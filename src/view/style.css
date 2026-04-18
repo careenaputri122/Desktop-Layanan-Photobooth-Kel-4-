@@ -1,0 +1,88 @@
+/* ===== Background ===== */
+.root-pane {
+    -fx-background-color: white;
+}
+
+/* ===== Header ===== */
+.logo-emoji {
+    -fx-font-size: 32px;
+}
+
+.app-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e1b4b;
+}
+
+.app-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6b7280;
+}
+
+/* ===== Form ===== */
+.field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}
+
+.input-field {
+    -fx-font-size: 13px;
+    -fx-padding: 9 12 9 12;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-background-color: #f9fafb;
+    -fx-pref-height: 36;
+}
+
+.input-field:focused {
+    -fx-border-color: #6366f1;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.2), 6, 0, 0, 0);
+}
+
+/* ===== Tombol ===== */
+.btn-primary {
+    -fx-background-color: #6366f1;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 11 0 11 0;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover   { -fx-background-color: #4f46e5; }
+.btn-primary:pressed { -fx-background-color: #4338ca; }
+
+/* ===== Pesan ===== */
+.label-error {
+    -fx-font-size: 12px;
+    -fx-text-fill: #dc2626;
+}
+
+.label-success {
+    -fx-font-size: 12px;
+    -fx-text-fill: #16a34a;
+}
+
+/* ===== Link ===== */
+.link-muted {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6b7280;
+}
+
+.link-action {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6366f1;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.link-action:hover {
+    -fx-text-fill: #4f46e5;
+    -fx-underline: true;
+}

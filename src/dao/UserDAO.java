@@ -1,30 +1,44 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import model.User;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 
-    public static void register(String namaDepan, String namaBelakang, String email, String password) throws Exception {
+    private static UserDAO instance;
+    private List<User> users    = new ArrayList<>();
+    private User currentUser;
 
-        Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/db_app",
-            "root",
-            ""
-        );
+    private UserDAO() {}
 
-        String query = "INSERT INTO user (nama_depan, nama_belakang, email, password) VALUES (?, ?, ?, ?)";
-
-        PreparedStatement ps = conn.prepareStatement(query);
-        ps.setString(1, namaDepan);
-        ps.setString(2, namaBelakang);
-        ps.setString(3, email);
-        ps.setString(4, password);
-
-        ps.executeUpdate();
-        System.out.println("User berhasil didaftarkan!");
-
-        conn.close();
+    public static UserDAO getInstance() {
+        if (instance == null) instance = new UserDAO();
+        return instance;
     }
+
+    // Simpan user baru 
+    public boolean register(User user) {
+        for (User u : users) {
+            if (u.getEmail().equalsIgnoreCase(user.getEmail())) return false;
+        }
+        users.add(user);
+        return true;
+    }
+
+    // Cek email + password 
+    public User login(String email, String password) {
+        for (User u : users) {
+            if (u.getEmail().equalsIgnoreCase(email)
+                    && u.getPassword().equals(password)) {
+                currentUser = u;
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public User getCurrentUser()  { return currentUser; }
+    public void logout()          { currentUser = null; }
+    public List<User> getAll()    { return users; }
 }

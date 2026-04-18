@@ -19,26 +19,56 @@ public class User {
         this.role = role;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-
-    public String getNamaDepan() { return namaDepan; }
-    public void setNamaDepan(String namaDepan) { this.namaDepan = namaDepan; }
-
-    public String getNamaBelakang() { return namaBelakang; }
-    public void setNamaBelakang(String namaBelakang) { this.namaBelakang = namaBelakang; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
-
-    // optional: nama lengkap
-    public String getNamaLengkap() {
-        return namaDepan + " " + namaBelakang;
+    public int getId() { 
+        return id; 
     }
+    
+    public String getNamaDepan() { 
+        return namaDepan; 
+    }
+    
+    public String getNamaBelakang() { 
+        return namaBelakang; 
+    }
+    
+    public String getNamaLengkap() { 
+        return namaDepan + " " + namaBelakang; 
+    }
+    
+    public String getEmail() { 
+        return email; 
+    }
+    
+    public String getPassword() { 
+        return password; 
+    }
+
+     public String getRole() { 
+        return role; 
+    }
+
+    public void setId(int id) {          
+        this.id = id; 
+    }
+    
+    public void setNamaDepan(String namaDepan) { 
+        this.namaDepan = namaDepan; 
+    }
+    
+    public void setNamaBelakang(String namaBelakang) { 
+        this.namaBelakang = namaBelakang; 
+    }
+    
+    public void setEmail(String email) { 
+        this.email = email; 
+    }
+    
+    public void setPassword(String password) { 
+        this.password = password; 
+    }
+
+    public void setRole(String role) { 
+        this.role = role; 
+    }
+
 }
