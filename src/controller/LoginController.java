@@ -1,21 +1,29 @@
 package controller;
 
+import java.io.IOException;
+
 import dao.UserDAO;
 import model.User;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class LoginController {
 
-    @FXML private TextField     emailField;
+    @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
-    @FXML private Label         errorLabel;
+    @FXML private Label errorLabel;
 
     @FXML
-    private void handleLogin() {
-        String email    = emailField.getText().trim();
+    private void handleLogin(ActionEvent event) {
+        String email = emailField.getText().trim();
         String password = passwordField.getText();
 
         if (email.isEmpty() || password.isEmpty()) {
@@ -25,10 +33,11 @@ public class LoginController {
 
         User user = UserDAO.getInstance().login(email, password);
         if (user != null) {
-            showSuccess("Selamat datang, " + user.getNamaDepan() + "!");
-            // TODO: arahkan berdasarkan role
-            // if ("admin".equals(user.getRole())) SceneManager.showAdminDashboard();
-            // else SceneManager.showUserDashboard();
+            try {
+                SceneManager.showHome();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             showError("Email atau password salah.");
         }
@@ -45,15 +54,17 @@ public class LoginController {
 
     private void showError(String msg) {
         errorLabel.getStyleClass().removeAll("label-success");
-        if (!errorLabel.getStyleClass().contains("label-error"))
+        if (!errorLabel.getStyleClass().contains("label-error")) {
             errorLabel.getStyleClass().add("label-error");
+        }
         errorLabel.setText(msg);
     }
 
     private void showSuccess(String msg) {
         errorLabel.getStyleClass().removeAll("label-error");
-        if (!errorLabel.getStyleClass().contains("label-success"))
+        if (!errorLabel.getStyleClass().contains("label-success")) {
             errorLabel.getStyleClass().add("label-success");
+        }
         errorLabel.setText(msg);
     }
 }

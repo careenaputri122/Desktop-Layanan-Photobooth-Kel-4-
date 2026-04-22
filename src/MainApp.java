@@ -11,7 +11,7 @@ public class MainApp extends Application {
         SceneManager.setStage(stage);
         stage.setTitle("Photobooth Management System");
         stage.setResizable(true);  
-        SceneManager.showLogin();
+        SceneManager.showHome();
         stage.show();
     }
 

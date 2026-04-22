@@ -13,6 +13,19 @@ public class SceneManager {
         stage = s;
     }
 
+    public static void showHome() throws Exception {
+        Parent root = FXMLLoader.load(
+            SceneManager.class.getResource("/view/home.fxml")
+        );
+        Scene scene = new Scene(root, 1280, 800);
+        scene.getStylesheets().add(
+            SceneManager.class.getResource("/view/home.css").toExternalForm()
+        );
+        stage.setScene(scene);
+        stage.setMaximized(true);
+        stage.centerOnScreen();
+    }
+
     public static void showLogin() throws Exception {
         Parent root = FXMLLoader.load(
             SceneManager.class.getResource("/view/login.fxml")

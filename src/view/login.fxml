@@ -25,7 +25,7 @@
 
             <VBox spacing="4" alignment="CENTER">
                 <Label text="&#128247;" styleClass="logo-emoji"/>
-                <Label text="Layanan Photobooth" styleClass="app-title"/>
+                <Label text="Aksaf Photobooth" styleClass="app-title"/>
                 <Label text="Masuk ke akun kamu" styleClass="app-subtitle"/>
             </VBox>
 
