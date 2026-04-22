@@ -1,0 +1,403 @@
+
+.scroll-root {
+    -fx-background: white;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+
+.scroll-root > .viewport {
+    -fx-background-color: white;
+}
+
+.page-root {
+    -fx-background-color: white;
+}
+
+/* NAVBAR */
+.navbar {
+    -fx-background-color: white;
+    -fx-padding: 16 40 16 40;
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 0;
+}
+
+.logo-box { -fx-spacing: 0; }
+
+.logo-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.logo-sub {
+    -fx-font-size: 11px;
+    -fx-text-fill: #ec4899;
+}
+
+.nav-active {
+    -fx-font-size: 14px;
+    -fx-text-fill: #ec4899;
+    -fx-font-weight: bold;
+}
+
+.nav-link {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4b5563;
+    -fx-cursor: hand;
+}
+
+.nav-link:hover { -fx-text-fill: #ec4899; }
+
+.btn-masuk {
+    -fx-background-color: #ec4899;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 24 10 24;
+    -fx-background-radius: 50px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.btn-masuk:hover { -fx-background-color: #db2777; }
+
+/* HERO */
+.hero {
+    -fx-background-color: linear-gradient(to bottom right, #7b1a3a, #c2185b, #f06292);
+    -fx-padding: 60 60 60 60;
+    -fx-min-height: 500px;
+}
+
+.promo-badge {
+    -fx-background-color: #facc15;
+    -fx-text-fill: #1a1a1a;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 50px;
+}
+
+.hero-title-white {
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.hero-title-pink {
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f9a8d4;
+}
+
+.hero-subtitle {
+    -fx-font-size: 15px;
+    -fx-text-fill: rgba(255,255,255,0.9);
+}
+
+.hero-price-label {
+    -fx-font-size: 15px;
+    -fx-text-fill: rgba(255,255,255,0.85);
+}
+
+.hero-price {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #facc15;
+}
+
+.btn-pesan {
+    -fx-background-color: #ec4899;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 14 28 14 28;
+    -fx-background-radius: 50px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.btn-pesan:hover { -fx-background-color: #db2777; }
+
+.btn-lihat {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 28 12 28;
+    -fx-background-radius: 50px;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-border-radius: 50px;
+    -fx-cursor: hand;
+}
+
+.btn-lihat:hover { -fx-background-color: rgba(255,255,255,0.15); }
+
+.stats-row { -fx-padding: 10 0 0 0; }
+
+.stat-number {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.stat-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: rgba(255,255,255,0.75);
+}
+
+/* PROMO SECTION */
+.promo-section {
+    -fx-background-color: white;
+    -fx-padding: 60 40 60 40;
+}
+
+.section-badge {
+    -fx-background-color: #fce7f3;
+    -fx-text-fill: #ec4899;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 16 6 16;
+    -fx-background-radius: 50px;
+}
+
+.section-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.section-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6b7280;
+    -fx-text-alignment: CENTER;
+}
+
+.promo-card {
+    -fx-background-color: white;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 16, 0, 0, 4);
+}
+
+.promo-card:hover {
+    -fx-border-color: #f9a8d4;
+    -fx-effect: dropshadow(gaussian, rgba(236,72,153,0.20), 20, 0, 0, 6);
+}
+
+.card-img {
+    -fx-background-radius: 16 16 0 0;
+    -fx-padding: 12 12 0 0;
+}
+
+.card-img-lebaran {
+    -fx-background-color: linear-gradient(to bottom right, #fda4af, #fb7185, #e11d48);
+}
+
+.card-img-wisuda {
+    -fx-background-color: linear-gradient(to bottom right, #f9a8d4, #ec4899, #be185d);
+}
+
+.card-img-wedding {
+    -fx-background-color: linear-gradient(to bottom right, #fecdd3, #fb923c, #f43f5e);
+}
+
+.hemat-badge {
+    -fx-background-color: #facc15;
+    -fx-text-fill: #1a1a1a;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 10 5 10;
+    -fx-background-radius: 0 12 0 12;
+}
+
+.card-body {
+    -fx-padding: 16 18 18 18;
+    -fx-background-color: white;
+    -fx-background-radius: 0 0 16 16;
+}
+
+.card-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.card-desc {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+.card-date {
+    -fx-font-size: 11px;
+    -fx-text-fill: #9ca3af;
+}
+
+.btn-ambil {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ec4899;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 9 0 9 0;
+    -fx-background-radius: 50px;
+    -fx-border-color: #ec4899;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 50px;
+    -fx-cursor: hand;
+}
+
+.btn-ambil:hover { -fx-background-color: #fce7f3; }
+
+/* =============================================
+   GALERI SECTION
+   ============================================= */
+.galeri-section {
+    -fx-background-color: white;
+    -fx-padding: 60 40 60 40;
+}
+
+.galeri-title {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.lihat-semua {
+    -fx-font-size: 14px;
+    -fx-text-fill: #ec4899;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.lihat-semua:hover { -fx-text-fill: #db2777; }
+
+.galeri-card {
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 4);
+    -fx-cursor: hand;
+}
+
+.galeri-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 20, 0, 0, 8);
+}
+
+.galeri-img {
+    -fx-background-radius: 16;
+    -fx-min-height: 220px;
+}
+
+.galeri-img-wedding {
+    -fx-background-color: linear-gradient(to bottom, #f9a8d4, #9d174d);
+}
+
+.galeri-img-birthday {
+    -fx-background-color: linear-gradient(to bottom, #fde68a, #ec4899);
+}
+
+.galeri-img-corporate {
+    -fx-background-color: linear-gradient(to bottom, #c4b5fd, #4c1d95);
+}
+
+.galeri-img-wisuda2 {
+    -fx-background-color: linear-gradient(to bottom, #bfdbfe, #1e3a5f);
+}
+
+.galeri-overlay {
+    -fx-background-color: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+    -fx-background-radius: 16;
+    -fx-padding: 16;
+    -fx-spacing: 4;
+    -fx-min-height: 220px;
+}
+
+.galeri-tag {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 10 3 10;
+    -fx-background-radius: 50px;
+}
+
+.galeri-tag-pink {
+    -fx-background-color: #ec4899;
+    -fx-text-fill: white;
+}
+
+.galeri-tag-purple {
+    -fx-background-color: #7c3aed;
+    -fx-text-fill: white;
+}
+
+.galeri-tag-blue {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+}
+
+.galeri-name {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.galeri-count {
+    -fx-font-size: 12px;
+    -fx-text-fill: rgba(255,255,255,0.80);
+}
+
+.testimoni-section {
+    -fx-background-color: #fdf2f8;
+    -fx-padding: 60 40 60 40;
+}
+
+.testi-card {
+    -fx-background-color: white;
+    -fx-border-color: #fce7f3;
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 3);
+}
+
+.testi-stars {
+    -fx-font-size: 16px;
+}
+
+.testi-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #4b5563;
+    -fx-line-spacing: 3;
+}
+
+.testi-avatar {
+    -fx-font-size: 28px;
+    -fx-background-color: #fce7f3;
+    -fx-background-radius: 50px;
+    -fx-padding: 8;
+}
+
+.testi-name {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.testi-event {
+    -fx-font-size: 12px;
+    -fx-text-fill: #9ca3af;
+}
+
+/* FOOTER */
+.footer {
+    -fx-background-color: #f9fafb;
+    -fx-padding: 24 40 24 40;
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 1 0 0 0;
+}
+
+.footer-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #9ca3af;
+}
