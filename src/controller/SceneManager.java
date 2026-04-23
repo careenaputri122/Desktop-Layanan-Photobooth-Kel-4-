@@ -45,6 +45,7 @@ public static void showPemesanan() throws Exception {
 }
 
     public static void showLogin() throws Exception {
+<<<<<<< HEAD
         Parent root = FXMLLoader.load(
             SceneManager.class.getResource("/view/login.fxml")
         );
@@ -68,5 +69,32 @@ public static void showPemesanan() throws Exception {
         stage.setScene(scene);
          stage.setMaximized(true);
         stage.centerOnScreen();
+=======
+    Parent root = FXMLLoader.load(
+        SceneManager.class.getResource("/view/login.fxml")
+    );
+    double w = stage.getWidth();
+    double h = stage.getHeight();
+    Scene scene = new Scene(root, w, h);
+    scene.getStylesheets().add(
+        SceneManager.class.getResource("/view/style.css").toExternalForm()
+    );
+    stage.setScene(scene);
+    stage.centerOnScreen();
+    }
+
+    public static void showRegister() throws Exception {
+    Parent root = FXMLLoader.load(
+        SceneManager.class.getResource("/view/register.fxml")
+    );
+    double w = stage.getWidth();
+    double h = stage.getHeight();
+    Scene scene = new Scene(root, w, h);
+    scene.getStylesheets().add(
+        SceneManager.class.getResource("/view/style.css").toExternalForm()
+    );
+    stage.setScene(scene);
+    stage.centerOnScreen();
+>>>>>>> 4207755e25be3ce322295afe101be857516c451f
     }
 }
