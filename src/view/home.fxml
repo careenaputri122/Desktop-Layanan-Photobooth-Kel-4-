@@ -49,9 +49,8 @@
 
             <!-- Auth Buttons -->
             <HBox alignment="CENTER_RIGHT" spacing="12">
-                <Button text="Admin"  styleClass="nav-text-btn" onAction="#goAdmin"/>
-                <Button text="Member" styleClass="nav-text-btn" onAction="#goMember"/>
-                <Button text="Masuk"  styleClass="btn-masuk"    onAction="#goLogin"/>
+                <Button text="Login"  styleClass="btn-masuk"    onAction="#goLogin"/>
+                <Button text="Sign in"  styleClass="btn-masuk"    onAction="#goSignin"/>
             </HBox>
         </HBox>
 
@@ -61,7 +60,7 @@
         <StackPane styleClass="hero-section">
             <ImageView fitWidth="1280" fitHeight="500" preserveRatio="false">
         <image>
-            <Image url="@hero-bg.jpg"/>
+            <Image url="@poto.jpg"/>
         </image>
     </ImageView>
             <VBox styleClass="hero-overlay" alignment="CENTER_LEFT" spacing="16">

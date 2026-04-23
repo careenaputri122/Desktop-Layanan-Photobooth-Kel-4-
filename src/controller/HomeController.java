@@ -45,6 +45,11 @@ public class HomeController {
         try { SceneManager.showLogin(); } catch (Exception e) { e.printStackTrace(); }
     }
 
+    @FXML
+    private void goSignin() {
+        try { SceneManager.showRegister(); } catch (Exception e) { e.printStackTrace(); }
+    }
+
     // ── Aksi Konten ──────────────────────────────────
     @FXML
     private void ambilPromo() {
