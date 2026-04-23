@@ -284,7 +284,7 @@
     </ImageView>
     <VBox style="-fx-background-color: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7)); -fx-background-radius: 0 0 12 12; -fx-padding: 12 12 12 12;" spacing="4">
         <Label text="Wedding" styleClass="galeri-category-badge"/>
-        <Label text="Wedding Rina &amp; Dimas" styleClass="galeri-event-title"/>
+        <Label text="Wedding Lady &amp; Cortis" styleClass="galeri-event-title"/>
         <Label text="148 foto" styleClass="galeri-foto-count"/>
     </VBox>
 </VBox>
@@ -298,7 +298,7 @@
     </ImageView>
     <VBox style="-fx-background-color: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7)); -fx-background-radius: 0 0 12 12; -fx-padding: 12 12 12 12;" spacing="4">
         <Label text="Birthday" styleClass="galeri-category-badge"/>
-        <Label text="Ulang Tahun Zahra ke-18" styleClass="galeri-event-title"/>
+        <Label text="Ulang Tahun dea ke-5" styleClass="galeri-event-title"/>
         <Label text="92 foto" styleClass="galeri-foto-count"/>
     </VBox>
 </VBox>
@@ -312,7 +312,7 @@
     </ImageView>
     <VBox style="-fx-background-color: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7)); -fx-background-radius: 0 0 12 12; -fx-padding: 12 12 12 12;" spacing="4">
         <Label text="Corporate" styleClass="galeri-category-badge"/>
-        <Label text="Gathering PT Maju Bersama" styleClass="galeri-event-title"/>
+        <Label text="Gathering PT Dea Keren" styleClass="galeri-event-title"/>
         <Label text="215 foto" styleClass="galeri-foto-count"/>
     </VBox>
 </VBox>
@@ -326,7 +326,7 @@
     </ImageView>
     <VBox style="-fx-background-color: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7)); -fx-background-radius: 0 0 12 12; -fx-padding: 12 12 12 12;" spacing="4">
         <Label text="Wisuda" styleClass="galeri-category-badge"/>
-        <Label text="Wisuda Universitas Trisakti" styleClass="galeri-event-title"/>
+        <Label text="Wisuda Universitas Sriwijaya" styleClass="galeri-event-title"/>
         <Label text="176 foto" styleClass="galeri-foto-count"/>
     </VBox>
 </VBox>
@@ -366,7 +366,7 @@
                             <Label text="M" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;"/>
                         </StackPane>
                         <VBox spacing="2">
-                            <Label text="Maya Putri" styleClass="testimoni-name"/>
+                            <Label text="Lady alfin" styleClass="testimoni-name"/>
                             <Label text="Wedding" styleClass="testimoni-event"/>
                         </VBox>
                     </HBox>
@@ -387,7 +387,7 @@
                             <Label text="S" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;"/>
                         </StackPane>
                         <VBox spacing="2">
-                            <Label text="Sari Dewi" styleClass="testimoni-name"/>
+                            <Label text="Difanya" styleClass="testimoni-name"/>
                             <Label text="Wedding" styleClass="testimoni-event"/>
                         </VBox>
                     </HBox>
@@ -408,7 +408,7 @@
                             <Label text="B" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;"/>
                         </StackPane>
                         <VBox spacing="2">
-                            <Label text="Budi Santoso" styleClass="testimoni-name"/>
+                            <Label text="Dea amalia" styleClass="testimoni-name"/>
                             <Label text="Corporate Event" styleClass="testimoni-event"/>
                         </VBox>
                     </HBox>

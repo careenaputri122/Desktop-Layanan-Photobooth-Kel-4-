@@ -27,26 +27,30 @@ public class SceneManager {
     }
 
     public static void showLogin() throws Exception {
-        Parent root = FXMLLoader.load(
-            SceneManager.class.getResource("/view/login.fxml")
-        );
-        Scene scene = new Scene(root, 480, 560);
-        scene.getStylesheets().add(
-            SceneManager.class.getResource("/view/style.css").toExternalForm()
-        );
-        stage.setScene(scene);
-        stage.centerOnScreen();
+    Parent root = FXMLLoader.load(
+        SceneManager.class.getResource("/view/login.fxml")
+    );
+    double w = stage.getWidth();
+    double h = stage.getHeight();
+    Scene scene = new Scene(root, w, h);
+    scene.getStylesheets().add(
+        SceneManager.class.getResource("/view/style.css").toExternalForm()
+    );
+    stage.setScene(scene);
+    stage.centerOnScreen();
     }
 
     public static void showRegister() throws Exception {
-        Parent root = FXMLLoader.load(
-            SceneManager.class.getResource("/view/register.fxml")
-        );
-        Scene scene = new Scene(root, 480, 650);
-        scene.getStylesheets().add(
-            SceneManager.class.getResource("/view/style.css").toExternalForm()
-        );
-        stage.setScene(scene);
-        stage.centerOnScreen();
+    Parent root = FXMLLoader.load(
+        SceneManager.class.getResource("/view/register.fxml")
+    );
+    double w = stage.getWidth();
+    double h = stage.getHeight();
+    Scene scene = new Scene(root, w, h);
+    scene.getStylesheets().add(
+        SceneManager.class.getResource("/view/style.css").toExternalForm()
+    );
+    stage.setScene(scene);
+    stage.centerOnScreen();
     }
 }
