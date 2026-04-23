@@ -12,8 +12,7 @@ public class HomeController {
 
     @FXML
     private void goPricelist() {
-        // TODO: SceneManager.showPricelist();
-        System.out.println("Navigasi ke Pricelist");
+        try { SceneManager.showPricelist(); } catch (Exception e) { e.printStackTrace(); }
     }
 
     @FXML

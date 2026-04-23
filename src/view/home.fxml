@@ -30,7 +30,7 @@
             <!-- Logo -->
             <HBox alignment="CENTER_LEFT" spacing="8">
                 <Label text="📷" styleClass="navbar-logo-icon"/>
-                <Label text="Aksaf Photobooth" styleClass="navbar-brand"/>
+                <Label text="📷 Aksaf Photobooth" styleClass="navbar-brand"/>
             </HBox>
 
             <!-- Spacer -->

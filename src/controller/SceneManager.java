@@ -26,6 +26,24 @@ public class SceneManager {
         stage.centerOnScreen();
     }
 
+    public static void showPricelist() throws Exception {
+    Parent root = FXMLLoader.load(
+        SceneManager.class.getResource("/view/pricelist.fxml")
+    );
+    Scene scene = new Scene(root, 1280, 800);
+    scene.getStylesheets().add(
+        SceneManager.class.getResource("/view/pricelist.css").toExternalForm()
+    );
+    stage.setScene(scene);
+    stage.setMaximized(true);
+    stage.centerOnScreen();
+}
+
+public static void showPemesanan() throws Exception {
+    // TODO: ganti dengan fxml pemesanan nanti
+    System.out.println("TODO: showPemesanan");
+}
+
     public static void showLogin() throws Exception {
         Parent root = FXMLLoader.load(
             SceneManager.class.getResource("/view/login.fxml")
@@ -35,6 +53,7 @@ public class SceneManager {
             SceneManager.class.getResource("/view/style.css").toExternalForm()
         );
         stage.setScene(scene);
+         stage.setMaximized(true);
         stage.centerOnScreen();
     }
 
@@ -47,6 +66,7 @@ public class SceneManager {
             SceneManager.class.getResource("/view/style.css").toExternalForm()
         );
         stage.setScene(scene);
+         stage.setMaximized(true);
         stage.centerOnScreen();
     }
 }
