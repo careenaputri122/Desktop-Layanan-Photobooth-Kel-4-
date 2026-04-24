@@ -13,7 +13,7 @@ public class PricelistController {
 
     // ── Navigasi Navbar ──────────────────────────────
     @FXML private void goHome()      { try { SceneManager.showHome();      } catch (Exception e) { e.printStackTrace(); } }
-    @FXML private void goGaleri()    { System.out.println("TODO: Galeri");  }
+    @FXML private void goGaleri()    { try { SceneManager.showGaleri();    } catch (Exception e) { e.printStackTrace(); } }
     @FXML private void goPemesanan() { try { SceneManager.showPemesanan(); } catch (Exception e) { e.printStackTrace(); } }
     @FXML private void goAdmin()     { System.out.println("TODO: Admin");   }
     @FXML private void goMember()    { System.out.println("TODO: Member");  }

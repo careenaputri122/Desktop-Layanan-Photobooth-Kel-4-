@@ -17,8 +17,7 @@ public class HomeController {
 
     @FXML
     private void goGaleri() {
-        // TODO: SceneManager.showGaleri();
-        System.out.println("Navigasi ke Galeri");
+        try { SceneManager.showGaleri(); } catch (Exception e) { e.printStackTrace(); }
     }
 
     @FXML

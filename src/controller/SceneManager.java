@@ -45,31 +45,6 @@ public static void showPemesanan() throws Exception {
 }
 
     public static void showLogin() throws Exception {
-<<<<<<< HEAD
-        Parent root = FXMLLoader.load(
-            SceneManager.class.getResource("/view/login.fxml")
-        );
-        Scene scene = new Scene(root, 480, 560);
-        scene.getStylesheets().add(
-            SceneManager.class.getResource("/view/style.css").toExternalForm()
-        );
-        stage.setScene(scene);
-         stage.setMaximized(true);
-        stage.centerOnScreen();
-    }
-
-    public static void showRegister() throws Exception {
-        Parent root = FXMLLoader.load(
-            SceneManager.class.getResource("/view/register.fxml")
-        );
-        Scene scene = new Scene(root, 480, 650);
-        scene.getStylesheets().add(
-            SceneManager.class.getResource("/view/style.css").toExternalForm()
-        );
-        stage.setScene(scene);
-         stage.setMaximized(true);
-        stage.centerOnScreen();
-=======
     Parent root = FXMLLoader.load(
         SceneManager.class.getResource("/view/login.fxml")
     );
@@ -95,6 +70,18 @@ public static void showPemesanan() throws Exception {
     );
     stage.setScene(scene);
     stage.centerOnScreen();
->>>>>>> 4207755e25be3ce322295afe101be857516c451f
     }
+    
+    public static void showGaleri() throws Exception {
+    Parent root = FXMLLoader.load(
+        SceneManager.class.getResource("/view/galeri.fxml")
+    );
+    Scene scene = new Scene(root, 1280, 800);
+    scene.getStylesheets().add(
+        SceneManager.class.getResource("/view/galeri.css").toExternalForm()
+    );
+    stage.setScene(scene);
+    stage.setMaximized(true);
+    stage.centerOnScreen();
+}
 }
