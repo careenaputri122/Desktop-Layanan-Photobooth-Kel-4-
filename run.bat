@@ -5,7 +5,7 @@ REM "SESUAIKAN_DENGAN_PATH_PROYEKMU"
 cd /d "C:\Users\Acer\Downloads\Desktop-Layanan-Photobooth-Kel-4-"
 
 REM Use the installed JavaFX SDK, Sesuaikan path JavaFX dibawah dengan komputer kamu!
-set JAVAFX_HOME=C:\Users\Acer\Downloads\openjfx-21.0.10_windows-x64_bin-sdk\javafx-sdk-21.0.10
+set JAVAFX_HOME=C:\Program Files\Java\javafx-sdk-21.0.10
 
 REM Run with correct module path and library path
 java -Djava.library.path="%JAVAFX_HOME%\bin" ^

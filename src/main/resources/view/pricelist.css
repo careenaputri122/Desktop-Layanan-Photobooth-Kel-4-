@@ -1,0 +1,239 @@
+/* ============================================================
+   pricelist.css  —  Halaman Pricelist Fotoimoet
+   ============================================================ */
+
+/* ── Base ── */
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-background-color: #F9FAFB;
+}
+
+/* ===========================
+   NAVBAR (sama persis home)
+   =========================== */
+.navbar {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #F3F4F6 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 0 40 0 40;
+    -fx-pref-height: 64;
+    -fx-min-height: 64;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+.navbar-logo-icon  { -fx-font-size: 24px; }
+.navbar-brand      { -fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1F2937; }
+
+.nav-link {
+    -fx-font-size: 14px; -fx-text-fill: #4B5563;
+    -fx-border-color: transparent; -fx-background-color: transparent;
+    -fx-cursor: hand; -fx-padding: 4 8 4 8;
+}
+.nav-link:hover { -fx-text-fill: #EC4899; }
+
+.nav-link-active {
+    -fx-font-size: 14px; -fx-text-fill: #EC4899; -fx-font-weight: bold;
+    -fx-border-color: transparent transparent #EC4899 transparent;
+    -fx-border-width: 0 0 2 0; -fx-background-color: transparent;
+    -fx-cursor: hand; -fx-padding: 4 8 4 8;
+}
+.nav-text-btn {
+    -fx-font-size: 13px; -fx-text-fill: #374151;
+    -fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;
+}
+.nav-text-btn:hover { -fx-text-fill: #EC4899; }
+
+.btn-masuk {
+    -fx-background-color: #EC4899; -fx-text-fill: white;
+    -fx-font-size: 13px; -fx-font-weight: bold;
+    -fx-padding: 8 20 8 20; -fx-background-radius: 20; -fx-cursor: hand;
+}
+.btn-masuk:hover { -fx-background-color: #DB2777; }
+
+/* ===========================
+   HERO HEADER
+   =========================== */
+.hero-header {
+    -fx-background-color: linear-gradient(to bottom, #FDF2F8, #F9FAFB);
+    -fx-padding: 50 80 50 80;
+}
+
+.hero-title {
+    -fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: #111827;
+}
+.hero-subtitle {
+    -fx-font-size: 15px; -fx-text-fill: #6B7280;
+    -fx-wrap-text: true; -fx-text-alignment: center;
+      -fx-alignment: center;
+}
+
+/* ===========================
+   FILTER TABS
+   =========================== */
+.filter-bar {
+    -fx-background-color: white;
+    -fx-padding: 16 60 16 60;
+    -fx-border-color: transparent transparent #F3F4F6 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+.tab-btn {
+    -fx-background-color: white;
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px; -fx-font-weight: bold;
+    -fx-padding: 8 20 8 20;
+    -fx-background-radius: 20;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 20; -fx-border-width: 1.5;
+    -fx-cursor: hand;
+}
+.tab-btn:hover {
+    -fx-border-color: #EC4899; -fx-text-fill: #EC4899;
+}
+.tab-btn-active {
+    -fx-background-color: #EC4899;
+    -fx-text-fill: white;
+    -fx-font-size: 13px; -fx-font-weight: bold;
+    -fx-padding: 8 20 8 20;
+    -fx-background-radius: 20;
+    -fx-border-color: #EC4899;
+    -fx-border-radius: 20; -fx-border-width: 1.5;
+    -fx-cursor: hand;
+}
+
+/* ===========================
+   PAKET GRID
+   =========================== */
+.section-paket {
+    -fx-background-color: #F9FAFB;
+    -fx-padding: 36 60 36 60;
+}
+
+.paket-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-color: #F3F4F6;
+    -fx-border-radius: 16; -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 12, 0, 0, 3);
+    -fx-pref-width: 380; -fx-max-width: 400;
+}
+
+/* Badge kategori */
+.badge-cetak {
+    -fx-background-color: #FCE7F3; -fx-text-fill: #EC4899;
+    -fx-font-size: 11px; -fx-font-weight: bold;
+    -fx-padding: 4 12 4 12; -fx-background-radius: 10;
+}
+.badge-digital {
+    -fx-background-color: #EFF6FF; -fx-text-fill: #3B82F6;
+    -fx-font-size: 11px; -fx-font-weight: bold;
+    -fx-padding: 4 12 4 12; -fx-background-radius: 10;
+}
+.badge-ai {
+    -fx-background-color: #F3E8FF; -fx-text-fill: #9333EA;
+    -fx-font-size: 11px; -fx-font-weight: bold;
+    -fx-padding: 4 12 4 12; -fx-background-radius: 10;
+}
+.badge-addon {
+    -fx-background-color: #FEF3C7; -fx-text-fill: #D97706;
+    -fx-font-size: 11px; -fx-font-weight: bold;
+    -fx-padding: 4 12 4 12; -fx-background-radius: 10;
+}
+
+/* Badge TERLARIS */
+.badge-terlaris {
+    -fx-background-color: #EAB308; -fx-text-fill: white;
+    -fx-font-size: 11px; -fx-font-weight: bold;
+    -fx-padding: 5 14 5 14; -fx-background-radius: 12;
+}
+
+.paket-name {
+    -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #111827;
+}
+
+.feature-check {
+    -fx-font-size: 13px; -fx-text-fill: #EC4899;
+}
+.feature-text {
+    -fx-font-size: 13px; -fx-text-fill: #374151;
+}
+
+/* Harga */
+.price-original {
+    -fx-font-size: 13px; -fx-text-fill: #9CA3AF;
+    -fx-strikethrough: true;
+}
+.price-discount-badge {
+    -fx-background-color: #DCFCE7; -fx-text-fill: #16A34A;
+    -fx-font-size: 11px; -fx-font-weight: bold;
+    -fx-padding: 3 8 3 8; -fx-background-radius: 8;
+}
+.price-member-badge {
+    -fx-background-color: #FEF9C3; -fx-text-fill: #D97706;
+    -fx-font-size: 11px; -fx-font-weight: bold;
+    -fx-padding: 3 8 3 8; -fx-background-radius: 8;
+}
+.price-final {
+    -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #EC4899;
+}
+
+.btn-pesan {
+    -fx-background-color: #EC4899;
+    -fx-text-fill: white;
+    -fx-font-size: 14px; -fx-font-weight: bold;
+    -fx-padding: 12 0 12 0;
+    -fx-background-radius: 10;
+    -fx-cursor: hand; -fx-max-width: Infinity;
+}
+.btn-pesan:hover { -fx-background-color: #DB2777; }
+
+/* Image placeholder di card */
+.card-img-placeholder {
+    -fx-background-radius: 16 16 0 0;
+    -fx-pref-height: 200; -fx-min-height: 200;
+}
+
+/* ===========================
+   CATATAN BAR
+   =========================== */
+.catatan-bar {
+    -fx-background-color: #FFFBEB;
+    -fx-border-color: #FDE68A;
+    -fx-border-width: 1;
+    -fx-padding: 14 60 14 60;
+}
+.catatan-icon {
+    -fx-font-size: 16px; -fx-text-fill: #D97706;
+}
+.catatan-bold {
+    -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #92400E;
+}
+.catatan-text {
+    -fx-font-size: 13px; -fx-text-fill: #92400E; -fx-wrap-text: true;
+}
+
+/* ===========================
+   FOOTER (sama persis home)
+   =========================== */
+.footer {
+    -fx-background-color: #111827;
+    -fx-padding: 40 60 24 60;
+}
+.footer-brand  { -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: white; }
+.footer-tagline { -fx-font-size: 12px; -fx-text-fill: #9CA3AF; -fx-wrap-text: true; }
+.footer-heading { -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: white; }
+.footer-link {
+    -fx-font-size: 13px; -fx-text-fill: #9CA3AF;
+    -fx-border-color: transparent; -fx-background-color: transparent;
+    -fx-cursor: hand; -fx-padding: 2 0 2 0;
+}
+.footer-link:hover { -fx-text-fill: #EC4899; }
+.footer-icon-btn {
+    -fx-background-color: #1F2937; -fx-text-fill: #9CA3AF;
+    -fx-font-size: 14px; -fx-border-color: transparent;
+    -fx-background-radius: 8;
+    -fx-pref-width: 34; -fx-pref-height: 34; -fx-cursor: hand;
+}
+.footer-icon-btn:hover { -fx-background-color: #EC4899; -fx-text-fill: white; }
+.footer-divider { -fx-background-color: #1F2937; -fx-pref-height: 1; -fx-min-height: 1; }
+.footer-copy    { -fx-font-size: 12px; -fx-text-fill: #6B7280; }
+.footer-made-with { -fx-font-size: 12px; -fx-text-fill: #6B7280; }
+.footer-heart   { -fx-font-size: 12px; -fx-text-fill: #EC4899; }
