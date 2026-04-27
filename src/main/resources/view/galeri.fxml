@@ -94,7 +94,7 @@
 
             <!-- Brand -->
             <VBox spacing="12" HBox.hgrow="ALWAYS" maxWidth="220">
-                <Label text="📷 Fotoimoet" styleClass="footer-brand"/>
+                <Label text="📷 Aksaf Photobooth" styleClass="footer-brand"/>
                 <Label text="Sewa photobooth terjangkau untuk momen spesialmu. Operator profesional, hasil foto berkualitas, kenangan tak terlupakan."
                        styleClass="footer-desc" wrapText="true"/>
                 <HBox spacing="10">
@@ -139,7 +139,7 @@
         <!-- Footer Bottom -->
         <HBox styleClass="footer-bottom" alignment="CENTER">
             <padding><Insets top="16" bottom="16"/></padding>
-            <Label text="© 2026 Fotoimoet. Semua hak dilindungi." styleClass="footer-copy"/>
+            <Label text="© 2026 Aksaf Photobooth. Semua hak dilindungi." styleClass="footer-copy"/>
         </HBox>
 
     </VBox>

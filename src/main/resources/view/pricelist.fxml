@@ -15,6 +15,7 @@
     fx:controller="controller.PricelistController"
     fitToWidth="true"
     hbarPolicy="NEVER"
+    stylesheets="@pricelist.css"
     style="-fx-background-color: transparent; -fx-background: transparent;">
 
     <VBox spacing="0">
@@ -366,7 +367,7 @@
                 <VBox spacing="14" prefWidth="220" minWidth="220">
                     <HBox spacing="8" alignment="CENTER_LEFT">
                         <Label text="📷" style="-fx-font-size: 20px;"/>
-                        <Label text="Fotoimoet" styleClass="footer-brand"/>
+                        <Label text="Aksaf Photobooth" styleClass="footer-brand"/>
                     </HBox>
                     <Label text="Sewa photobooth terjangkau untuk momen spesialmu. Operator profesional, hasil foto berkualitas, kenangan tak terlupakan."
                         styleClass="footer-tagline" wrapText="true" maxWidth="180"/>
@@ -407,7 +408,7 @@
             </HBox>
             <Region styleClass="footer-divider" maxWidth="Infinity"/>
             <HBox alignment="CENTER_LEFT">
-                <Label text="© 2026 Fotoimoet. Semua hak dilindungi." styleClass="footer-copy"/>
+                <Label text="© 2026 Aksaf Photobooth. Semua hak dilindungi." styleClass="footer-copy"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <HBox spacing="4" alignment="CENTER_RIGHT">
                     <Label text="Dibuat dengan" styleClass="footer-made-with"/>
