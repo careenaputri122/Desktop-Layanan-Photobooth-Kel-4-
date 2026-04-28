@@ -8,7 +8,9 @@ controller\SceneManager.class
 model\Paket.class
 model\User.class
 controller\GaleriController.class
+controller\PemesananController.class
 model\Booking.class
+controller\PemesananController$Nav.class
 controller\GaleriController$Nav.class
 model\Foto.class
 controller\PricelistController.class

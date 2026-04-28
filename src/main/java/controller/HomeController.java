@@ -68,8 +68,7 @@ private void setupNavbar() {
 
     @FXML
     private void goPemesanan() {
-        // TODO: SceneManager.showPemesanan();
-        System.out.println("Navigasi ke Pemesanan");
+        try { SceneManager.showPemesanan(); } catch (Exception e) { e.printStackTrace(); }
     }
 
     @FXML

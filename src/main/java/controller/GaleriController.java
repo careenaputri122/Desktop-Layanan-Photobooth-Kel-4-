@@ -201,7 +201,7 @@ public class GaleriController {
     @FXML private void goHome()      { nav(() -> SceneManager.showHome());      }
     @FXML private void goPricelist() { nav(() -> SceneManager.showPricelist()); }
     @FXML private void goGaleri()    { nav(() -> SceneManager.showGaleri());    }
-    @FXML private void goPemesanan() { System.out.println("TODO: Pemesanan");   }
+    @FXML private void goPemesanan() { nav(() -> SceneManager.showPemesanan()); }
     @FXML private void goSignin()    { nav(() -> SceneManager.showRegister());  }
     @FXML private void goLogin()     { nav(() -> SceneManager.showLogin());     }
 

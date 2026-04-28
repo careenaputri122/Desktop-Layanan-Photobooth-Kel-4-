@@ -45,8 +45,16 @@ public class SceneManager {
 }
 
 public static void showPemesanan() throws Exception {
-    // TODO: ganti dengan fxml pemesanan nanti
-    System.out.println("TODO: showPemesanan");
+    Parent root = FXMLLoader.load(
+        SceneManager.class.getResource("/view/pemesanan.fxml")
+    );
+    Scene scene = new Scene(root, 1280, 800);
+    scene.getStylesheets().add(
+        SceneManager.class.getResource("/view/pemesanan.css").toExternalForm()
+    );
+    stage.setScene(scene);
+    stage.setMaximized(true);
+    stage.centerOnScreen();
 }
 
     public static void showLogin() throws Exception {
