@@ -55,6 +55,7 @@ public class PemesananController {
     // ── Init ──────────────────────────────────────────────────────
     @FXML
     public void initialize() {
+        
         setupNavbar();
         Platform.runLater(() -> buildCalendar(currentMonth));
     }
@@ -68,7 +69,10 @@ public class PemesananController {
             namaLabel.setStyle("-fx-text-fill: #EC4899; -fx-font-weight: bold;");
             Button btnLogout = new Button("Logout");
             btnLogout.getStyleClass().add("btn-masuk");
-            btnLogout.setOnAction(e -> { UserDAO.getInstance().logout(); setupNavbar(); });
+            btnLogout.setOnAction(e -> {
+    UserDAO.getInstance().logout();
+    try { SceneManager.showHome(); } catch (Exception ex) { ex.printStackTrace(); }
+});
             authBox.getChildren().addAll(namaLabel, btnLogout);
         } else {
             Button btnLogin = new Button("Login");

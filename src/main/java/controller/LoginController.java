@@ -26,17 +26,24 @@ public class LoginController {
             return;
         }
 
-        User user = UserDAO.getInstance().login(email, password);
-        if (user != null) {
-            try {
-                SceneManager.closeCurrentPopup(); // tutup popup login
-                SceneManager.showHome();          // navigasi ke home
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+       User user = UserDAO.getInstance().login(email, password);
+if (user != null) {
+    try {
+        SceneManager.closeCurrentPopup();
+
+        // cek apakah dari pemesanan
+        if ("pemesanan".equals(SceneManager.afterLoginDestination)) {
+            SceneManager.afterLoginDestination = null; // reset flag
+            SceneManager.showPemesanan();
         } else {
-            showError("Email atau password salah.");
+            SceneManager.showHome();
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+} else {
+    showError("Email atau password salah.");
+}
     }
 
     @FXML

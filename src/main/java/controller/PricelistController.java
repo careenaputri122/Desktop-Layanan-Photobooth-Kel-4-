@@ -59,7 +59,14 @@ private void setupNavbar() {
     // ── Navigasi Navbar ──────────────────────────────
     @FXML private void goHome()      { try { SceneManager.showHome();      } catch (Exception e) { e.printStackTrace(); } }
     @FXML private void goGaleri()    { try { SceneManager.showGaleri();    } catch (Exception e) { e.printStackTrace(); } }
-    @FXML private void goPemesanan() { try { SceneManager.showPemesanan(); } catch (Exception e) { e.printStackTrace(); } }
+   @FXML private void goPemesanan() {
+    if (UserDAO.getInstance().getCurrentUser() == null) {
+        SceneManager.afterLoginDestination = "pemesanan";
+        try { SceneManager.showLogin(); } catch (Exception e) { e.printStackTrace(); }
+    } else {
+        try { SceneManager.showPemesanan(); } catch (Exception e) { e.printStackTrace(); }
+    }
+}
     @FXML private void goAdmin()     { System.out.println("TODO: Admin");   }
     @FXML private void goMember()    { System.out.println("TODO: Member");  }
     @FXML private void goLogin()     { try { SceneManager.showLogin();      } catch (Exception e) { e.printStackTrace(); } }

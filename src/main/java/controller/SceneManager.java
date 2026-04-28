@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 public class SceneManager {
 
     private static Stage stage;
+    public static String afterLoginDestination = null; 
 
     public static void setStage(Stage s) {
         stage = s;

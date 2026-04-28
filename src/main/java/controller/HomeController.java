@@ -66,10 +66,14 @@ private void setupNavbar() {
         try { SceneManager.showGaleri(); } catch (Exception e) { e.printStackTrace(); }
     }
 
-    @FXML
-    private void goPemesanan() {
+    @FXML private void goPemesanan() {
+    if (UserDAO.getInstance().getCurrentUser() == null) {
+        SceneManager.afterLoginDestination = "pemesanan";
+        try { SceneManager.showLogin(); } catch (Exception e) { e.printStackTrace(); }
+    } else {
         try { SceneManager.showPemesanan(); } catch (Exception e) { e.printStackTrace(); }
     }
+}
 
     @FXML
     private void goAdmin() {

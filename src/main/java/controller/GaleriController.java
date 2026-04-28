@@ -201,7 +201,14 @@ public class GaleriController {
     @FXML private void goHome()      { nav(() -> SceneManager.showHome());      }
     @FXML private void goPricelist() { nav(() -> SceneManager.showPricelist()); }
     @FXML private void goGaleri()    { nav(() -> SceneManager.showGaleri());    }
-    @FXML private void goPemesanan() { nav(() -> SceneManager.showPemesanan()); }
+   @FXML private void goPemesanan() {
+    if (UserDAO.getInstance().getCurrentUser() == null) {
+        SceneManager.afterLoginDestination = "pemesanan";
+        try { SceneManager.showLogin(); } catch (Exception e) { e.printStackTrace(); }
+    } else {
+        try { SceneManager.showPemesanan(); } catch (Exception e) { e.printStackTrace(); }
+    }
+}
     @FXML private void goSignin()    { nav(() -> SceneManager.showRegister());  }
     @FXML private void goLogin()     { nav(() -> SceneManager.showLogin());     }
 
