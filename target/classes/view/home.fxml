@@ -48,7 +48,7 @@
             <Region HBox.hgrow="ALWAYS"/>
 
             <!-- Auth Buttons -->
-            <HBox alignment="CENTER_RIGHT" spacing="12">
+            <HBox alignment="CENTER_RIGHT" spacing="12" fx:id="authBox">
                 <Button text="Login"  styleClass="btn-masuk"    onAction="#goLogin"/>
                 <Button text="Sign in"  styleClass="btn-masuk"    onAction="#goSignin"/>
             </HBox>

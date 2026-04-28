@@ -11,9 +11,54 @@ import javafx.scene.control.Label;
 import javafx.scene.shape.Rectangle;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import dao.UserDAO;
+import model.User;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 
 public class GaleriController {
+    @FXML private HBox authBox;
 
+@FXML
+public void initialize() {
+    setupNavbar();
+}
+
+private void setupNavbar() {
+    User user = UserDAO.getInstance().getCurrentUser();
+    authBox.getChildren().clear();
+
+    if (user != null) {
+        // Sudah login → tampil nama + tombol logout
+        Label namaLabel = new Label("Hi, " + user.getNamaDepan() + "!");
+        namaLabel.setStyle("-fx-text-fill: #EC4899; -fx-font-weight: bold;");
+
+        Button btnLogout = new Button("Logout");
+        btnLogout.getStyleClass().add("btn-masuk");
+        btnLogout.setOnAction(e -> {
+            UserDAO.getInstance().logout();
+            setupNavbar(); // refresh navbar
+        });
+
+        authBox.getChildren().addAll(namaLabel, btnLogout);
+    } else {
+        // Belum login → tampil Login + Sign in
+        Button btnLogin = new Button("Login");
+        btnLogin.getStyleClass().add("btn-masuk");
+        btnLogin.setOnAction(e -> {
+            try { SceneManager.showLogin(); } catch (Exception ex) { ex.printStackTrace(); }
+        });
+
+        Button btnSignin = new Button("Sign in");
+        btnSignin.getStyleClass().add("btn-masuk");
+        btnSignin.setOnAction(e -> {
+            try { SceneManager.showRegister(); } catch (Exception ex) { ex.printStackTrace(); }
+        });
+
+        authBox.getChildren().addAll(btnLogin, btnSignin);
+    }
+}
     // ─── Ukuran kartu — SERAGAM untuk semua gambar ──────────────
     private static final double CARD_WIDTH  = 260;
     private static final double CARD_HEIGHT = 195;
