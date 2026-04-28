@@ -1,65 +1,27 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import dao.UserDAO;
 import model.User;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 
 public class GaleriController {
+
     @FXML private HBox authBox;
 
-@FXML
-public void initialize() {
-    setupNavbar();
-}
-
-private void setupNavbar() {
-    User user = UserDAO.getInstance().getCurrentUser();
-    authBox.getChildren().clear();
-
-    if (user != null) {
-        // Sudah login → tampil nama + tombol logout
-        Label namaLabel = new Label("Hi, " + user.getNamaDepan() + "!");
-        namaLabel.setStyle("-fx-text-fill: #EC4899; -fx-font-weight: bold;");
-
-        Button btnLogout = new Button("Logout");
-        btnLogout.getStyleClass().add("btn-masuk");
-        btnLogout.setOnAction(e -> {
-            UserDAO.getInstance().logout();
-            setupNavbar(); // refresh navbar
-        });
-
-        authBox.getChildren().addAll(namaLabel, btnLogout);
-    } else {
-        // Belum login → tampil Login + Sign in
-        Button btnLogin = new Button("Login");
-        btnLogin.getStyleClass().add("btn-masuk");
-        btnLogin.setOnAction(e -> {
-            try { SceneManager.showLogin(); } catch (Exception ex) { ex.printStackTrace(); }
-        });
-
-        Button btnSignin = new Button("Sign in");
-        btnSignin.getStyleClass().add("btn-masuk");
-        btnSignin.setOnAction(e -> {
-            try { SceneManager.showRegister(); } catch (Exception ex) { ex.printStackTrace(); }
-        });
-
-        authBox.getChildren().addAll(btnLogin, btnSignin);
-    }
-}
-    // ─── Ukuran kartu — SERAGAM untuk semua gambar ──────────────
+    // ─── Ukuran kartu ────────────────────────────────────────────
     private static final double CARD_WIDTH  = 260;
     private static final double CARD_HEIGHT = 195;
     private static final double RADIUS      = 14;
@@ -73,25 +35,15 @@ private void setupNavbar() {
     @FXML private Button btnCorporate;
     @FXML private Button btnWisuda;
 
-    // Data: [path, kategori]
     private static final String[][] IMAGE_DATA = {
-        {"/view/images/wedding.jpg",    "Wedding"},
-        {"/view/images/birthday.jpg",   "Birthday"},
-        {"/view/images/corporate.jpg",  "Corporate"},
-        {"/view/images/wisuda.jpg",     "Wisuda"},
-        {"/view/images/promo1.jpg",     "Birthday"},
-        {"/view/images/promo2.jpg",     "Wedding"},
-        {"/view/images/promo3.jpg",     "Wisuda"},
-        {"/view/images/wedding.jpg",    "Wedding"},
-        // nama alternatif jika ada
-        {"/view/images/wedding1.jpg",   "Wedding"},
-        {"/view/images/wedding2.jpg",   "Wedding"},
-        {"/view/images/birthday1.jpg",  "Birthday"},
-        {"/view/images/birthday2.jpg",  "Birthday"},
-        {"/view/images/corporate1.jpg", "Corporate"},
-        {"/view/images/corporate2.jpg", "Corporate"},
-        {"/view/images/wisuda1.jpg",    "Wisuda"},
-        {"/view/images/wisuda2.jpg",    "Wisuda"},
+        {"/view/images/wedding.jpg",    "Wedding",   "Wedding Leddy & Cortis",              "12 Apr 2026", "148 foto"},
+        {"/view/images/birthday.jpg",   "Birthday",  "Birthday Dea Amalia ke-5",            "20 Mar 2026", "95 foto"},
+        {"/view/images/corporate.jpg",  "Corporate", "Gathering PT. Dea Keren",             "05 Mar 2026", "210 foto"},
+        {"/view/images/wisuda.jpg",     "Wisuda",    "Wisuda Universitas Sriwijaya",        "5 Mar 2026",  "150 foto"},
+        {"/view/images/birthday2.jpg",  "Birthday",  "Birthday Aluna ke-18",                "3 Mar 2026",  "102 foto"},
+        {"/view/images/wedding2.jpg",   "Wedding",   "Wedding Hana & Rizky",                "1 Mar 2026",  "160 foto"},
+        {"/view/images/wisuda2.jpg",    "Wisuda",    "Wisuda Politeknik Negeri Sriwijaya",  "26 Feb 2026", "135 foto"},
+        {"/view/images/wedding3.jpg",   "Wedding",   "Wedding Tiara & Fauzan",              "22 Feb 2026", "175 foto"}
     };
 
     private String activeCategory = "Semua";
@@ -99,10 +51,44 @@ private void setupNavbar() {
     // ─── Init ────────────────────────────────────────────────────
     @FXML
     public void initialize() {
-        // Paksa TilePane menggunakan ukuran tile seragam
         galleryPane.setPrefTileWidth(CARD_WIDTH);
         galleryPane.setPrefTileHeight(CARD_HEIGHT);
-        renderGallery("Semua", "");
+        setupNavbar();
+        Platform.runLater(() -> renderGallery("Semua", ""));
+    }
+
+    // ─── Setup Navbar ─────────────────────────────────────────────
+    private void setupNavbar() {
+        User user = UserDAO.getInstance().getCurrentUser();
+        authBox.getChildren().clear();
+
+        if (user != null) {
+            Label namaLabel = new Label("Hi, " + user.getNamaDepan() + "!");
+            namaLabel.setStyle("-fx-text-fill: #EC4899; -fx-font-weight: bold;");
+
+            Button btnLogout = new Button("Logout");
+            btnLogout.getStyleClass().add("btn-masuk");
+            btnLogout.setOnAction(e -> {
+                UserDAO.getInstance().logout();
+                setupNavbar();
+            });
+
+            authBox.getChildren().addAll(namaLabel, btnLogout);
+        } else {
+            Button btnLogin = new Button("Login");
+            btnLogin.getStyleClass().add("btn-masuk");
+            btnLogin.setOnAction(e -> {
+                try { SceneManager.showLogin(); } catch (Exception ex) { ex.printStackTrace(); }
+            });
+
+            Button btnSignin = new Button("Sign in");
+            btnSignin.getStyleClass().add("btn-masuk");
+            btnSignin.setOnAction(e -> {
+                try { SceneManager.showRegister(); } catch (Exception ex) { ex.printStackTrace(); }
+            });
+
+            authBox.getChildren().addAll(btnLogin, btnSignin);
+        }
     }
 
     // ─── Filter Actions ──────────────────────────────────────────
@@ -137,53 +123,75 @@ private void setupNavbar() {
         galleryPane.getChildren().clear();
 
         for (String[] data : IMAGE_DATA) {
-            String path = data[0];
-            String cat  = data[1];
+            String path  = data[0];
+            String cat   = data[1];
+            String judul = data[2];
+            String tgl   = data[3];
+            String nFoto = data[4];
 
             if (!category.equals("Semua") && !cat.equals(category)) continue;
-            if (!keyword.isEmpty() && !cat.toLowerCase().contains(keyword)) continue;
+            if (!keyword.isEmpty() && !cat.toLowerCase().contains(keyword)
+                    && !judul.toLowerCase().contains(keyword)) continue;
 
             java.io.InputStream is = getClass().getResourceAsStream(path);
             if (is == null) continue;
 
-            // ── ImageView ukuran seragam ─────────────────────────
+            // ── Gambar ──────────────────────────────────────────────
             ImageView imgView = new ImageView(new Image(is));
             imgView.setFitWidth(CARD_WIDTH);
             imgView.setFitHeight(CARD_HEIGHT);
-            imgView.setPreserveRatio(false);   // fill penuh, tidak ada celah kosong
+            imgView.setPreserveRatio(false);
 
-            // ── Clip rounded corner pada gambar ──────────────────
             Rectangle clip = new Rectangle(CARD_WIDTH, CARD_HEIGHT);
             clip.setArcWidth(RADIUS * 2);
             clip.setArcHeight(RADIUS * 2);
             imgView.setClip(clip);
 
-            // ── Badge kategori ───────────────────────────────────
+            // ── Badge kategori ───────────────────────────────────────
             Label badge = new Label(cat);
             badge.getStyleClass().add("photo-category-badge");
 
-            // ── Card container — ukuran dikunci ──────────────────
-            StackPane card = new StackPane(imgView, badge);
-            card.getStyleClass().add("photo-card");
+            // ── Overlay bawah (badge + judul + info) ─────────────────
+            Label lblJudul = new Label(judul);
+            lblJudul.setStyle(
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 13px;" +
+                "-fx-text-fill: white;"
+            );
+            lblJudul.setWrapText(true);
+            lblJudul.setMaxWidth(CARD_WIDTH - 20);
+
+            Label lblInfo = new Label(tgl + " • " + nFoto);
+            lblInfo.setStyle(
+                "-fx-font-size: 11px;" +
+                "-fx-text-fill: rgba(255,255,255,0.85);"
+            );
+
+            // badge di dalam overlayBox, di atas judul
+            VBox overlayBox = new VBox(4, badge, lblJudul, lblInfo);
+            overlayBox.setStyle(
+                "-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.0) 100%);" +
+                "-fx-padding: 10 10 10 10;" +
+                "-fx-background-radius: 0 0 14 14;"
+            );
+            overlayBox.setPrefWidth(CARD_WIDTH);
+            overlayBox.setMaxWidth(CARD_WIDTH);
+            overlayBox.setMaxHeight(javafx.scene.layout.Region.USE_PREF_SIZE);
+
+            // ── Card — hanya imgView + overlayBox ─────────────────────
+            StackPane card = new StackPane(imgView, overlayBox);
             card.setPrefWidth(CARD_WIDTH);
             card.setPrefHeight(CARD_HEIGHT);
             card.setMinWidth(CARD_WIDTH);
             card.setMinHeight(CARD_HEIGHT);
             card.setMaxWidth(CARD_WIDTH);
             card.setMaxHeight(CARD_HEIGHT);
+            card.getStyleClass().add("photo-card");
 
-            StackPane.setAlignment(badge, Pos.BOTTOM_LEFT);
-            StackPane.setMargin(badge, new Insets(0, 0, 10, 10));
+            StackPane.setAlignment(overlayBox, Pos.BOTTOM_CENTER);
 
-            // ── Hover effect ─────────────────────────────────────
-            card.setOnMouseEntered(e -> {
-                card.setScaleX(1.04);
-                card.setScaleY(1.04);
-            });
-            card.setOnMouseExited(e -> {
-                card.setScaleX(1.0);
-                card.setScaleY(1.0);
-            });
+            card.setOnMouseEntered(e -> { card.setScaleX(1.04); card.setScaleY(1.04); });
+            card.setOnMouseExited(e ->  { card.setScaleX(1.0);  card.setScaleY(1.0);  });
 
             galleryPane.getChildren().add(card);
         }
@@ -194,7 +202,7 @@ private void setupNavbar() {
     @FXML private void goPricelist() { nav(() -> SceneManager.showPricelist()); }
     @FXML private void goGaleri()    { nav(() -> SceneManager.showGaleri());    }
     @FXML private void goPemesanan() { System.out.println("TODO: Pemesanan");   }
-    @FXML private void goSignin() { nav(() -> SceneManager.showRegister()); }
+    @FXML private void goSignin()    { nav(() -> SceneManager.showRegister());  }
     @FXML private void goLogin()     { nav(() -> SceneManager.showLogin());     }
 
     @FunctionalInterface interface Nav { void go() throws Exception; }

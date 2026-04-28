@@ -80,9 +80,14 @@
 }
 
 .btn-masuk {
-    -fx-background-color: #EC4899; -fx-text-fill: white;
-    -fx-font-size: 13px; -fx-font-weight: bold;
-    -fx-padding: 8 20 8 20; -fx-background-radius: 20; -fx-cursor: hand;
+    -fx-background-color: #ff6fa5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 22;
+    -fx-padding: 8 24;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
 }
 
 .btn-masuk:hover {

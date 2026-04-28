@@ -36,10 +36,7 @@
                 <Button text="Pemesanan" styleClass="nav-link"        onAction="#goPemesanan"/>
             </HBox>
             <Region HBox.hgrow="ALWAYS"/>
-            <HBox alignment="CENTER_RIGHT" spacing="12">
-                <Button text="Login"  styleClass="btn-masuk"    onAction="#goLogin"/>
-                <Button text="Sign in"  styleClass="btn-masuk"    onAction="#goSignin"/>
-            </HBox>
+            <HBox fx:id="authBox" alignment="CENTER_RIGHT" spacing="12"/>
         </HBox>
 
         <!-- ══════════════════════════════════════
