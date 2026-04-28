@@ -149,8 +149,7 @@ public class GaleriController {
     @FXML private void goPricelist() { nav(() -> SceneManager.showPricelist()); }
     @FXML private void goGaleri()    { nav(() -> SceneManager.showGaleri());    }
     @FXML private void goPemesanan() { System.out.println("TODO: Pemesanan");   }
-    @FXML private void goAdmin()     { System.out.println("TODO: Admin");       }
-    @FXML private void goMember()    { System.out.println("TODO: Member");      }
+    @FXML private void goSignin() { nav(() -> SceneManager.showRegister()); }
     @FXML private void goLogin()     { nav(() -> SceneManager.showLogin());     }
 
     @FunctionalInterface interface Nav { void go() throws Exception; }

@@ -1,19 +1,12 @@
 package controller;
 
-import java.io.IOException;
-
 import dao.UserDAO;
 import model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 public class LoginController {
 
@@ -34,7 +27,8 @@ public class LoginController {
         User user = UserDAO.getInstance().login(email, password);
         if (user != null) {
             try {
-                SceneManager.showHome();
+                SceneManager.closeCurrentPopup(); // tutup popup login
+                SceneManager.showHome();          // navigasi ke home
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -46,7 +40,8 @@ public class LoginController {
     @FXML
     private void goToRegister() {
         try {
-            SceneManager.showRegister();
+            SceneManager.closeCurrentPopup(); // tutup popup login
+            SceneManager.showRegister();      // buka popup register
         } catch (Exception e) {
             e.printStackTrace();
         }

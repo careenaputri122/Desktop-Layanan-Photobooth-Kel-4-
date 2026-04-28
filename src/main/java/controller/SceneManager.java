@@ -48,29 +48,47 @@ public static void showPemesanan() throws Exception {
     Parent root = FXMLLoader.load(
         SceneManager.class.getResource("/view/login.fxml")
     );
-    double w = stage.getWidth();
-    double h = stage.getHeight();
-    Scene scene = new Scene(root, w, h);
+    Scene scene = new Scene(root, 400, 420);
     scene.getStylesheets().add(
         SceneManager.class.getResource("/view/style.css").toExternalForm()
     );
-    stage.setScene(scene);
-    stage.centerOnScreen();
-    }
 
-    public static void showRegister() throws Exception {
+    Stage popup = new Stage();
+    popup.setScene(scene);
+    popup.setTitle("Masuk");
+    popup.setResizable(false);
+    popup.initOwner(stage);                          // terikat ke window utama
+    popup.initModality(javafx.stage.Modality.APPLICATION_MODAL); // blok window utama
+    popup.centerOnScreen();
+    popup.show();
+}
+
+public static void closeCurrentPopup() {
+    // tutup stage aktif yang bukan stage utama
+    javafx.stage.Stage.getWindows().stream()
+        .filter(w -> w instanceof javafx.stage.Stage && w != stage && w.isShowing())
+        .findFirst()
+        .ifPresent(javafx.stage.Window::hide);
+}
+
+public static void showRegister() throws Exception {
     Parent root = FXMLLoader.load(
         SceneManager.class.getResource("/view/register.fxml")
     );
-    double w = stage.getWidth();
-    double h = stage.getHeight();
-    Scene scene = new Scene(root, w, h);
+    Scene scene = new Scene(root, 420, 520);
     scene.getStylesheets().add(
         SceneManager.class.getResource("/view/style.css").toExternalForm()
     );
-    stage.setScene(scene);
-    stage.centerOnScreen();
-    }
+
+    Stage popup = new Stage();
+    popup.setScene(scene);
+    popup.setTitle("Daftar");
+    popup.setResizable(false);
+    popup.initOwner(stage);
+    popup.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+    popup.centerOnScreen();
+    popup.show();
+}
     
     public static void showGaleri() throws Exception {
     Parent root = FXMLLoader.load(
