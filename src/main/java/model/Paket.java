@@ -1,29 +1,31 @@
 package model;
 
 public class Paket {
-    private int id;
-    private String namaPaket;
-    private double harga;
-    private String deskripsi;
+    private int    id;
+    private String nama;    
+    private int    harga;     
+    private String tipe;     
 
     public Paket() {}
 
-    public Paket(int id, String namaPaket, double harga, String deskripsi) {
-        this.id = id;
-        this.namaPaket = namaPaket;
+    public Paket(int id, String nama, int harga, String tipe) {
+        this.id    = id;
+        this.nama  = nama;
         this.harga = harga;
-        this.deskripsi = deskripsi;
+        this.tipe  = tipe;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    // ── Getters & Setters ─────────────────────────────────────────────────
 
-    public String getNamaPaket() { return namaPaket; }
-    public void setNamaPaket(String namaPaket) { this.namaPaket = namaPaket; }
+    public int    getId()             { return id; }
+    public void   setId(int id)       { this.id = id; }
 
-    public double getHarga() { return harga; }
-    public void setHarga(double harga) { this.harga = harga; }
+    public String getNama()             { return nama; }
+    public void   setNama(String nama)  { this.nama = nama; }
 
-    public String getDeskripsi() { return deskripsi; }
-    public void setDeskripsi(String deskripsi) { this.deskripsi = deskripsi; }
+    public int    getHarga()             { return harga; }
+    public void   setHarga(int harga)    { this.harga = harga; }
+
+    public String getTipe()             { return tipe; }
+    public void   setTipe(String tipe)  { this.tipe = tipe; }
 }
