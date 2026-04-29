@@ -1,6 +1,10 @@
 package controller;
 
+import dao.BookingDAO;
+import dao.PaketDAO;
 import dao.UserDAO;
+import model.Booking;
+import model.Paket;
 import model.User;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -11,6 +15,7 @@ import javafx.geometry.Insets;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+
 
 public class PemesananController {
 
@@ -177,6 +182,55 @@ public class PemesananController {
     @FXML private void backToStep3() { goToStep(3); }
 
     @FXML private void konfirmasi() {
+        Booking booking = new Booking();
+        
+//menambahkan logic agar tersimpan ke db booking
+// user
+User user = UserDAO.getInstance().getCurrentUser();
+if (user == null) {
+    showAlert("Login dulu!");
+    return;
+}
+booking.setUser(user);
+
+// paket (mapping dari nama)
+Paket paket = PaketDAO.getInstance().findAll()
+    .stream()
+    .filter(p -> p.getNama().equals(selectedPaket))
+    .findFirst()
+    .orElse(null);
+
+if (paket == null) {
+    showAlert("Paket gak ditemukan!");
+    return;
+}
+booking.setPaket(paket);
+
+// isi data
+booking.setTanggal(java.sql.Date.valueOf(selectedDate));
+booking.setSlotWaktu(selectedSlot);
+booking.setLokasi(lokasiField.getText().trim());
+booking.setNamaPemesan(namaDepanField.getText() + " " + namaBelakangField.getText());
+booking.setEmail(emailField.getText());
+booking.setPhone(phoneField.getText());
+booking.setCatatan(catatanField.getText());
+
+// nomor & status
+String nomor = BookingDAO.generateNomorPesanan();
+booking.setNomorPesanan(nomor);
+booking.setStatus("Menunggu Konfirmasi");
+
+// harga
+int harga = Integer.parseInt(selectedHarga.replace("Rp","").replace(".",""));
+booking.setTotalHarga(harga);
+
+// SAVE
+boolean success = BookingDAO.getInstance().save(booking);
+
+if (!success) {
+    showAlert("Gagal simpan!");
+    return;
+}
         int nomorAcak = (int)(Math.random() * 900) + 100;
         String nomorPesanan = "FTM-2026-" + nomorAcak;
 
