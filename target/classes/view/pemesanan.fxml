@@ -214,26 +214,67 @@
             </VBox>
 
             <!-- ── STEP 4: Ringkasan ── -->
-            <VBox fx:id="step4Panel" spacing="20" managed="false" visible="false">
-                <Label text="Ringkasan Pemesanan" styleClass="section-title"/>
-                <VBox styleClass="form-card" spacing="14">
-                    <HBox><Label text="Paket"    styleClass="ring-key" minWidth="160"/><Label fx:id="ringPaket"   styleClass="ring-val"/></HBox>
-                    <HBox><Label text="Tanggal"  styleClass="ring-key" minWidth="160"/><Label fx:id="ringTanggal" styleClass="ring-val"/></HBox>
-                    <HBox><Label text="Slot"     styleClass="ring-key" minWidth="160"/><Label fx:id="ringSlot"    styleClass="ring-val"/></HBox>
-                    <HBox><Label text="Lokasi"   styleClass="ring-key" minWidth="160"/><Label fx:id="ringLokasi"  styleClass="ring-val"/></HBox>
-                    <HBox><Label text="Nama"     styleClass="ring-key" minWidth="160"/><Label fx:id="ringNama"    styleClass="ring-val"/></HBox>
-                    <HBox><Label text="Email"    styleClass="ring-key" minWidth="160"/><Label fx:id="ringEmail"   styleClass="ring-val"/></HBox>
-                    <HBox><Label text="WhatsApp" styleClass="ring-key" minWidth="160"/><Label fx:id="ringPhone"   styleClass="ring-val"/></HBox>
-                    <HBox><Label text="Catatan"  styleClass="ring-key" minWidth="160"/><Label fx:id="ringCatatan" styleClass="ring-val" wrapText="true"/></HBox>
-                    <Label styleClass="divider-line" maxWidth="Infinity"/>
-                    <HBox><Label text="Total Harga" styleClass="ring-key-bold" minWidth="160"/><Label fx:id="ringHarga" styleClass="ring-harga"/></HBox>
-                </VBox>
-                <HBox spacing="12" alignment="CENTER_RIGHT">
-                    <Button text="← Kembali"       styleClass="btn-back"    onAction="#backToStep3"/>
-                    <Button text="Konfirmasi Pesan" styleClass="btn-primary" onAction="#konfirmasi"/>
-                </HBox>
-            </VBox>
+            <!-- ── STEP 4: Ringkasan ── -->
+<VBox fx:id="step4Panel" spacing="20" managed="false" visible="false">
+    <Label text="Ringkasan Pesanan" styleClass="section-title"/>
+    <HBox spacing="20" alignment="TOP_LEFT">
 
+        <!-- Kiri: Detail -->
+        <VBox spacing="12" HBox.hgrow="ALWAYS">
+            <!-- Paket -->
+            <VBox styleClass="ring-card" spacing="4">
+                <Label text="Paket Dipilih" styleClass="ring-card-label"/>
+                <Label fx:id="ringPaket"    styleClass="ring-card-value"/>
+                <Label fx:id="ringTipe"     styleClass="ring-card-sub"/>
+            </VBox>
+            <!-- Tanggal -->
+            <VBox styleClass="ring-card" spacing="4">
+                <Label text="Tanggal &amp; Waktu" styleClass="ring-card-label"/>
+                <Label fx:id="ringTanggal"        styleClass="ring-card-value"/>
+                <Label fx:id="ringSlot"           styleClass="ring-card-sub"/>
+            </VBox>
+            <!-- Lokasi -->
+            <VBox styleClass="ring-card" spacing="4">
+                <Label text="Lokasi Event"  styleClass="ring-card-label"/>
+                <Label fx:id="ringLokasi"   styleClass="ring-card-value" wrapText="true"/>
+            </VBox>
+            <!-- Data Pemesan -->
+            <VBox styleClass="ring-card" spacing="4">
+                <Label text="Data Pemesan"  styleClass="ring-card-label"/>
+                <Label fx:id="ringNama"     styleClass="ring-card-value"/>
+                <Label fx:id="ringContact"  styleClass="ring-card-sub"/>
+            </VBox>
+        </VBox>
+
+        <!-- Kanan: Total Pembayaran -->
+        <VBox styleClass="payment-card" spacing="14" minWidth="300" maxWidth="340">
+            <Label text="Total Pembayaran" styleClass="payment-title"/>
+            <HBox>
+                <Label text="Harga Paket"    styleClass="pay-key" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="payHarga"      styleClass="pay-val"/>
+            </HBox>
+            <HBox fx:id="diskonRow" managed="false" visible="false">
+                <Label text="Diskon Member"  styleClass="pay-key" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="payDiskon"     styleClass="pay-diskon"/>
+            </HBox>
+            <Label styleClass="divider-line" maxWidth="Infinity"/>
+            <HBox>
+                <Label text="Total"          styleClass="pay-total-key" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="payTotal"      styleClass="pay-total-val"/>
+            </HBox>
+            <VBox styleClass="dp-box" spacing="6">
+                <Label text="Instruksi DP (50%)" styleClass="dp-title"/>
+                <Label text="BCA: 1234567890"    styleClass="dp-info"/>
+                <Label text="a.n. Aksaf Photobooth" styleClass="dp-info"/>
+                <Label fx:id="payDP"             styleClass="dp-nominal"/>
+            </VBox>
+            <Button text="Konfirmasi Pesanan" styleClass="btn-konfirmasi"
+                    onAction="#konfirmasi" maxWidth="Infinity"/>
+        </VBox>
+
+    </HBox>
+    <Button text="← Kembali" styleClass="btn-back" onAction="#backToStep3"/>
+</VBox>
         </VBox>
 
         <!-- ══════════════════════════════════════

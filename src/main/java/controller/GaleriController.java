@@ -36,14 +36,14 @@ public class GaleriController {
     @FXML private Button btnWisuda;
 
     private static final String[][] IMAGE_DATA = {
-        {"/view/images/wedding.jpg",    "Wedding",   "Wedding Leddy & Cortis",              "12 Apr 2026", "148 foto"},
-        {"/view/images/birthday.jpg",   "Birthday",  "Birthday Dea Amalia ke-5",            "20 Mar 2026", "95 foto"},
-        {"/view/images/corporate.jpg",  "Corporate", "Gathering PT. Dea Keren",             "05 Mar 2026", "210 foto"},
-        {"/view/images/wisuda.jpg",     "Wisuda",    "Wisuda Universitas Sriwijaya",        "5 Mar 2026",  "150 foto"},
-        {"/view/images/birthday2.jpg",  "Birthday",  "Birthday Aluna ke-18",                "3 Mar 2026",  "102 foto"},
-        {"/view/images/wedding2.jpg",   "Wedding",   "Wedding Hana & Rizky",                "1 Mar 2026",  "160 foto"},
-        {"/view/images/wisuda2.jpg",    "Wisuda",    "Wisuda Politeknik Negeri Sriwijaya",  "26 Feb 2026", "135 foto"},
-        {"/view/images/wedding3.jpg",   "Wedding",   "Wedding Tiara & Fauzan",              "22 Feb 2026", "175 foto"}
+        {"/view/images/wedding.jpg",    "Wedding",   "Wedding Leddy & Cortis",              "12 Apr 2026", "148 foto", "https://waldophotos.app.link/wZUEpqCXI2b?source=yxe67GemPpujh3uejP99tG"},
+        {"/view/images/birthday.jpg",   "Birthday",  "Birthday Dea Amalia ke-19",            "20 Mar 2026", "95 foto", "https://waldophotos.app.link/lO1N452ZI2b?source=eK1FJznkyxPNjA3oNNBYsr"},
+        {"/view/images/corporate.jpg",  "Corporate", "Gathering PT. Dea Keren",             "05 Mar 2026", "210 foto", "https://waldophotos.app.link/ySkVmtc1I2b?source=nch63kSqdCv94UGPEzfKYX"},
+        {"/view/images/wisuda.jpg",     "Wisuda",    "Wisuda Universitas Sriwijaya",        "5 Mar 2026",  "150 foto", "https://waldophotos.app.link/BoN6r55YI2b?source=fz3qgF1LStUT5dez1NsURm"},
+        {"/view/images/birthday2.jpg",  "Birthday",  "Birthday Aluna ke-18",                "3 Mar 2026",  "102 foto", "https://waldophotos.app.link/iY6dQTRZI2b?source=bvE5W3zQKTJECDbfPsCo2V"},
+        {"/view/images/wedding2.jpg",   "Wedding",   "Wedding Hana & Rizky",                "1 Mar 2026",  "160 foto", "https://waldophotos.app.link/OemWzcs0I2b?source=22FEpfdGDmC74MxnQJ9wSoZ"},
+        {"/view/images/wisuda2.jpg",    "Wisuda",    "Wisuda Politeknik Negeri Sriwijaya",  "26 Feb 2026", "135 foto", "https://waldophotos.app.link/u3zNxhrZI2b?source=nvet8asMZTVEYkHr3oEpsi"},
+        {"/view/images/wedding3.jpg",   "Wedding",   "Wedding Tiara & Fauzan",              "22 Feb 2026", "175 foto", "https://waldophotos.app.link/mexEMrN0I2b?source=vpb8c1KAqcGyEU6cP8Bgt5"}, 
     };
 
     private String activeCategory = "Semua";
@@ -128,6 +128,7 @@ public class GaleriController {
             String judul = data[2];
             String tgl   = data[3];
             String nFoto = data[4];
+            String link = data[5];
 
             if (!category.equals("Semua") && !cat.equals(category)) continue;
             if (!keyword.isEmpty() && !cat.toLowerCase().contains(keyword)
@@ -140,7 +141,9 @@ public class GaleriController {
             ImageView imgView = new ImageView(new Image(is));
             imgView.setFitWidth(CARD_WIDTH);
             imgView.setFitHeight(CARD_HEIGHT);
-            imgView.setPreserveRatio(false);
+            imgView.setPreserveRatio(true);
+imgView.setFitWidth(CARD_WIDTH);
+imgView.setFitHeight(CARD_HEIGHT);
 
             Rectangle clip = new Rectangle(CARD_WIDTH, CARD_HEIGHT);
             clip.setArcWidth(RADIUS * 2);
@@ -192,6 +195,15 @@ public class GaleriController {
 
             card.setOnMouseEntered(e -> { card.setScaleX(1.04); card.setScaleY(1.04); });
             card.setOnMouseExited(e ->  { card.setScaleX(1.0);  card.setScaleY(1.0);  });
+            card.setOnMouseClicked(e -> {
+    if (link != null && !link.isEmpty()) {
+        try {
+            java.awt.Desktop.getDesktop().browse(new java.net.URI(link));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+});
 
             galleryPane.getChildren().add(card);
         }

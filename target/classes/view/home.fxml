@@ -55,7 +55,7 @@
              HERO SECTION
              ══════════════════════════════════════ -->
         <StackPane styleClass="hero-section">
-            <ImageView fitWidth="1280" fitHeight="500" preserveRatio="false">
+            <ImageView fitWidth="1280" fitHeight="500" preserveRatio="false" smooth="true">
         <image>
             <Image url="@poto.jpg"/>
         </image>
@@ -130,7 +130,7 @@
                 <!-- Promo 1 -->
                 <VBox styleClass="promo-card" spacing="0">
                     <StackPane prefHeight="180" alignment="TOP_RIGHT">
-                       <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
+                       <ImageView fitWidth="300" fitHeight="180" preserveRatio="false" smooth="true">
             <image>
                 <Image url="@images/promo1.jpg"/>
             </image>
@@ -151,7 +151,7 @@
                 <!-- Promo 2 -->
                 <VBox styleClass="promo-card" spacing="0">
                     <StackPane prefHeight="180" alignment="TOP_RIGHT">
-                        <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
+                        <ImageView fitWidth="300" fitHeight="180" preserveRatio="false" smooth="true">
             <image>
                 <Image url="@images/promo2.jpg"/>
             </image>
@@ -173,7 +173,7 @@
                 <!-- Promo 3 -->
                 <VBox styleClass="promo-card" spacing="0">
                     <StackPane prefHeight="180" alignment="TOP_RIGHT">
-                       <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
+                       <ImageView fitWidth="300" fitHeight="180" preserveRatio="false" smooth="true">
             <image>
                 <Image url="@images/promo3.jpg"/>
             </image>
@@ -274,7 +274,7 @@
 
                 <!-- Card 1 - Wedding -->
                 <VBox styleClass="galeri-card" spacing="0" alignment="BOTTOM_LEFT">
-    <ImageView fitWidth="280" fitHeight="200" preserveRatio="false">
+    <ImageView fitWidth="280" fitHeight="200" preserveRatio="false" smooth="true">
         <image>
             <Image url="@images/wedding.jpg"/>
         </image>
@@ -288,7 +288,7 @@
 
                 <!-- Card 2 - Birthday -->
 <VBox styleClass="galeri-card" spacing="0" alignment="BOTTOM_LEFT">
-    <ImageView fitWidth="280" fitHeight="200" preserveRatio="false">
+    <ImageView fitWidth="280" fitHeight="200" preserveRatio="false" smooth="true">
         <image>
             <Image url="@images/birthday.jpg"/>
         </image>
@@ -302,7 +302,7 @@
 
 <!-- Card 3 - Corporate -->
 <VBox styleClass="galeri-card" spacing="0" alignment="BOTTOM_LEFT">
-    <ImageView fitWidth="280" fitHeight="200" preserveRatio="false">
+    <ImageView fitWidth="280" fitHeight="200" preserveRatio="false" smooth="true">
         <image>
             <Image url="@images/corporate.jpg"/>
         </image>
@@ -316,7 +316,7 @@
 
 <!-- Card 4 - Wisuda -->
 <VBox styleClass="galeri-card" spacing="0" alignment="BOTTOM_LEFT">
-    <ImageView fitWidth="280" fitHeight="200" preserveRatio="false">
+    <ImageView fitWidth="280" fitHeight="200" preserveRatio="false" smooth="true">
         <image>
             <Image url="@images/wisuda.jpg"/>
         </image>
