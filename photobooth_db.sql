@@ -45,7 +45,7 @@ CREATE TABLE `bookings` (
   `nomor_pesanan` varchar(30) NOT NULL,
   `total_harga` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bookings`
@@ -65,7 +65,7 @@ CREATE TABLE `paket` (
   `nama` varchar(100) NOT NULL,
   `harga` int NOT NULL,
   `tipe` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `paket`
@@ -90,7 +90,7 @@ CREATE TABLE `users` (
   `email` varchar(150) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` varchar(20) NOT NULL DEFAULT 'user'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -162,12 +162,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-CREATE TABLE users (
-    id           INT AUTO_INCREMENT PRIMARY KEY,
-    namaDepan    VARCHAR(100) NOT NULL,
-    namaBelakang VARCHAR(100) NOT NULL,
-    email        VARCHAR(150) NOT NULL UNIQUE,
-    password     VARCHAR(255) NOT NULL,
-    role         VARCHAR(20)  NOT NULL DEFAULT 'user'
-);
