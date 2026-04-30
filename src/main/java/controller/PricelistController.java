@@ -51,10 +51,14 @@ private void setupNavbar() {
     }
 }
     // ── Aksi Pesan ───────────────────────────────────
-    @FXML
-    private void pesanPaket() {
+   @FXML private void pesanPaket() {
+    if (UserDAO.getInstance().getCurrentUser() == null) {
+        SceneManager.afterLoginDestination = "pemesanan";
+        try { SceneManager.showLogin(); } catch (Exception e) { e.printStackTrace(); }
+    } else {
         try { SceneManager.showPemesanan(); } catch (Exception e) { e.printStackTrace(); }
     }
+}
 
     // ── Navigasi Navbar ──────────────────────────────
     @FXML private void goHome()      { try { SceneManager.showHome();      } catch (Exception e) { e.printStackTrace(); } }
