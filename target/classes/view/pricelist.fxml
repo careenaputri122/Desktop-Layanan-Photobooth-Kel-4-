@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
@@ -26,7 +24,7 @@
         <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="0">
             <HBox alignment="CENTER_LEFT" spacing="8">
                 <Label text="📷" styleClass="navbar-logo-icon"/>
-                <Label text="📷 Aksaf Photobooth" styleClass="navbar-brand"/>
+                <Label text="Aksaf Photobooth" styleClass="navbar-brand"/>
             </HBox>
             <Region HBox.hgrow="ALWAYS"/>
             <HBox alignment="CENTER" spacing="4">
@@ -44,10 +42,8 @@
              ══════════════════════════════════════ -->
         <VBox styleClass="hero-header" spacing="14" alignment="CENTER">
             <Label text="Pilih Paket Terbaik Untukmu" styleClass="hero-title"/>
-            <Label
-                text="Semua paket sudah termasuk operator profesional."
-                styleClass="hero-subtitle"
-                maxWidth="500"/>
+            <Label text="Semua paket sudah termasuk operator profesional."
+                   styleClass="hero-subtitle" maxWidth="500"/>
         </VBox>
 
         <!-- ══════════════════════════════════════
@@ -55,11 +51,11 @@
              ══════════════════════════════════════ -->
         <VBox styleClass="section-paket" spacing="20">
 
-            <!-- Baris 1: Cetak -->
-            <HBox fx:id="rowCetak" spacing="20" alignment="CENTER">
+            <!-- Baris 1: Starter + Silver -->
+            <HBox spacing="20" alignment="CENTER">
 
                 <!-- Paket Starter -->
-                <VBox styleClass="paket-card" spacing="0">
+                <VBox styleClass="paket-card" spacing="0" HBox.hgrow="ALWAYS">
                     <VBox styleClass="card-img-placeholder"
                           style="-fx-background-color: #F3E8E0;" alignment="CENTER">
                         <Label text="📸" style="-fx-font-size: 60px;"/>
@@ -104,7 +100,7 @@
                 </VBox>
 
                 <!-- Paket Silver (TERLARIS) -->
-                <VBox styleClass="paket-card" spacing="0">
+                <VBox styleClass="paket-card" spacing="0" HBox.hgrow="ALWAYS">
                     <StackPane alignment="TOP_RIGHT">
                         <VBox styleClass="card-img-placeholder"
                               style="-fx-background-color: #F9D4DF;" alignment="CENTER">
@@ -156,8 +152,13 @@
                     </VBox>
                 </VBox>
 
+            </HBox>
+
+            <!-- Baris 2: Gold + Digital -->
+            <HBox spacing="20" alignment="CENTER">
+
                 <!-- Paket Gold -->
-                <VBox styleClass="paket-card" spacing="0">
+                <VBox styleClass="paket-card" spacing="0" HBox.hgrow="ALWAYS">
                     <VBox styleClass="card-img-placeholder"
                           style="-fx-background-color: #F5E6D0;" alignment="CENTER">
                         <Label text="💐" style="-fx-font-size: 60px;"/>
@@ -209,13 +210,8 @@
                     </VBox>
                 </VBox>
 
-            </HBox>
-
-            <!-- Baris 2: Digital, AI, Add-on -->
-            <HBox fx:id="rowLainnya" spacing="20" alignment="CENTER">
-
                 <!-- Paket Digital -->
-                <VBox styleClass="paket-card" spacing="0">
+                <VBox styleClass="paket-card" spacing="0" HBox.hgrow="ALWAYS">
                     <VBox styleClass="card-img-placeholder"
                           style="-fx-background-color: #E8EEFA;" alignment="CENTER">
                         <Label text="💻" style="-fx-font-size: 60px;"/>
@@ -263,97 +259,8 @@
                     </VBox>
                 </VBox>
 
-                <!-- Paket AI Photobooth -->
-                <VBox styleClass="paket-card" spacing="0">
-                    <VBox styleClass="card-img-placeholder"
-                          style="-fx-background-color: #1E1B4B;" alignment="CENTER">
-                        <Label text="🤖" style="-fx-font-size: 60px;"/>
-                    </VBox>
-                    <VBox spacing="12" style="-fx-padding: 20 20 20 20;">
-                        <Label text="AI" styleClass="badge-ai"/>
-                        <Label text="Paket AI Photobooth" styleClass="paket-name"/>
-                        <VBox spacing="6">
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="✅" styleClass="feature-check"/>
-                                <Label text="4 jam operasional" styleClass="feature-text"/>
-                            </HBox>
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="✅" styleClass="feature-check"/>
-                                <Label text="AI background replacement" styleClass="feature-text"/>
-                            </HBox>
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="✅" styleClass="feature-check"/>
-                                <Label text="Filter &amp; efek AI real-time" styleClass="feature-text"/>
-                            </HBox>
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="✅" styleClass="feature-check"/>
-                                <Label text="Digital file semua foto" styleClass="feature-text"/>
-                            </HBox>
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="✅" styleClass="feature-check"/>
-                                <Label text="Share instan via WhatsApp" styleClass="feature-text"/>
-                            </HBox>
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="✅" styleClass="feature-check"/>
-                                <Label text="2 operator teknisi" styleClass="feature-text"/>
-                            </HBox>
-                        </VBox>
-                        <VBox spacing="6">
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="Rp3.500.000" styleClass="price-original"/>
-                                <Label text="-15%" styleClass="price-discount-badge"/>
-                            </HBox>
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="Rp2.975.000" styleClass="price-final"/>
-                                <Label text="Member" styleClass="price-member-badge"/>
-                            </HBox>
-                        </VBox>
-                        <Button text="Pesan Paket" styleClass="btn-pesan" onAction="#pesanPaket"/>
-                    </VBox>
-                </VBox>
-
-                <!-- Add-on Backdrop -->
-                <VBox styleClass="paket-card" spacing="0">
-                    <VBox styleClass="card-img-placeholder"
-                          style="-fx-background-color: #FFF1F2;" alignment="CENTER">
-                        <Label text="🌹" style="-fx-font-size: 60px;"/>
-                    </VBox>
-                    <VBox spacing="12" style="-fx-padding: 20 20 20 20;">
-                        <Label text="Add-on" styleClass="badge-addon"/>
-                        <Label text="Add-on Backdrop" styleClass="paket-name"/>
-                        <VBox spacing="6">
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="✅" styleClass="feature-check"/>
-                                <Label text="Tambah 1 backdrop tema" styleClass="feature-text"/>
-                            </HBox>
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="✅" styleClass="feature-check"/>
-                                <Label text="Pilihan 20+ desain" styleClass="feature-text"/>
-                            </HBox>
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="✅" styleClass="feature-check"/>
-                                <Label text="Ukuran 2×2 meter" styleClass="feature-text"/>
-                            </HBox>
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="✅" styleClass="feature-check"/>
-                                <Label text="Termasuk frame standing" styleClass="feature-text"/>
-                            </HBox>
-                        </VBox>
-                        <VBox spacing="6">
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="Rp350.000" styleClass="price-original"/>
-                                <Label text="-15%" styleClass="price-discount-badge"/>
-                            </HBox>
-                            <HBox spacing="8" alignment="CENTER_LEFT">
-                                <Label text="Rp297.500" styleClass="price-final"/>
-                                <Label text="Member" styleClass="price-member-badge"/>
-                            </HBox>
-                        </VBox>
-                        <Button text="Pesan Paket" styleClass="btn-pesan" onAction="#pesanPaket"/>
-                    </VBox>
-                </VBox>
-
             </HBox>
+
         </VBox>
 
         <!-- ══════════════════════════════════════
@@ -391,7 +298,6 @@
                     <Button text="Photobooth Ulang Tahun" styleClass="footer-link"/>
                     <Button text="Photobooth Wisuda"      styleClass="footer-link"/>
                     <Button text="Photobooth Corporate"   styleClass="footer-link"/>
-                    <Button text="AI Photobooth"          styleClass="footer-link"/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
                 <VBox spacing="10" prefWidth="220">
