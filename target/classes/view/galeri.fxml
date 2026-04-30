@@ -127,7 +127,7 @@
                 <Label text="📍  Jl. Kebon Jeruk Raya No. 12, Jakarta Barat 11530"
                        styleClass="footer-link" wrapText="true" maxWidth="200"/>
                 <Label text="📞  +62 812-3456-7890"        styleClass="footer-link"/>
-                <Label text="✉  halo@aksafPhotobooth.id"         styleClass="footer-link"/>
+                <Label text="✉  halo@fotoimoet.id"         styleClass="footer-link"/>
                 <Label text="⏰  Senin–Minggu, 08.00–20.00 WIB" styleClass="footer-link"/>
             </VBox>
         </HBox>
