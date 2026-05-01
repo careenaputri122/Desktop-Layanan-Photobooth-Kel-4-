@@ -108,7 +108,7 @@ private void setupNavbar() {
     private void openWhatsApp() {
         try {
             java.awt.Desktop.getDesktop().browse(
-                new java.net.URI("https://wa.me/6281234567890?text=Halo+Fotoimoet,+saya+mau+tanya+tentang+paket")
+                new java.net.URI("https://wa.me/6281234567890?text=Halo+Aksaf+Photobooth,+saya+mau+tanya+tentang+paket")
             );
         } catch (Exception e) {
             e.printStackTrace();
