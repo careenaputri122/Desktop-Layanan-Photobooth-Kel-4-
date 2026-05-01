@@ -92,6 +92,9 @@ CREATE TABLE `users` (
   `role` varchar(20) NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO users (id, namaDepan, namaBelakang, email, password, role) VALUES
+(1, 'Admin', 'Utama', 'admin@aksaf.id', 'admin123', 'admin');
+
 --
 -- Dumping data for table `users`
 --
