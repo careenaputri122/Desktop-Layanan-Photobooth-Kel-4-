@@ -185,13 +185,10 @@
                 <VBox styleClass="form-card" spacing="16">
                     <HBox spacing="16">
                         <VBox spacing="6" HBox.hgrow="ALWAYS">
-                            <Label text="Nama Depan" styleClass="field-label"/>
-                            <TextField fx:id="namaDepanField" promptText="Nama depan" styleClass="input-field"/>
+                            <Label text="Nama Lengkap" styleClass="field-label"/>
+                            <TextField fx:id="namaDepanField" promptText="Nama Depan" styleClass="input-field"/>
                         </VBox>
-                        <VBox spacing="6" HBox.hgrow="ALWAYS">
-                            <Label text="Nama Belakang" styleClass="field-label"/>
-                            <TextField fx:id="namaBelakangField" promptText="Nama belakang" styleClass="input-field"/>
-                        </VBox>
+                        
                     </HBox>
                     <VBox spacing="6">
                         <Label text="Email" styleClass="field-label"/>
@@ -262,12 +259,7 @@
                 <Label text="Total"          styleClass="pay-total-key" HBox.hgrow="ALWAYS"/>
                 <Label fx:id="payTotal"      styleClass="pay-total-val"/>
             </HBox>
-            <VBox styleClass="dp-box" spacing="6">
-                <Label text="Instruksi DP (50%)" styleClass="dp-title"/>
-                <Label text="BCA: 1234567890"    styleClass="dp-info"/>
-                <Label text="a.n. Aksaf Photobooth" styleClass="dp-info"/>
-                <Label fx:id="payDP"             styleClass="dp-nominal"/>
-            </VBox>
+            
             <Button text="Konfirmasi Pesanan" styleClass="btn-konfirmasi"
                     onAction="#konfirmasi" maxWidth="Infinity"/>
         </VBox>

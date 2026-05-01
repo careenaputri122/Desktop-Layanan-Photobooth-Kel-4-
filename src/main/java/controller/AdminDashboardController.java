@@ -50,36 +50,6 @@ public class AdminDashboardController {
 
     @FXML
     public void initialize() {
-        btnLogout.setStyle(
-        "-fx-background-color: #b5336a;" +
-        "-fx-text-fill: white;" +
-        "-fx-font-size: 13px;" +
-        "-fx-font-weight: bold;" +
-        "-fx-alignment: CENTER_LEFT;" +
-        "-fx-padding: 12 20 12 20;" +
-        "-fx-background-radius: 0;" +
-        "-fx-cursor: hand;"
-    );
-    btnLogout.setOnMouseEntered(e -> btnLogout.setStyle(
-        "-fx-background-color: #8c1f4e;" +
-        "-fx-text-fill: white;" +
-        "-fx-font-size: 13px;" +
-        "-fx-font-weight: bold;" +
-        "-fx-alignment: CENTER_LEFT;" +
-        "-fx-padding: 12 20 12 20;" +
-        "-fx-background-radius: 0;" +
-        "-fx-cursor: hand;"
-    ));
-    btnLogout.setOnMouseExited(e -> btnLogout.setStyle(
-        "-fx-background-color: #b5336a;" +
-        "-fx-text-fill: white;" +
-        "-fx-font-size: 13px;" +
-        "-fx-font-weight: bold;" +
-        "-fx-alignment: CENTER_LEFT;" +
-        "-fx-padding: 12 20 12 20;" +
-        "-fx-background-radius: 0;" +
-        "-fx-cursor: hand;"
-    ));
         setupSidebarProfile();
         setupTable();
         loadStats();
@@ -99,6 +69,7 @@ public class AdminDashboardController {
     }
 
     private void setupTable() {
+        tableBooking.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         // Gunakan callback manual supaya bisa format Paket & Tanggal & Rupiah
         colNomor.setCellValueFactory(data ->
             new javafx.beans.property.SimpleStringProperty(

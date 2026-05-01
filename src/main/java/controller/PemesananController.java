@@ -39,14 +39,14 @@ public class PemesananController {
     @FXML private TextField lokasiField;
 
     // ── Step 3: Data Pemesan ──────────────────────────────────────
-    @FXML private TextField namaDepanField, namaBelakangField, emailField, phoneField;
+    @FXML private TextField namaDepanField, emailField, phoneField;
     @FXML private TextArea  catatanField;
     @FXML private Label     errorStep3;
 
     // ── Step 4: Ringkasan ─────────────────────────────────────────
     @FXML private Label ringPaket, ringTipe, ringTanggal, ringSlot, ringLokasi;
     @FXML private Label ringNama, ringContact;
-    @FXML private Label payHarga, payDiskon, payTotal, payDP;
+    @FXML private Label payHarga, payDiskon, payTotal; 
     @FXML private HBox  diskonRow;
 
     // ── State ─────────────────────────────────────────────────────
@@ -135,7 +135,7 @@ public class PemesananController {
     // ── Step 3: Data Pemesan ──────────────────────────────────────
     @FXML private void backToStep2() { goToStep(2); }
     @FXML private void goToStep4() {
-        if (namaDepanField.getText().trim().isEmpty() || namaBelakangField.getText().trim().isEmpty()) {
+        if (namaDepanField.getText().trim().isEmpty()) {
             errorStep3.setText("Nama lengkap harus diisi."); return;
         }
         if (emailField.getText().trim().isEmpty()) {
@@ -153,30 +153,44 @@ public class PemesananController {
         ringTanggal.setText(selectedDate.format(fmt));
         ringSlot.setText(selectedSlot);
         ringLokasi.setText(lokasiField.getText().trim());
-        ringNama.setText(namaDepanField.getText().trim() + " " + namaBelakangField.getText().trim());
+        ringNama.setText(namaDepanField.getText().trim());
         ringContact.setText(phoneField.getText().trim() + " • " + emailField.getText().trim());
 
         // hitung harga & diskon
         int hargaInt = Integer.parseInt(selectedHarga.replace("Rp", "").replace(".", ""));
-        boolean isMember = UserDAO.getInstance().getCurrentUser() != null;
-        int diskon = isMember ? (int)(hargaInt * 0.15) : 0;
-        int total  = hargaInt - diskon;
-        int dp     = total / 2;
+User currentUser = UserDAO.getInstance().getCurrentUser();
 
-        payHarga.setText(formatRp(hargaInt));
-        if (isMember) {
-            diskonRow.setVisible(true);
-            diskonRow.setManaged(true);
-            payDiskon.setText("-" + formatRp(diskon));
-        } else {
-            diskonRow.setVisible(false);
-            diskonRow.setManaged(false);
-        }
-        payTotal.setText(formatRp(total));
-        payDP.setText("DP: " + formatRp(dp));
+// cek jumlah pesanan user
+boolean berhakDiskon = false;
+if (currentUser != null) {
+    long jumlahPesanan = BookingDAO.getInstance().findAll()
+        .stream()
+        .filter(b -> b.getUser() != null && b.getUser().getId() == currentUser.getId())
+        .count();
+    berhakDiskon = jumlahPesanan >= 3;
+}
 
-        goToStep(4);
-    }
+int diskon = berhakDiskon ? (int)(hargaInt * 0.15) : 0;
+int total  = hargaInt - diskon;
+
+payHarga.setText(formatRp(hargaInt));
+
+if (berhakDiskon) {
+    diskonRow.setVisible(true);
+    diskonRow.setManaged(true);
+    payDiskon.setText("-" + formatRp(diskon));
+} else {
+    diskonRow.setVisible(true);
+    diskonRow.setManaged(true);
+    payDiskon.setText("-");
+}
+
+payTotal.setText(formatRp(total));
+
+goToStep(4);
+       }
+
+       
 
     // ── Step 4: Konfirmasi ────────────────────────────────────────
     @FXML private void backToStep3() { goToStep(3); }
@@ -210,7 +224,7 @@ booking.setPaket(paket);
 booking.setTanggal(java.sql.Date.valueOf(selectedDate));
 booking.setSlotWaktu(selectedSlot);
 booking.setLokasi(lokasiField.getText().trim());
-booking.setNamaPemesan(namaDepanField.getText() + " " + namaBelakangField.getText());
+booking.setNamaPemesan(namaDepanField.getText());
 booking.setEmail(emailField.getText());
 booking.setPhone(phoneField.getText());
 booking.setCatatan(catatanField.getText());

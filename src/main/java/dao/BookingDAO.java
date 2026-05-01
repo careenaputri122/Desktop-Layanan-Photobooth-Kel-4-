@@ -124,7 +124,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
     @Override
     public List<Booking> findAll() {
         List<Booking> list = new ArrayList<>();
-        String sql = "SELECT * FROM bookings ORDER BY tanggal DESC";
+        String sql = "SELECT * FROM bookings ORDER BY id DESC";
         try (Connection conn = getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
