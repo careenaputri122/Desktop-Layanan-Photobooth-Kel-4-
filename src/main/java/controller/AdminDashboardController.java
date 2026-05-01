@@ -1,0 +1,209 @@
+package controller;
+
+import dao.BookingDAO;
+import dao.UserDAO;
+import model.Booking;
+import model.User;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
+public class AdminDashboardController {
+
+    // ── Sidebar Profile ───────────────────────────────────────────────────
+    @FXML private Label labelAdminName;
+    @FXML private Label labelAdminRole;
+    @FXML private Label labelAdminInitial;
+
+    // ── Stat Cards ────────────────────────────────────────────────────────
+    @FXML private Label labelPesananHariIni;
+    @FXML private Label labelMemberAktif;
+    @FXML private Label labelPesananPending;
+
+    // ── Tabel Pesanan Terbaru ─────────────────────────────────────────────
+    @FXML private TableView<Booking>               tableBooking;
+    @FXML private TableColumn<Booking, String>     colNomor;
+    @FXML private TableColumn<Booking, String>     colNamaPemesan;
+    @FXML private TableColumn<Booking, String>     colPaket;
+    @FXML private TableColumn<Booking, String>     colTanggal;
+    @FXML private TableColumn<Booking, String>     colStatus;
+    @FXML private TableColumn<Booking, String>     colTotal;
+
+    private final NumberFormat rupiahFmt = NumberFormat.getCurrencyInstance(
+        new Locale("id", "ID")
+    );
+    private final SimpleDateFormat dateFmt = new SimpleDateFormat("dd MMM yyyy");
+
+    // ─────────────────────────────────────────────────────────────────────
+
+// Tambah di atas, sejajar field lain
+@FXML private Button btnLogout;
+
+    @FXML
+    public void initialize() {
+        btnLogout.setStyle(
+        "-fx-background-color: #b5336a;" +
+        "-fx-text-fill: white;" +
+        "-fx-font-size: 13px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-alignment: CENTER_LEFT;" +
+        "-fx-padding: 12 20 12 20;" +
+        "-fx-background-radius: 0;" +
+        "-fx-cursor: hand;"
+    );
+    btnLogout.setOnMouseEntered(e -> btnLogout.setStyle(
+        "-fx-background-color: #8c1f4e;" +
+        "-fx-text-fill: white;" +
+        "-fx-font-size: 13px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-alignment: CENTER_LEFT;" +
+        "-fx-padding: 12 20 12 20;" +
+        "-fx-background-radius: 0;" +
+        "-fx-cursor: hand;"
+    ));
+    btnLogout.setOnMouseExited(e -> btnLogout.setStyle(
+        "-fx-background-color: #b5336a;" +
+        "-fx-text-fill: white;" +
+        "-fx-font-size: 13px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-alignment: CENTER_LEFT;" +
+        "-fx-padding: 12 20 12 20;" +
+        "-fx-background-radius: 0;" +
+        "-fx-cursor: hand;"
+    ));
+        setupSidebarProfile();
+        setupTable();
+        loadStats();
+        loadRecentBookings();
+    }
+
+    // ── Setup ─────────────────────────────────────────────────────────────
+
+    private void setupSidebarProfile() {
+        User admin = UserDAO.getInstance().getCurrentUser();
+        if (admin != null) {
+            labelAdminName.setText(admin.getNamaDepan() + " " + admin.getNamaBelakang());
+            labelAdminRole.setText("Administrator");
+            // Inisial huruf pertama nama depan
+            labelAdminInitial.setText(String.valueOf(admin.getNamaDepan().charAt(0)).toUpperCase());
+        }
+    }
+
+    private void setupTable() {
+        // Gunakan callback manual supaya bisa format Paket & Tanggal & Rupiah
+        colNomor.setCellValueFactory(data ->
+            new javafx.beans.property.SimpleStringProperty(
+                data.getValue().getNomorPesanan() != null
+                    ? data.getValue().getNomorPesanan() : "-"
+            )
+        );
+        colNamaPemesan.setCellValueFactory(data ->
+            new javafx.beans.property.SimpleStringProperty(
+                data.getValue().getNamaPemesan() != null
+                    ? data.getValue().getNamaPemesan() : "-"
+            )
+        );
+        colPaket.setCellValueFactory(data ->
+            new javafx.beans.property.SimpleStringProperty(
+                data.getValue().getPaket() != null
+                    ? data.getValue().getPaket().getNama() : "-"
+            )
+        );
+        colTanggal.setCellValueFactory(data ->
+            new javafx.beans.property.SimpleStringProperty(
+                data.getValue().getTanggal() != null
+                    ? dateFmt.format(data.getValue().getTanggal()) : "-"
+            )
+        );
+        colStatus.setCellValueFactory(data ->
+            new javafx.beans.property.SimpleStringProperty(
+                data.getValue().getStatus() != null
+                    ? data.getValue().getStatus() : "-"
+            )
+        );
+        colTotal.setCellValueFactory(data ->
+            new javafx.beans.property.SimpleStringProperty(
+                rupiahFmt.format(data.getValue().getTotalHarga())
+            )
+        );
+
+        // Warna badge status
+        colStatus.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty || status == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(status);
+                    switch (status.toLowerCase()) {
+                        case "pending"   -> setStyle("-fx-text-fill: #D97706; -fx-font-weight: bold;");
+                        case "confirmed" -> setStyle("-fx-text-fill: #059669; -fx-font-weight: bold;");
+                        case "cancelled" -> setStyle("-fx-text-fill: #DC2626; -fx-font-weight: bold;");
+                        default          -> setStyle("-fx-text-fill: #6B7280;");
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadStats() {
+        List<Booking> semuaBooking = BookingDAO.getInstance().findAll();
+        List<User>    semuaUser   = UserDAO.getInstance().findAll();
+
+        String hariIni = dateFmt.format(new Date());
+
+        // Pesanan hari ini
+        long pesananHariIni = semuaBooking.stream()
+            .filter(b -> b.getTanggal() != null
+                && dateFmt.format(b.getTanggal()).equals(hariIni))
+            .count();
+
+        
+
+        // Member aktif (semua user non-admin)
+        long memberAktif = semuaUser.stream()
+            .filter(u -> !"admin".equalsIgnoreCase(u.getRole()))
+            .count();
+
+        // Pesanan pending
+        long pending = semuaBooking.stream()
+            .filter(b -> "pending".equalsIgnoreCase(b.getStatus()))
+            .count();
+
+        labelPesananHariIni.setText(String.valueOf(pesananHariIni));
+        labelMemberAktif.setText(String.valueOf(memberAktif));
+        labelPesananPending.setText(String.valueOf(pending));
+    }
+
+    private void loadRecentBookings() {
+        List<Booking> semua = BookingDAO.getInstance().findAll();
+        // Ambil 5 teratas (sudah diurutkan DESC oleh DAO)
+        List<Booking> lima = semua.stream().limit(5).collect(Collectors.toList());
+        tableBooking.setItems(FXCollections.observableArrayList(lima));
+    }
+
+    // ── Navigasi Sidebar ──────────────────────────────────────────────────
+
+    @FXML private void handleLogout() {
+        UserDAO.getInstance().logout();
+        try { SceneManager.showHome(); } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    // Placeholder — isi nanti sesuai halaman masing-masing
+    @FXML private void goKelolaPesanan() { System.out.println("TODO: Kelola Pesanan"); }
+    @FXML private void goKelolaPaket()   { System.out.println("TODO: Kelola Paket"); }
+    @FXML private void goUploadGaleri()  { System.out.println("TODO: Upload Galeri"); }
+    @FXML private void goKalender()      { System.out.println("TODO: Kalender Booking"); }
+    @FXML private void goPelanggan()     { System.out.println("TODO: Pelanggan"); }
+}

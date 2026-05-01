@@ -1,0 +1,272 @@
+/* ============================================================
+   ADMIN DASHBOARD CSS — Aksaf Photobooth
+   Primary: #EC4899  |  Font: Segoe UI
+   ============================================================ */
+
+.admin-root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-background-color: #F3F4F6;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+    -fx-background-color: #EC4899;
+    -fx-pref-width: 240px;
+    -fx-min-width: 240px;
+}
+
+/* Logo area */
+.sidebar-logo-box {
+    -fx-padding: 28 24 20 24;
+}
+.sidebar-logo-text {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Georgia";
+}
+.sidebar-logo-sub {
+    -fx-text-fill: rgba(255,255,255,0.75);
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Georgia";
+}
+
+/* Separator */
+.sidebar-sep {
+    -fx-background-color: rgba(255,255,255,0.25);
+    -fx-padding: 0;
+}
+
+/* Seksi label */
+.sidebar-section-label {
+    -fx-text-fill: rgba(255,255,255,0.60);
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-letter-spacing: 1px;
+}
+
+/* Menu item normal */
+.sidebar-menu-item {
+    -fx-padding: 13 20 13 20;
+    -fx-cursor: hand;
+    -fx-background-color: transparent;
+}
+.sidebar-menu-item:hover {
+    -fx-background-color: rgba(255,255,255,0.15);
+}
+
+/* Menu item AKTIF */
+.sidebar-menu-item-active {
+    -fx-padding: 13 20 13 20;
+    -fx-background-color: rgba(255,255,255,0.22);
+    -fx-border-color: transparent transparent transparent white;
+    -fx-border-width: 0 0 0 3.5;
+}
+
+.sidebar-menu-icon {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
+.sidebar-menu-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.sidebar-menu-item-active .sidebar-menu-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Profile box bawah sidebar */
+.sidebar-bottom-section {
+    -fx-background-color: rgba(0,0,0,0.15);
+}
+.sidebar-profile-box {
+    -fx-padding: 12 16 12 16;   /* dikurangi dari 16/20 agar tidak makan terlalu banyak ruang */
+    -fx-background-color: transparent;
+}
+.sidebar-avatar {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+}
+.sidebar-avatar-initial {
+    -fx-text-fill: #EC4899;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+.sidebar-profile-name {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.sidebar-profile-role {
+    -fx-text-fill: rgba(255,255,255,0.70);
+    -fx-font-size: 11px;
+}
+.sidebar-logout-btn {
+    -fx-background-color: rgba(0,0,0,0.25);
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 11 20 11 20;
+    -fx-background-insets: 0;
+}
+/* KUNCI UTAMA: Modena CSS meng-override teks di internal .label node.
+   Harus di-target secara eksplisit agar teks "Logout" terlihat. */
+.sidebar-logout-btn .label {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.sidebar-logout-btn:hover {
+    -fx-background-color: rgba(0,0,0,0.40);
+}
+.sidebar-logout-btn:hover .label {
+    -fx-text-fill: white;
+}
+.sidebar-logout-btn:pressed {
+    -fx-background-color: rgba(0,0,0,0.50);
+}
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main-content {
+    -fx-background-color: #F3F4F6;
+    -fx-padding: 0 0 40 0;
+}
+
+/* Header halaman */
+.content-header {
+    -fx-background-color: white;
+    -fx-padding: 28 40 24 40;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 6, 0, 0, 2);
+}
+.page-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+.page-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6B7280;
+}
+
+/* ── STAT ROW ── */
+.stat-row {
+    -fx-padding: 32 40 0 40;
+}
+
+/* Stat card */
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 22 22 22 22;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);
+}
+
+.stat-card-label {
+    -fx-text-fill: #6B7280;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.stat-card-number {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #EC4899;
+}
+.stat-card-desc {
+    -fx-font-size: 11px;
+    -fx-text-fill: #9CA3AF;
+}
+
+/* Warna varian angka */
+.stat-number-green  { -fx-text-fill: #059669; }
+.stat-number-blue   { -fx-text-fill: #2563EB; }
+.stat-number-yellow { -fx-text-fill: #D97706; }
+
+/* Icon box di kanan stat */
+.stat-icon-box {
+    -fx-background-radius: 10;
+    -fx-min-width: 44px;
+    -fx-min-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-pref-height: 44px;
+}
+.stat-icon-pink   { -fx-background-color: #FDE8F4; }
+.stat-icon-green  { -fx-background-color: #D1FAE5; }
+.stat-icon-blue   { -fx-background-color: #DBEAFE; }
+.stat-icon-yellow { -fx-background-color: #FEF3C7; }
+.stat-icon        { -fx-font-size: 20px; }
+
+/* ── TABLE SECTION ── */
+.table-section {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 24 24 24 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);
+    -fx-margin: 32 40 0 40;
+}
+VBox > .table-section {
+    -fx-padding: 24 24 24 24;
+}
+/* Trick margin via wrapper parent */
+.main-content > .scroll-pane > .viewport > VBox > .table-section,
+ScrollPane > VBox > .table-section {
+    -fx-padding: 24 24 24 24;
+}
+
+/* Margin dari luar (padding kanan-kiri konten) */
+.table-section {
+    -fx-translate-x: 0;
+}
+
+.section-heading {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+.section-subheading {
+    -fx-font-size: 12px;
+    -fx-text-fill: #9CA3AF;
+}
+
+/* TableView */
+.booking-table {
+    -fx-background-color: transparent;
+    -fx-border-color: #F3F4F6;
+    -fx-border-radius: 10;
+}
+.booking-table .column-header-background {
+    -fx-background-color: #FFF0F6;
+    -fx-background-radius: 10 10 0 0;
+}
+.booking-table .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #EC4899;
+    -fx-font-size: 12px;
+}
+.booking-table .table-row-cell:odd  { -fx-background-color: #FAFAFA; }
+.booking-table .table-row-cell:even { -fx-background-color: white; }
+.booking-table .table-row-cell:selected {
+    -fx-background-color: #FDE8F4;
+}
+.booking-table .table-cell {
+    -fx-font-size: 13px;
+    -fx-text-fill: #374151;
+    -fx-padding: 10 12;
+}
+.table-placeholder {
+    -fx-text-fill: #9CA3AF;
+    -fx-font-size: 13px;
+    -fx-font-style: italic;
+}

@@ -7,18 +7,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 
 public class LoginController {
 
-    @FXML private TextField emailField;
+    @FXML private TextField     emailField;
     @FXML private PasswordField passwordField;
-    @FXML private Label errorLabel;
+    @FXML private Label         errorLabel;
 
     @FXML
     private void handleLogin(ActionEvent event) {
-        String email = emailField.getText().trim();
+        String email    = emailField.getText().trim();
         String password = passwordField.getText();
 
         if (email.isEmpty() || password.isEmpty()) {
@@ -26,31 +24,38 @@ public class LoginController {
             return;
         }
 
-       User user = UserDAO.getInstance().login(email, password);
-if (user != null) {
-    try {
-        SceneManager.closeCurrentPopup();
+        User user = UserDAO.getInstance().login(email, password);
+        if (user != null) {
+            try {
+                SceneManager.closeCurrentPopup();
 
-        // cek apakah dari pemesanan
-        if ("pemesanan".equals(SceneManager.afterLoginDestination)) {
-            SceneManager.afterLoginDestination = null; // reset flag
-            SceneManager.showPemesanan();
+                if ("admin".equalsIgnoreCase(user.getRole())) {
+                    // ── ADMIN → ke Admin Dashboard ──
+                    SceneManager.showAdminDashboard();
+
+                } else if ("pemesanan".equals(SceneManager.afterLoginDestination)) {
+                    // ── Pelanggan dari alur pesan → lanjut pemesanan ──
+                    SceneManager.afterLoginDestination = null;
+                    SceneManager.showPemesanan();
+
+                } else {
+                    // ── Pelanggan biasa → home ──
+                    SceneManager.showHome();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
-            SceneManager.showHome();
+            showError("Email atau password salah.");
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-} else {
-    showError("Email atau password salah.");
-}
     }
 
     @FXML
     private void goToRegister() {
         try {
-            SceneManager.closeCurrentPopup(); // tutup popup login
-            SceneManager.showRegister();      // buka popup register
+            SceneManager.closeCurrentPopup();
+            SceneManager.showRegister();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,17 +63,8 @@ if (user != null) {
 
     private void showError(String msg) {
         errorLabel.getStyleClass().removeAll("label-success");
-        if (!errorLabel.getStyleClass().contains("label-error")) {
+        if (!errorLabel.getStyleClass().contains("label-error"))
             errorLabel.getStyleClass().add("label-error");
-        }
-        errorLabel.setText(msg);
-    }
-
-    private void showSuccess(String msg) {
-        errorLabel.getStyleClass().removeAll("label-error");
-        if (!errorLabel.getStyleClass().contains("label-success")) {
-            errorLabel.getStyleClass().add("label-success");
-        }
         errorLabel.setText(msg);
     }
 }
