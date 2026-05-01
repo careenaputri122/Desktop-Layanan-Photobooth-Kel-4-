@@ -35,7 +35,7 @@ public class PemesananController {
 
     // ── Step 2: Tanggal ───────────────────────────────────────────
     @FXML private VBox calendarBox;
-    @FXML private VBox slotPagi, slotSiang, slotSore;
+    @FXML private TextField jamMulaiField;
     @FXML private TextField lokasiField;
 
     // ── Step 3: Data Pemesan ──────────────────────────────────────
@@ -44,7 +44,7 @@ public class PemesananController {
     @FXML private Label     errorStep3;
 
     // ── Step 4: Ringkasan ─────────────────────────────────────────
-    @FXML private Label ringPaket, ringTipe, ringTanggal, ringSlot, ringLokasi;
+    @FXML private Label ringPaket, ringTipe, ringTanggal, ringJamMulai, ringLokasi;
     @FXML private Label ringNama, ringContact;
     @FXML private Label payHarga, payDiskon, payTotal; 
     @FXML private HBox  diskonRow;
@@ -54,10 +54,8 @@ public class PemesananController {
     private String    selectedPaket  = "";
     private String    selectedHarga  = "";
     private String    selectedTipe   = "";
-    private String    selectedSlot   = "";
     private LocalDate selectedDate   = null;
     private YearMonth currentMonth   = YearMonth.now();
-    private VBox      activeSlotCard = null;
     private VBox      activePackCard = null;
 
     // ── Init ──────────────────────────────────────────────────────
@@ -112,23 +110,22 @@ public class PemesananController {
         goToStep(2);
     }
 
-    // ── Step 2: Tanggal & Slot ────────────────────────────────────
-    @FXML private void pilihPagi()  { pilihSlot("Pagi (08.00 – 12.00)",  slotPagi);  }
-    @FXML private void pilihSiang() { pilihSlot("Siang (12.00 – 16.00)", slotSiang); }
-    @FXML private void pilihSore()  { pilihSlot("Sore (16.00 – 20.00)",  slotSore);  }
-
-    private void pilihSlot(String slot, VBox card) {
-        selectedSlot = slot;
-        if (activeSlotCard != null) activeSlotCard.getStyleClass().removeAll("slot-card-selected");
-        card.getStyleClass().add("slot-card-selected");
-        activeSlotCard = card;
-    }
-
+    // ── Step 2: Tanggal & Jam Mulai ──────────────────────────────
     @FXML private void backToStep1() { goToStep(1); }
     @FXML private void goToStep3() {
-        if (selectedDate == null)                    { showAlert("Pilih tanggal terlebih dahulu.");   return; }
-        if (selectedSlot.isEmpty())                  { showAlert("Pilih slot waktu terlebih dahulu."); return; }
-        if (lokasiField.getText().trim().isEmpty())  { showAlert("Masukkan lokasi acara.");            return; }
+        if (selectedDate == null) { showAlert("Pilih tanggal terlebih dahulu."); return; }
+
+        String jam = jamMulaiField.getText().trim();
+        if (jam.isEmpty()) { showAlert("Masukkan jam mulai acara."); return; }
+        if (!jam.matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) {
+            showAlert("Format jam tidak valid. Gunakan HH:mm, contoh: 09:00"); return;
+        }
+        int jamInt = Integer.parseInt(jam.split(":")[0]);
+        if (jamInt < 8 || jamInt >= 20) {
+            showAlert("Jam mulai harus antara 08:00 – 20:00 WIB."); return;
+        }
+
+        if (lokasiField.getText().trim().isEmpty()) { showAlert("Masukkan lokasi acara."); return; }
         goToStep(3);
     }
 
@@ -151,7 +148,7 @@ public class PemesananController {
         ringPaket.setText(selectedPaket);
         ringTipe.setText(selectedTipe);
         ringTanggal.setText(selectedDate.format(fmt));
-        ringSlot.setText(selectedSlot);
+        ringJamMulai.setText("Jam Mulai: " + jamMulaiField.getText().trim());
         ringLokasi.setText(lokasiField.getText().trim());
         ringNama.setText(namaDepanField.getText().trim());
         ringContact.setText(phoneField.getText().trim() + " • " + emailField.getText().trim());
@@ -180,9 +177,8 @@ if (berhakDiskon) {
     diskonRow.setManaged(true);
     payDiskon.setText("-" + formatRp(diskon));
 } else {
-    diskonRow.setVisible(true);
-    diskonRow.setManaged(true);
-    payDiskon.setText("-");
+    diskonRow.setVisible(false);
+    diskonRow.setManaged(false);
 }
 
 payTotal.setText(formatRp(total));
@@ -222,7 +218,7 @@ booking.setPaket(paket);
 
 // isi data
 booking.setTanggal(java.sql.Date.valueOf(selectedDate));
-booking.setSlotWaktu(selectedSlot);
+booking.setJamMulai(jamMulaiField.getText().trim());
 booking.setLokasi(lokasiField.getText().trim());
 booking.setNamaPemesan(namaDepanField.getText());
 booking.setEmail(emailField.getText());

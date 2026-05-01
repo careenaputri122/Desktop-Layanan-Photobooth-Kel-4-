@@ -35,7 +35,7 @@ CREATE TABLE `bookings` (
   `user_id` int NOT NULL,
   `paket_id` int NOT NULL,
   `tanggal` date NOT NULL,
-  `slot_waktu` varchar(50) NOT NULL,
+  `jam_mulai` varchar(50) NOT NULL,
   `lokasi` varchar(255) NOT NULL,
   `nama_pemesan` varchar(200) NOT NULL,
   `email` varchar(150) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE `bookings` (
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`id`, `user_id`, `paket_id`, `tanggal`, `slot_waktu`, `lokasi`, `nama_pemesan`, `email`, `phone`, `catatan`, `status`, `nomor_pesanan`, `total_harga`, `created_at`) VALUES
+INSERT INTO `bookings` (`id`, `user_id`, `paket_id`, `tanggal`, `jam_mulai`, `lokasi`, `nama_pemesan`, `email`, `phone`, `catatan`, `status`, `nomor_pesanan`, `total_harga`, `created_at`) VALUES
 (1, 2, 1, '2026-04-30', 'Pagi (08.00 – 12.00)', 'layo inilah', 'budi jona', 'jona123@gmail.com', '085361113051', 'cepet kak, nak bepoto', 'Menunggu Konfirmasi', 'FTM-2026-784', 1275000, '2026-04-29 15:44:49');
 
 -- --------------------------------------------------------

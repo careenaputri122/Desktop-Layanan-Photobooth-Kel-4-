@@ -7,7 +7,7 @@ public class Booking {
     private User   user;
     private Paket  paket;
     private Date   tanggal;
-    private String slotWaktu;
+    private String jamMulai;
     private String lokasi;
     private String namaPemesan;
     private String email;
@@ -41,8 +41,8 @@ public class Booking {
     public Date   getTanggal()               { return tanggal; }
     public void   setTanggal(Date tanggal)   { this.tanggal = tanggal; }
 
-    public String getSlotWaktu()                  { return slotWaktu; }
-    public void   setSlotWaktu(String slotWaktu)  { this.slotWaktu = slotWaktu; }
+    public String getJamMulai()                 { return jamMulai; }
+    public void   setJamMulai(String jamMulai)  { this.jamMulai = jamMulai; }
 
     public String getLokasi()               { return lokasi; }
     public void   setLokasi(String lokasi)  { this.lokasi = lokasi; }

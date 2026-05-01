@@ -152,20 +152,16 @@
                     <!-- Kalender -->
                     <VBox fx:id="calendarBox" styleClass="calendar-card" spacing="12" HBox.hgrow="ALWAYS"/>
 
-                    <!-- Slot Waktu -->
+                    <!-- Jam Mulai -->
                     <VBox spacing="14" minWidth="280">
-                        <Label text="Pilih Slot Waktu" styleClass="section-subtitle"/>
-                        <VBox fx:id="slotPagi"     styleClass="slot-card" spacing="4" onMouseClicked="#pilihPagi">
-                            <Label text="☀  Pagi"     styleClass="slot-title"/>
-                            <Label text="08.00 – 12.00" styleClass="slot-time"/>
-                        </VBox>
-                        <VBox fx:id="slotSiang"    styleClass="slot-card" spacing="4" onMouseClicked="#pilihSiang">
-                            <Label text="🌤  Siang"   styleClass="slot-title"/>
-                            <Label text="12.00 – 16.00" styleClass="slot-time"/>
-                        </VBox>
-                        <VBox fx:id="slotSore"     styleClass="slot-card" spacing="4" onMouseClicked="#pilihSore">
-                            <Label text="🌙  Sore"    styleClass="slot-title"/>
-                            <Label text="16.00 – 20.00" styleClass="slot-time"/>
+                        <Label text="Jam Mulai" styleClass="section-subtitle"/>
+                        <VBox spacing="6">
+                            <Label text="Masukkan jam mulai acara (format HH:mm)" styleClass="field-label"/>
+                            <TextField fx:id="jamMulaiField"
+                                       promptText="Contoh: 09:00"
+                                       styleClass="input-field"/>
+                            <Label text="⏰  Operasional: 08.00 – 20.00 WIB"
+                                   styleClass="slot-time"/>
                         </VBox>
 
                         <Label text="Lokasi Acara" styleClass="section-subtitle"/>
@@ -228,7 +224,7 @@
             <VBox styleClass="ring-card" spacing="4">
                 <Label text="Tanggal &amp; Waktu" styleClass="ring-card-label"/>
                 <Label fx:id="ringTanggal"        styleClass="ring-card-value"/>
-                <Label fx:id="ringSlot"           styleClass="ring-card-sub"/>
+                <Label fx:id="ringJamMulai"       styleClass="ring-card-sub"/>
             </VBox>
             <!-- Lokasi -->
             <VBox styleClass="ring-card" spacing="4">

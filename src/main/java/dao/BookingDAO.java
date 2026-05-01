@@ -14,7 +14,7 @@ import java.util.List;
  *  - SINGLETON    : satu instance shared untuk seluruh aplikasi
  *
  * Kolom tabel `bookings`:
- *   id, user_id, paket_id, tanggal, slot_waktu, lokasi,
+ *   id, user_id, paket_id, tanggal, jam_mulai, lokasi,
  *   nama_pemesan, email, phone, catatan, status, nomor_pesanan, total_harga
  */
 public class BookingDAO extends BaseDao implements IDao<Booking> {
@@ -40,7 +40,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
     @Override
     public boolean save(Booking booking) {
         String sql = "INSERT INTO bookings " +
-                     "(user_id, paket_id, tanggal, slot_waktu, lokasi, " +
+                     "(user_id, paket_id, tanggal, jam_mulai, lokasi, " +
                      "nama_pemesan, email, phone, catatan, status, nomor_pesanan, total_harga) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -50,7 +50,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
             ps.setInt   (1,  booking.getUser()  != null ? booking.getUser().getId()  : 0);
             ps.setInt   (2,  booking.getPaket() != null ? booking.getPaket().getId() : 0);
             ps.setDate  (3,  new java.sql.Date(booking.getTanggal().getTime()));
-            ps.setString(4,  booking.getSlotWaktu());
+            ps.setString(4,  booking.getJamMulai());
             ps.setString(5,  booking.getLokasi());
             ps.setString(6,  booking.getNamaPemesan());
             ps.setString(7,  booking.getEmail());
@@ -172,7 +172,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
     private Booking mapRow(ResultSet rs) throws SQLException {
         Booking b = new Booking();
         b.setId          (rs.getInt   ("id"));
-        b.setSlotWaktu   (rs.getString("slot_waktu"));
+        b.setJamMulai    (rs.getString("jam_mulai"));
         b.setLokasi      (rs.getString("lokasi"));
         b.setNamaPemesan (rs.getString("nama_pemesan"));
         b.setEmail       (rs.getString("email"));
