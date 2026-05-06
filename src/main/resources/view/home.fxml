@@ -28,16 +28,16 @@
              ══════════════════════════════════════ -->
         <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="0">
             <!-- Logo -->
-            <HBox alignment="CENTER_LEFT" spacing="8">
+            <HBox styleClass="navbar-brand-box" alignment="CENTER_LEFT" spacing="8">
                 <Label text="📷" styleClass="navbar-logo-icon"/>
-                <Label text="📷 Aksaf Photobooth" styleClass="navbar-brand"/>
+                <Label text="Aksaf Photobooth" styleClass="navbar-brand"/>
             </HBox>
 
             <!-- Spacer -->
             <Region HBox.hgrow="ALWAYS"/>
 
             <!-- Nav Links -->
-            <HBox alignment="CENTER" spacing="4">
+            <HBox styleClass="navbar-menu-box" alignment="CENTER" spacing="4">
                 <Button text="Beranda"   styleClass="nav-link-active" onAction="#goHome"/>
                 <Button text="Pricelist" styleClass="nav-link"        onAction="#goPricelist"/>
                 <Button text="Galeri"    styleClass="nav-link"        onAction="#goGaleri"/>
@@ -48,7 +48,7 @@
             <Region HBox.hgrow="ALWAYS"/>
 
             <!-- Auth Buttons -->
-            <HBox fx:id="authBox" alignment="CENTER_RIGHT" spacing="12"/>
+            <HBox fx:id="authBox" styleClass="navbar-auth-box" alignment="CENTER_RIGHT" spacing="12"/>
         </HBox>
 
         <!-- ══════════════════════════════════════

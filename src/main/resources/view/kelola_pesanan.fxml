@@ -17,7 +17,7 @@
 
             <!-- Logo -->
             <VBox styleClass="sidebar-logo-box" alignment="CENTER_LEFT" spacing="4">
-                <Label text="📷 Aksaf" styleClass="sidebar-logo-text"/>
+                <Label text="Aksaf" styleClass="sidebar-logo-text"/>
                 <Label text="Photobooth" styleClass="sidebar-logo-sub"/>
             </VBox>
 
@@ -31,46 +31,40 @@
             <!-- Dashboard -->
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goDashboard">
-                <Label text="📊" styleClass="sidebar-menu-icon"/>
                 <Label text="Dashboard" styleClass="sidebar-menu-label"/>
             </HBox>
 
             <!-- Kelola Pesanan (aktif) -->
             <HBox styleClass="sidebar-menu-item-active" alignment="CENTER_LEFT" spacing="12">
-                <Label text="📋" styleClass="sidebar-menu-icon"/>
                 <Label text="Kelola Pesanan" styleClass="sidebar-menu-label"/>
             </HBox>
 
             <!-- Kelola Paket -->
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goKelolaPaket">
-                <Label text="📦" styleClass="sidebar-menu-icon"/>
                 <Label text="Kelola Paket" styleClass="sidebar-menu-label"/>
             </HBox>
 
             <!-- Upload Galeri -->
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goUploadGaleri">
-                <Label text="🖼️" styleClass="sidebar-menu-icon"/>
                 <Label text="Upload Galeri" styleClass="sidebar-menu-label"/>
             </HBox>
 
             <!-- Kalender Booking -->
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goKalender">
-                <Label text="📅" styleClass="sidebar-menu-icon"/>
                 <Label text="Kalender Booking" styleClass="sidebar-menu-label"/>
             </HBox>
 
             <!-- Pelanggan -->
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goPelanggan">
-                <Label text="👥" styleClass="sidebar-menu-icon"/>
                 <Label text="Pelanggan" styleClass="sidebar-menu-label"/>
             </HBox>
 
             <!-- Logout button (SETELAH Pelanggan, seperti admin_dashboard.fxml) -->
-            <Button fx:id="btnLogout" text="🚪  Logout"
+            <Button fx:id="btnLogout" text="Logout"
                     onAction="#handleLogout"
                     styleClass="sidebar-logout-btn"
                     maxWidth="Infinity"/>

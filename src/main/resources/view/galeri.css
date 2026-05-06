@@ -26,6 +26,16 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 2);
 }
 .navbar-logo-icon { -fx-font-size: 22px; }
+.navbar-brand-box,
+.navbar-auth-box {
+    -fx-pref-width: 260px;
+    -fx-min-width: 260px;
+    -fx-max-width: 260px;
+}
+.navbar-menu-box {
+    -fx-pref-width: 420px;
+    -fx-min-width: 420px;
+}
 .navbar-brand {
     -fx-font-family: "Georgia";
     -fx-font-size: 18px;
