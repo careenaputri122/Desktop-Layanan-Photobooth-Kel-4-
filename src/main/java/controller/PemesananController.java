@@ -15,6 +15,7 @@ import javafx.geometry.Insets;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 
 
 public class PemesananController {
@@ -116,6 +117,22 @@ public class PemesananController {
     @FXML private void goToStep3() {
         if (selectedDate == null) { showAlert("Pilih tanggal terlebih dahulu."); return; }
 
+        // ── Validasi backend: tanggal sudah lewat atau penuh ──────────
+        if (selectedDate.isBefore(LocalDate.now())) {
+            showAlert("Tanggal yang dipilih sudah lewat. Silakan pilih tanggal lain.");
+            selectedDate = null;
+            buildCalendar(currentMonth);
+            return;
+        }
+        if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
+            showAlert("Tanggal " + selectedDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
+                    + " sudah penuh dipesan. Silakan pilih tanggal lain.");
+            selectedDate = null;
+            buildCalendar(currentMonth);
+            return;
+        }
+        // ──────────────────────────────────────────────────────────────
+
         String jam = jamMulaiField.getText().trim();
         if (jam.isEmpty()) { showAlert("Masukkan jam mulai acara."); return; }
         if (!jam.matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) {
@@ -197,6 +214,22 @@ goToStep(4);
         Booking booking = new Booking();
         
 //menambahkan logic agar tersimpan ke db booking
+// ── Validasi ulang tanggal sebelum simpan ─────────────────────
+if (selectedDate == null || selectedDate.isBefore(LocalDate.now())) {
+    showAlert("Tanggal tidak valid. Silakan pilih ulang tanggal.");
+    goToStep(2);
+    return;
+}
+if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
+    showAlert("Maaf, tanggal " + selectedDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
+            + " baru saja penuh dipesan. Silakan pilih tanggal lain.");
+    selectedDate = null;
+    buildCalendar(currentMonth);
+    goToStep(2);
+    return;
+}
+// ──────────────────────────────────────────────────────────────
+
 // user
 User user = UserDAO.getInstance().getCurrentUser();
 if (user == null) {
@@ -318,8 +351,12 @@ if (!success) {
     private void buildCalendar(YearMonth ym) {
         calendarBox.getChildren().clear();
 
+        // ── Muat tanggal penuh dari DB ─────────────────────────────────
+        Set<LocalDate> fullDates = BookingDAO.getInstance().getFullyBookedDatesInMonth(ym);
+
         DateTimeFormatter headerFmt = DateTimeFormatter.ofPattern("MMMM yyyy");
 
+        // ── Header navigasi bulan ──────────────────────────────────────
         HBox header = new HBox(12);
         header.setAlignment(Pos.CENTER);
         Button prev = new Button("‹");
@@ -339,6 +376,7 @@ if (!success) {
         header.getChildren().addAll(prev, monthLabel, next);
         calendarBox.getChildren().add(header);
 
+        // ── Grid kalender ─────────────────────────────────────────────
         GridPane grid = new GridPane();
         grid.setHgap(4); grid.setVgap(4);
         grid.setAlignment(Pos.CENTER);
@@ -350,9 +388,10 @@ if (!success) {
             grid.add(d, i, 0);
         }
 
-        LocalDate first = ym.atDay(1);
-        int startCol = first.getDayOfWeek().getValue() % 7;
-        int daysInMonth = ym.lengthOfMonth();
+        LocalDate today    = LocalDate.now();
+        LocalDate first    = ym.atDay(1);
+        int startCol       = first.getDayOfWeek().getValue() % 7;
+        int daysInMonth    = ym.lengthOfMonth();
 
         int col = startCol, row = 1;
         for (int day = 1; day <= daysInMonth; day++) {
@@ -361,19 +400,27 @@ if (!success) {
             btn.setMinWidth(36); btn.setMinHeight(36);
             btn.setMaxWidth(36); btn.setMaxHeight(36);
 
+            boolean isPast = date.isBefore(today);
+            boolean isFull = fullDates.contains(date);
+
             if (date.equals(selectedDate)) {
                 btn.getStyleClass().add("cal-day-selected");
-            } else if (date.isBefore(LocalDate.now())) {
-                btn.getStyleClass().add("cal-day");
+                btn.setOnAction(e -> { selectedDate = date; buildCalendar(currentMonth); });
+            } else if (isPast) {
+                // tanggal lewat – disable, warna abu
+                btn.getStyleClass().add("cal-day-past");
                 btn.setDisable(true);
+            } else if (isFull) {
+                // tanggal penuh – disable, warna merah
+                btn.getStyleClass().add("cal-day-full");
+                btn.setDisable(true);
+                btn.setOnAction(e -> showAlert("Tanggal " + date.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
+                        + " sudah penuh dipesan. Silakan pilih tanggal lain."));
             } else {
-                btn.getStyleClass().add("cal-day");
+                // tersedia – warna hijau
+                btn.getStyleClass().add("cal-day-available");
+                btn.setOnAction(e -> { selectedDate = date; buildCalendar(currentMonth); });
             }
-
-            btn.setOnAction(e -> {
-                selectedDate = date;
-                buildCalendar(currentMonth);
-            });
 
             grid.add(btn, col, row);
             col++;
@@ -381,6 +428,31 @@ if (!success) {
         }
 
         calendarBox.getChildren().add(grid);
+
+        // ── Legend ────────────────────────────────────────────────────
+        HBox legend = new HBox(16);
+        legend.setAlignment(Pos.CENTER);
+        legend.setPadding(new Insets(10, 0, 0, 0));
+        legend.getChildren().addAll(
+            makeLegendItem("cal-legend-available", "Tersedia"),
+            makeLegendItem("cal-legend-full",      "Penuh"),
+            makeLegendItem("cal-legend-past",       "Sudah Lewat"),
+            makeLegendItem("cal-legend-selected",   "Dipilih")
+        );
+        calendarBox.getChildren().add(legend);
+    }
+
+    /** Buat satu item legend (dot + label). */
+    private HBox makeLegendItem(String dotStyle, String text) {
+        Label dot = new Label();
+        dot.getStyleClass().add(dotStyle);
+        dot.setMinWidth(12); dot.setMinHeight(12);
+        dot.setMaxWidth(12); dot.setMaxHeight(12);
+        Label lbl = new Label(text);
+        lbl.getStyleClass().add("cal-legend-label");
+        HBox item = new HBox(5, dot, lbl);
+        item.setAlignment(Pos.CENTER_LEFT);
+        return item;
     }
 
     // ── Ganti Step ────────────────────────────────────────────────

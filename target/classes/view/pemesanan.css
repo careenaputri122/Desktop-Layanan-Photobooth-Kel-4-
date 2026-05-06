@@ -201,12 +201,45 @@
     -fx-font-weight: bold;
     -fx-background-radius: 18;
 }
-.cal-day-empty {
-    -fx-background-color: transparent;
+.cal-day-available {
+    -fx-background-color: #d1fae5;
+    -fx-text-fill: #065f46;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
     -fx-min-width: 36px;
     -fx-min-height: 36px;
+    -fx-background-radius: 18;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+}
+.cal-day-available:hover { -fx-background-color: #6ee7b7; -fx-text-fill: #064e3b; }
+.cal-day-full {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #991b1b;
+    -fx-font-size: 13px;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+    -fx-background-radius: 18;
+    -fx-border-color: transparent;
+    -fx-opacity: 0.85;
+}
+.cal-day-past {
+    -fx-background-color: transparent;
+    -fx-text-fill: #d1d5db;
+    -fx-font-size: 13px;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+    -fx-background-radius: 18;
     -fx-border-color: transparent;
 }
+/* Legend dots */
+.cal-legend-available { -fx-background-color: #6ee7b7; -fx-background-radius: 6; }
+.cal-legend-full      { -fx-background-color: #fca5a5; -fx-background-radius: 6; }
+.cal-legend-past      { -fx-background-color: #d1d5db; -fx-background-radius: 6; }
+.cal-legend-selected  { -fx-background-color: #EC4899; -fx-background-radius: 6; }
+.cal-legend-label     { -fx-font-size: 11px; -fx-text-fill: #6b7280; }
+
+
 
 /* ── Slot Waktu ──────────────────────────────── */
 .slot-card {

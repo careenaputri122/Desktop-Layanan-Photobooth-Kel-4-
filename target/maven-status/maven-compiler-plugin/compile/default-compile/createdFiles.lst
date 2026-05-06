@@ -4,6 +4,7 @@ dao\UserDAO.class
 controller\KelolaPesananController$1.class
 controller\SceneManager.class
 model\User.class
+controller\KelolaPaketController$3.class
 model\Booking.class
 dao\IDao.class
 controller\GaleriController$Nav.class
@@ -12,6 +13,7 @@ controller\PricelistController.class
 MainApp.class
 controller\RegisterController.class
 model\Event.class
+controller\KelolaPaketController$1.class
 dao\PaketDAO.class
 controller\KelolaPesananController.class
 controller\LoginController.class
@@ -20,7 +22,9 @@ controller\AdminDashboardController.class
 model\Paket.class
 dao\BaseDao.class
 controller\GaleriController.class
+controller\KelolaPaketController$2.class
 controller\PemesananController.class
 controller\PemesananController$Nav.class
 controller\KelolaPesananController$2.class
 controller\AdminDashboardController$1.class
+controller\KelolaPaketController.class

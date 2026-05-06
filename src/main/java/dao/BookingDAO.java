@@ -222,6 +222,69 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
         }
     }
 
+    // ── Kalender Booking ──────────────────────────────────────────────────
+
+    /** Batas maksimum booking per hari (3 sesi: pagi, siang, sore). */
+    public static final int MAX_BOOKING_PER_DAY = 3;
+
+    /**
+     * Hitung jumlah booking pada tanggal EVENT tertentu
+     * (hanya status yang aktif: Menunggu Konfirmasi / Disetujui / Selesai).
+     *
+     * @param tanggal tanggal acara (java.time.LocalDate)
+     * @return jumlah booking pada hari itu
+     */
+    public int countBookingsByDate(java.time.LocalDate tanggal) {
+        String sql = "SELECT COUNT(*) FROM bookings " +
+                     "WHERE tanggal = ? AND status NOT IN ('Ditolak')";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, java.sql.Date.valueOf(tanggal));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * Cek apakah tanggal sudah penuh (jumlah booking >= MAX_BOOKING_PER_DAY).
+     *
+     * @param tanggal tanggal yang dicek
+     * @return true jika penuh / tidak bisa dipesan lagi
+     */
+    public boolean isDateFullyBooked(java.time.LocalDate tanggal) {
+        return countBookingsByDate(tanggal) >= MAX_BOOKING_PER_DAY;
+    }
+
+    /**
+     * Ambil semua tanggal yang sudah PENUH dalam rentang bulan tertentu.
+     * Digunakan oleh kalender untuk mewarnai tanggal merah.
+     *
+     * @param yearMonth bulan yang ditampilkan
+     * @return Set tanggal yang sudah penuh
+     */
+    public java.util.Set<java.time.LocalDate> getFullyBookedDatesInMonth(java.time.YearMonth yearMonth) {
+        java.util.Set<java.time.LocalDate> fullDates = new java.util.HashSet<>();
+        String sql = "SELECT tanggal, COUNT(*) AS total FROM bookings " +
+                     "WHERE tanggal BETWEEN ? AND ? AND status NOT IN ('Ditolak') " +
+                     "GROUP BY tanggal HAVING total >= ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, java.sql.Date.valueOf(yearMonth.atDay(1)));
+            ps.setDate(2, java.sql.Date.valueOf(yearMonth.atEndOfMonth()));
+            ps.setInt (3, MAX_BOOKING_PER_DAY);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                fullDates.add(rs.getDate("tanggal").toLocalDate());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fullDates;
+    }
+
     /**
      * Hitung jumlah pesanan yang DIBUAT hari ini (bukan tanggal eventnya).
      * Menggunakan kolom created_at dengan CURDATE() di MySQL.
