@@ -93,7 +93,7 @@ private VBox createPaketCard(Paket paket, int index) {
 
     VBox features = new VBox(6);
     for (String feature : buildFeatures(paket)) {
-        Label check = new Label("OK");
+        Label check = new Label("✓");
         check.getStyleClass().add("feature-check");
         Label text = new Label(feature);
         text.getStyleClass().add("feature-text");
