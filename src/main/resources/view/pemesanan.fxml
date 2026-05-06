@@ -256,7 +256,7 @@
                 <Label fx:id="payTotal"      styleClass="pay-total-val"/>
             </HBox>
             
-            <Button text="Konfirmasi Pesanan" styleClass="btn-konfirmasi"
+            <Button fx:id="btnKonfirmasi" text="Konfirmasi Pesanan" styleClass="btn-konfirmasi"
                     onAction="#konfirmasi" maxWidth="Infinity"/>
         </VBox>
 

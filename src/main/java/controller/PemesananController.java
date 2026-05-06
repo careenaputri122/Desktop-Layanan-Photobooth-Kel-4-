@@ -49,6 +49,7 @@ public class PemesananController {
     @FXML private Label ringNama, ringContact;
     @FXML private Label payHarga, payDiskon, payTotal; 
     @FXML private HBox  diskonRow;
+    @FXML private Button btnKonfirmasi;
 
     // ── State ─────────────────────────────────────────────────────
     private int       currentStep    = 1;
@@ -59,6 +60,7 @@ public class PemesananController {
     private YearMonth currentMonth   = YearMonth.now();
     private VBox      activePackCard = null;
     private int       totalFinal     = 0;
+    private boolean   sedangKonfirmasi = false;
 
     // ── Init ──────────────────────────────────────────────────────
     @FXML
@@ -211,6 +213,10 @@ goToStep(4);
     @FXML private void backToStep3() { goToStep(3); }
 
     @FXML private void konfirmasi() {
+        if (sedangKonfirmasi) return;
+        sedangKonfirmasi = true;
+        if (btnKonfirmasi != null) btnKonfirmasi.setDisable(true);
+
         Booking booking = new Booking();
         
 //menambahkan logic agar tersimpan ke db booking
@@ -218,6 +224,7 @@ goToStep(4);
 if (selectedDate == null || selectedDate.isBefore(LocalDate.now())) {
     showAlert("Tanggal tidak valid. Silakan pilih ulang tanggal.");
     goToStep(2);
+    resetKonfirmasiState();
     return;
 }
 if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
@@ -226,6 +233,7 @@ if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
     selectedDate = null;
     buildCalendar(currentMonth);
     goToStep(2);
+    resetKonfirmasiState();
     return;
 }
 // ──────────────────────────────────────────────────────────────
@@ -234,6 +242,7 @@ if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
 User user = UserDAO.getInstance().getCurrentUser();
 if (user == null) {
     showAlert("Login dulu!");
+    resetKonfirmasiState();
     return;
 }
 booking.setUser(user);
@@ -247,6 +256,7 @@ Paket paket = PaketDAO.getInstance().findAll()
 
 if (paket == null) {
     showAlert("Paket gak ditemukan!");
+    resetKonfirmasiState();
     return;
 }
 booking.setPaket(paket);
@@ -274,10 +284,10 @@ boolean success = BookingDAO.getInstance().save(booking);
 
 if (!success) {
     showAlert("Gagal simpan!");
+    resetKonfirmasiState();
     return;
 }
-        int nomorAcak = (int)(Math.random() * 900) + 100;
-        String nomorPesanan = "FTM-2026-" + nomorAcak;
+        String nomorPesanan = nomor;
 
         javafx.stage.Stage popup = new javafx.stage.Stage();
         popup.initModality(javafx.stage.Modality.APPLICATION_MODAL);
@@ -345,6 +355,11 @@ if (!success) {
     // ── Helper ────────────────────────────────────────────────────
     private String formatRp(int amount) {
         return "Rp" + String.format("%,d", amount).replace(",", ".");
+    }
+
+    private void resetKonfirmasiState() {
+        sedangKonfirmasi = false;
+        if (btnKonfirmasi != null) btnKonfirmasi.setDisable(false);
     }
 
     // ── Kalender ──────────────────────────────────────────────────
