@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.KelolaPesananController"
+            styleClass="root-pane">
+
+    <!-- ══════════════════════════════════════════════════════════
+         SIDEBAR KIRI
+         ══════════════════════════════════════════════════════════ -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="240" minWidth="240" spacing="0">
+
+            <!-- Logo -->
+            <VBox styleClass="sidebar-logo-box" alignment="CENTER_LEFT" spacing="4">
+                <Label text="📷 Aksaf" styleClass="sidebar-logo-text"/>
+                <Label text="Photobooth" styleClass="sidebar-logo-sub"/>
+            </VBox>
+
+            <Separator styleClass="sidebar-sep"/>
+
+            <!-- Label Seksi -->
+            <Label text="MENU UTAMA" styleClass="sidebar-section-label">
+                <VBox.margin><Insets top="20" left="20" bottom="8" right="0"/></VBox.margin>
+            </Label>
+
+            <!-- Dashboard -->
+            <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+                  onMouseClicked="#goDashboard">
+                <Label text="📊" styleClass="sidebar-menu-icon"/>
+                <Label text="Dashboard" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <!-- Kelola Pesanan (aktif) -->
+            <HBox styleClass="sidebar-menu-item-active" alignment="CENTER_LEFT" spacing="12">
+                <Label text="📋" styleClass="sidebar-menu-icon"/>
+                <Label text="Kelola Pesanan" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <!-- Kelola Paket -->
+            <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+                  onMouseClicked="#goKelolaPaket">
+                <Label text="📦" styleClass="sidebar-menu-icon"/>
+                <Label text="Kelola Paket" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <!-- Upload Galeri -->
+            <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+                  onMouseClicked="#goUploadGaleri">
+                <Label text="🖼️" styleClass="sidebar-menu-icon"/>
+                <Label text="Upload Galeri" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <!-- Kalender Booking -->
+            <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+                  onMouseClicked="#goKalender">
+                <Label text="📅" styleClass="sidebar-menu-icon"/>
+                <Label text="Kalender Booking" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <!-- Pelanggan -->
+            <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+                  onMouseClicked="#goPelanggan">
+                <Label text="👥" styleClass="sidebar-menu-icon"/>
+                <Label text="Pelanggan" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <!-- Logout button (SETELAH Pelanggan, seperti admin_dashboard.fxml) -->
+            <Button fx:id="btnLogout" text="🚪  Logout"
+                    onAction="#handleLogout"
+                    styleClass="sidebar-logout-btn"
+                    maxWidth="Infinity"/>
+
+            <!-- Spacer (untuk mendorong profile ke bawah) -->
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <!-- Bottom Section: Profile (SAMA STRUKTUR dengan admin_dashboard.fxml) -->
+            <VBox styleClass="sidebar-bottom-section" spacing="0">
+                <Separator styleClass="sidebar-sep"/>
+
+                <!-- Profile Admin -->
+                <HBox styleClass="sidebar-profile-box" alignment="CENTER_LEFT" spacing="12">
+                    <StackPane styleClass="sidebar-avatar" minWidth="36" minHeight="36"
+                               prefWidth="36" prefHeight="36">
+                        <Label fx:id="labelAdminInitial" text="A" styleClass="sidebar-avatar-initial"/>
+                    </StackPane>
+                    <VBox spacing="2">
+                        <Label fx:id="labelAdminName" text="Admin" styleClass="sidebar-profile-name"/>
+                        <Label fx:id="labelAdminRole" text="Administrator" styleClass="sidebar-profile-role"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+        </VBox>
+    </left>
+
+    <!-- ══════════════════════════════════════════════════════════
+         KONTEN UTAMA
+         ══════════════════════════════════════════════════════════ -->
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER"
+                    style="-fx-background-color: transparent; -fx-background: transparent;">
+        <AnchorPane styleClass="main-content">
+            <padding><Insets top="32" right="32" bottom="32" left="32"/></padding>
+
+            <!-- Header Halaman -->
+            <VBox AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                  spacing="4">
+                <Label text="Kelola Pesanan" styleClass="page-title"/>
+                <Label text="Pantau dan kelola seluruh pesanan dari pelanggan"
+                       styleClass="page-subtitle"/>
+            </VBox>
+
+            <!-- ── Filter Tab Status ────────────────────────────── -->
+            <HBox AnchorPane.topAnchor="100" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                  styleClass="filter-bar" spacing="8" alignment="CENTER_LEFT">
+
+                <Button fx:id="btnFilterSemua"
+                        text="Semua"
+                        styleClass="filter-btn-active"
+                        onAction="#filterSemua"/>
+
+                <Button fx:id="btnFilterMenunggu"
+                        text="⏳  Menunggu Konfirmasi"
+                        styleClass="filter-btn"
+                        onAction="#filterMenunggu"/>
+
+                <Button fx:id="btnFilterDisetujui"
+                        text="✅  Disetujui"
+                        styleClass="filter-btn"
+                        onAction="#filterDisetujui"/>
+
+                <Button fx:id="btnFilterDitolak"
+                        text="❌  Ditolak"
+                        styleClass="filter-btn"
+                        onAction="#filterDitolak"/>
+
+                <Button fx:id="btnFilterSelesai"
+                        text="🏁  Selesai"
+                        styleClass="filter-btn"
+                        onAction="#filterSelesai"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label fx:id="labelJumlahPesanan"
+                       text="0 pesanan"
+                       styleClass="pesanan-count"/>
+
+            </HBox>
+
+            <!-- ── Tabel Pesanan ────────────────────────────────── -->
+            <!-- Menggunakan AnchorPane untuk constrain height agar mengisi sisa tinggi layar -->
+            <VBox AnchorPane.topAnchor="160" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                  styleClass="table-card">
+
+                <TableView fx:id="tablePesanan"
+                           styleClass="pesanan-table"
+                           VBox.vgrow="ALWAYS">
+
+                    <columns>
+                        <TableColumn fx:id="colNomor"   text="No. Pesanan"   prefWidth="150" minWidth="120"/>
+                        <TableColumn fx:id="colNama"    text="Nama Pemesan"  prefWidth="180" minWidth="140"/>
+                        <TableColumn fx:id="colPaket"   text="Paket"         prefWidth="150" minWidth="120"/>
+                        <TableColumn fx:id="colTanggal" text="Tanggal Event" prefWidth="140" minWidth="120"/>
+                        <TableColumn fx:id="colTotal"   text="Total"         prefWidth="140" minWidth="120"/>
+                        <TableColumn fx:id="colStatus"  text="Status"        prefWidth="180" minWidth="150"/>
+                        <TableColumn fx:id="colAksi"    text="Aksi"          prefWidth="110" minWidth="100" sortable="false"/>
+                    </columns>
+
+                    <placeholder>
+                        <VBox alignment="CENTER" spacing="8">
+                            <Label text="📭" style="-fx-font-size: 36px;"/>
+                            <Label text="Tidak ada pesanan"
+                                   style="-fx-font-size: 14px; -fx-text-fill: #9CA3AF;"/>
+                        </VBox>
+                    </placeholder>
+
+                </TableView>
+
+            </VBox>
+
+        </AnchorPane>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
