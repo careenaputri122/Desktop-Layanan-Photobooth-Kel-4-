@@ -298,7 +298,7 @@
             </VBox>
         </HBox>
         <HBox styleClass="footer-bottom" alignment="CENTER">
-            <padding><Insets top="16" bottom="16"/></padding>
+            <padding><Insets top="16" bottom="48"/></padding>
             <Label text="© 2026 Aksaf Photobooth. Semua hak dilindungi." styleClass="footer-copy"/>
         </HBox>
 

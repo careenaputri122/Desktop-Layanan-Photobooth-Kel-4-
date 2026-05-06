@@ -57,6 +57,7 @@ public class PemesananController {
     private LocalDate selectedDate   = null;
     private YearMonth currentMonth   = YearMonth.now();
     private VBox      activePackCard = null;
+    private int       totalFinal     = 0;
 
     // ── Init ──────────────────────────────────────────────────────
     @FXML
@@ -169,6 +170,7 @@ if (currentUser != null) {
 
 int diskon = berhakDiskon ? (int)(hargaInt * 0.15) : 0;
 int total  = hargaInt - diskon;
+totalFinal = total; 
 
 payHarga.setText(formatRp(hargaInt));
 
@@ -232,7 +234,7 @@ booking.setStatus("Menunggu Konfirmasi");
 
 // harga
 int harga = Integer.parseInt(selectedHarga.replace("Rp","").replace(".",""));
-booking.setTotalHarga(harga);
+booking.setTotalHarga(totalFinal);
 
 // SAVE
 boolean success = BookingDAO.getInstance().save(booking);

@@ -36,6 +36,13 @@ public class SceneManager {
         loadScene("/view/admin_dashboard.fxml", "/view/admin_dashboard.css", 1280, 800);
     }
 
+    public static void showKelolaPesanan() throws Exception {
+    loadScene("/view/kelola_pesanan.fxml", "/view/kelola_pesanan.css", 1280, 800);
+}
+
+    public static void showKelolaPaket() throws Exception {
+        loadScene("/view/kelola_paket.fxml", "/view/kelola_paket.css", 1280, 800);
+    }
     // ── Popup Login / Register ────────────────────────────────────────────
 
     public static void showLogin() throws Exception {

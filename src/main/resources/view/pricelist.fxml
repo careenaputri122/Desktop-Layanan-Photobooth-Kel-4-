@@ -49,7 +49,7 @@
         <!-- ══════════════════════════════════════
              PAKET GRID
              ══════════════════════════════════════ -->
-        <VBox styleClass="section-paket" spacing="20">
+        <VBox fx:id="paketContainer" styleClass="section-paket" spacing="20">
 
             <!-- Baris 1: Starter + Silver -->
             <HBox spacing="20" alignment="CENTER">

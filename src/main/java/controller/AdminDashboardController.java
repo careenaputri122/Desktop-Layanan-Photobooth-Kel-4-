@@ -38,15 +38,15 @@ public class AdminDashboardController {
     @FXML private TableColumn<Booking, String>     colStatus;
     @FXML private TableColumn<Booking, String>     colTotal;
 
+    // ── Logout ────────────────────────────────────────────────────────────
+    @FXML private Button btnLogout;
+
     private final NumberFormat rupiahFmt = NumberFormat.getCurrencyInstance(
         new Locale("id", "ID")
     );
     private final SimpleDateFormat dateFmt = new SimpleDateFormat("dd MMM yyyy");
 
     // ─────────────────────────────────────────────────────────────────────
-
-// Tambah di atas, sejajar field lain
-@FXML private Button btnLogout;
 
     @FXML
     public void initialize() {
@@ -63,14 +63,15 @@ public class AdminDashboardController {
         if (admin != null) {
             labelAdminName.setText(admin.getNamaDepan() + " " + admin.getNamaBelakang());
             labelAdminRole.setText("Administrator");
-            // Inisial huruf pertama nama depan
-            labelAdminInitial.setText(String.valueOf(admin.getNamaDepan().charAt(0)).toUpperCase());
+            labelAdminInitial.setText(
+                String.valueOf(admin.getNamaDepan().charAt(0)).toUpperCase()
+            );
         }
     }
 
     private void setupTable() {
         tableBooking.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-        // Gunakan callback manual supaya bisa format Paket & Tanggal & Rupiah
+
         colNomor.setCellValueFactory(data ->
             new javafx.beans.property.SimpleStringProperty(
                 data.getValue().getNomorPesanan() != null
@@ -113,15 +114,20 @@ public class AdminDashboardController {
             protected void updateItem(String status, boolean empty) {
                 super.updateItem(status, empty);
                 if (empty || status == null) {
-                    setText(null);
-                    setStyle("");
+                    setText(null); setStyle("");
                 } else {
                     setText(status);
                     switch (status.toLowerCase()) {
-                        case "pending"   -> setStyle("-fx-text-fill: #D97706; -fx-font-weight: bold;");
-                        case "confirmed" -> setStyle("-fx-text-fill: #059669; -fx-font-weight: bold;");
-                        case "cancelled" -> setStyle("-fx-text-fill: #DC2626; -fx-font-weight: bold;");
-                        default          -> setStyle("-fx-text-fill: #6B7280;");
+                        case "menunggu konfirmasi" ->
+                            setStyle("-fx-text-fill: #D97706; -fx-font-weight: bold;");
+                        case "disetujui" ->
+                            setStyle("-fx-text-fill: #059669; -fx-font-weight: bold;");
+                        case "ditolak"   ->
+                            setStyle("-fx-text-fill: #DC2626; -fx-font-weight: bold;");
+                        case "selesai"   ->
+                            setStyle("-fx-text-fill: #7C3AED; -fx-font-weight: bold;");
+                        default          ->
+                            setStyle("-fx-text-fill: #6B7280;");
                     }
                 }
             }
@@ -129,28 +135,19 @@ public class AdminDashboardController {
     }
 
     private void loadStats() {
-        List<Booking> semuaBooking = BookingDAO.getInstance().findAll();
-        List<User>    semuaUser   = UserDAO.getInstance().findAll();
+        List<User> semuaUser = UserDAO.getInstance().findAll();
 
-        String hariIni = dateFmt.format(new Date());
-
-        // Pesanan hari ini
-        long pesananHariIni = semuaBooking.stream()
-            .filter(b -> b.getTanggal() != null
-                && dateFmt.format(b.getTanggal()).equals(hariIni))
-            .count();
-
-        
+        // ✅ Fix: pakai countTodayOrders() → filter by created_at di DB
+        int pesananHariIni = BookingDAO.getInstance().countTodayOrders();
 
         // Member aktif (semua user non-admin)
         long memberAktif = semuaUser.stream()
             .filter(u -> !"admin".equalsIgnoreCase(u.getRole()))
             .count();
 
-        // Pesanan pending
-        long pending = semuaBooking.stream()
-            .filter(b -> "pending".equalsIgnoreCase(b.getStatus()))
-            .count();
+        // Pesanan menunggu konfirmasi
+        long pending = BookingDAO.getInstance()
+            .findByStatus("Menunggu Konfirmasi").size();
 
         labelPesananHariIni.setText(String.valueOf(pesananHariIni));
         labelMemberAktif.setText(String.valueOf(memberAktif));
@@ -160,7 +157,7 @@ public class AdminDashboardController {
     private void loadRecentBookings() {
         List<Booking> semua = BookingDAO.getInstance().findAll();
         // Ambil 5 teratas (sudah diurutkan DESC oleh DAO)
-        List<Booking> lima = semua.stream().limit(5).collect(Collectors.toList());
+        List<Booking> lima  = semua.stream().limit(5).collect(Collectors.toList());
         tableBooking.setItems(FXCollections.observableArrayList(lima));
     }
 
@@ -171,10 +168,15 @@ public class AdminDashboardController {
         try { SceneManager.showHome(); } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // Placeholder — isi nanti sesuai halaman masing-masing
-    @FXML private void goKelolaPesanan() { System.out.println("TODO: Kelola Pesanan"); }
-    @FXML private void goKelolaPaket()   { System.out.println("TODO: Kelola Paket"); }
-    @FXML private void goUploadGaleri()  { System.out.println("TODO: Upload Galeri"); }
-    @FXML private void goKalender()      { System.out.println("TODO: Kalender Booking"); }
-    @FXML private void goPelanggan()     { System.out.println("TODO: Pelanggan"); }
+    // ✅ Disambungkan ke halaman Kelola Pesanan
+    @FXML private void goKelolaPesanan() {
+        try { SceneManager.showKelolaPesanan(); } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    @FXML private void goKelolaPaket()  {
+        try { SceneManager.showKelolaPaket(); } catch (Exception e) { e.printStackTrace(); }
+    }
+    @FXML private void goUploadGaleri() { System.out.println("TODO: Upload Galeri");       }
+    @FXML private void goKalender()     { System.out.println("TODO: Kalender Booking");    }
+    @FXML private void goPelanggan()    { System.out.println("TODO: Pelanggan");           }
 }

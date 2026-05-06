@@ -15,7 +15,7 @@ import java.util.List;
  *
  * Kolom tabel `bookings`:
  *   id, user_id, paket_id, tanggal, jam_mulai, lokasi,
- *   nama_pemesan, email, phone, catatan, status, nomor_pesanan, total_harga
+ *   nama_pemesan, email, phone, catatan, status, nomor_pesanan, total_harga, created_at
  */
 public class BookingDAO extends BaseDao implements IDao<Booking> {
 
@@ -155,6 +155,89 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
             e.printStackTrace();
         }
         return list;
+    }
+
+    /**
+     * ✅ BARU — Ambil pesanan berdasarkan status.
+     * Dipakai oleh filter tab di halaman Kelola Pesanan admin.
+     *
+     * @param status nilai status, contoh: "Menunggu Konfirmasi", "Disetujui", "Ditolak", "Selesai"
+     * @return list booking yang cocok
+     */
+    public List<Booking> findByStatus(String status) {
+        List<Booking> list = new ArrayList<>();
+        String sql = "SELECT * FROM bookings WHERE status = ? ORDER BY id DESC";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, status);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapRow(rs));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * ✅ BARU — Update hanya kolom status berdasarkan ID booking.
+     * Dipakai oleh tombol ✓ (Disetujui) dan ✗ (Ditolak) di halaman Kelola Pesanan.
+     *
+     * Aturan otomatis:
+     *  - Jika status baru = "Disetujui" DAN tanggal event sudah lewat → disimpan sebagai "Selesai"
+     *
+     * @param id     ID booking yang akan diupdate
+     * @param status status baru ("Disetujui" / "Ditolak")
+     * @return true jika berhasil
+     */
+    public boolean updateStatus(int id, String status) {
+        // Cek apakah perlu auto-set ke "Selesai"
+        String statusFinal = status;
+        if ("Disetujui".equals(status)) {
+            Booking b = findById(id);
+            if (b != null && b.getTanggal() != null) {
+                // Tanggal event sudah lewat → langsung Selesai
+                java.time.LocalDate tanggalEvent = b.getTanggal()
+                        .toInstant()
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toLocalDate();
+                if (tanggalEvent.isBefore(java.time.LocalDate.now())) {
+                    statusFinal = "Selesai";
+                }
+            }
+        }
+
+        String sql = "UPDATE bookings SET status = ? WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, statusFinal);
+            ps.setInt   (2, id);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Hitung jumlah pesanan yang DIBUAT hari ini (bukan tanggal eventnya).
+     * Menggunakan kolom created_at dengan CURDATE() di MySQL.
+     */
+    public int countTodayOrders() {
+        String sql = "SELECT COUNT(*) FROM bookings WHERE DATE(created_at) = CURDATE()";
+        try (Connection conn = getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            if (rs.next()) return rs.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     /**

@@ -223,7 +223,7 @@
    =========================== */
 .footer {
     -fx-background-color: #111827;
-    -fx-padding: 40 60 24 60;
+    -fx-padding: 40 60 56 60;
 }
 .footer-brand  { -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: white; }
 .footer-tagline { -fx-font-size: 12px; -fx-text-fill: #9CA3AF; -fx-wrap-text: true; }

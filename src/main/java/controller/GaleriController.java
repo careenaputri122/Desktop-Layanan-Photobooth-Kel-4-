@@ -118,7 +118,7 @@ public class GaleriController {
         renderGallery(category, kw);
     }
 
-    // ─── Render gallery ──────────────────────────────────────────
+    // ─── Render gallery ─────────────────────────────────────────
     private void renderGallery(String category, String keyword) {
         galleryPane.getChildren().clear();
 
