@@ -127,6 +127,12 @@ private VBox createPaketCard(Paket paket, boolean diskonMemberAktif) {
 }
 
 private List<String> buildFeatures(Paket paket) {
+    List<String> items = new ArrayList<>();
+    String jamOperasional = paket.getJamOperasional();
+    if (jamOperasional != null && !jamOperasional.isBlank()) {
+        items.add("Jam operasional: " + jamOperasional.trim());
+    }
+
     String keterangan = paket.getKeterangan();
     if (keterangan != null && !keterangan.isBlank()) {
         String normalized = keterangan.trim();
@@ -134,14 +140,15 @@ private List<String> buildFeatures(Paket paket) {
             ? normalized.split("\\R+")
             : normalized.split("\\s*[;,]\\s*");
 
-        List<String> items = new ArrayList<>();
         Arrays.stream(rawItems)
             .map(String::trim)
             .filter(item -> !item.isBlank())
+            .filter(item -> jamOperasional == null || jamOperasional.isBlank()
+                || !item.toLowerCase(Locale.ROOT).contains("jam operasional"))
             .forEach(items::add);
-
-        if (!items.isEmpty()) return items;
     }
+
+    if (!items.isEmpty()) return items;
 
     // Fallback: default berdasarkan tipe jika keterangan belum diisi admin
     return getDefaultFeatures(paket.getTipe());

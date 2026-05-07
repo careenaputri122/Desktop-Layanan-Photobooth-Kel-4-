@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class PemesananController {
     // ── Step 2: Tanggal ───────────────────────────────────────────
     @FXML private VBox calendarBox;
     @FXML private TextField jamMulaiField;
+    @FXML private Label jamSelesaiInfo;
     @FXML private TextField lokasiField;
 
     // ── Step 3: Data Pemesan ──────────────────────────────────────
@@ -68,6 +70,7 @@ public class PemesananController {
     public void initialize() {
         setupNavbar();
         loadPaketFromDatabase();
+        jamMulaiField.textProperty().addListener((obs, oldVal, newVal) -> updateJamSelesaiInfo());
         Platform.runLater(() -> buildCalendar(currentMonth));
     }
 
@@ -99,6 +102,7 @@ public class PemesananController {
     // ── Step 1: Pilih Paket ───────────────────────────────────────
     private void loadPaketFromDatabase() {
         List<Paket> paketList = PaketDAO.getInstance().findAll();
+        boolean diskonMemberAktif = UserDAO.getInstance().currentUserHasMemberDiscount();
         paketListBox.getChildren().clear();
 
         if (paketList.isEmpty()) {
@@ -116,13 +120,13 @@ public class PemesananController {
                 paketListBox.getChildren().add(row);
             }
 
-            VBox card = createPaketCard(paketList.get(i));
+            VBox card = createPaketCard(paketList.get(i), diskonMemberAktif);
             HBox.setHgrow(card, Priority.ALWAYS);
             row.getChildren().add(card);
         }
     }
 
-    private VBox createPaketCard(Paket paket) {
+    private VBox createPaketCard(Paket paket, boolean diskonMemberAktif) {
         VBox card = new VBox(12);
         card.getStyleClass().add("paket-card");
         card.setMaxWidth(Double.MAX_VALUE);
@@ -135,9 +139,33 @@ public class PemesananController {
 
         HBox hargaRow = new HBox(8);
         hargaRow.setAlignment(Pos.CENTER_LEFT);
-        Label harga = new Label(formatRp(paket.getHarga()));
-        harga.getStyleClass().add("paket-price");
-        hargaRow.getChildren().add(harga);
+        int hargaNormal = paket.getHarga();
+        DiscountInfo discountInfo = resolveDiscount(paket, diskonMemberAktif);
+        int diskonPersen = discountInfo.percent();
+        if (diskonPersen > 0) {
+            int hargaDiskon = hargaNormal - (hargaNormal * diskonPersen / 100);
+
+            Label hargaAwal = new Label(formatRp(hargaNormal));
+            hargaAwal.getStyleClass().add("paket-price-old");
+            Label persen = new Label("-" + diskonPersen + "%");
+            persen.getStyleClass().add("paket-discount-badge");
+            HBox hargaAwalRow = new HBox(8, hargaAwal, persen);
+            hargaAwalRow.setAlignment(Pos.CENTER_LEFT);
+
+            Label hargaAkhir = new Label(formatRp(hargaDiskon));
+            hargaAkhir.getStyleClass().add("paket-price");
+            Label labelDiskon = new Label(discountInfo.label());
+            labelDiskon.getStyleClass().add("paket-discount-source");
+            HBox hargaAkhirRow = new HBox(8, hargaAkhir, labelDiskon);
+            hargaAkhirRow.setAlignment(Pos.CENTER_LEFT);
+
+            VBox hargaBox = new VBox(4, hargaAwalRow, hargaAkhirRow);
+            hargaRow.getChildren().add(hargaBox);
+        } else {
+            Label harga = new Label(formatRp(hargaNormal));
+            harga.getStyleClass().add("paket-price");
+            hargaRow.getChildren().add(harga);
+        }
 
         VBox features = new VBox(6);
         for (String feature : buildFeatures(paket)) {
@@ -158,6 +186,7 @@ public class PemesananController {
 
     private void pilihPaket(Paket paket, VBox card) {
         selectedPaket = paket;
+        updateJamSelesaiInfo();
 
         if (activePackCard != null) {
             activePackCard.getStyleClass().removeAll("paket-card-selected");
@@ -199,6 +228,10 @@ public class PemesananController {
         if (jamInt < 8 || jamInt >= 20) {
             showAlert("Jam mulai harus antara 08:00 – 20:00 WIB."); return;
         }
+        if (parseDurasiMenit(resolveJamOperasional(selectedPaket)) <= 0) {
+            showAlert("Jam operasional paket belum diatur admin.");
+            return;
+        }
 
         if (lokasiField.getText().trim().isEmpty()) { showAlert("Masukkan lokasi acara."); return; }
         goToStep(3);
@@ -228,7 +261,7 @@ public class PemesananController {
         ringPaket.setText(selectedPaket.getNama());
         ringTipe.setText(selectedPaket.getTipe());
         ringTanggal.setText(selectedDate.format(fmt));
-        ringJamMulai.setText("Jam Mulai: " + jamMulaiField.getText().trim());
+        ringJamMulai.setText("Jam Mulai: " + jamMulaiField.getText().trim() + " | " + buildJamSelesaiText());
         ringLokasi.setText(lokasiField.getText().trim());
         ringNama.setText(namaDepanField.getText().trim());
         ringContact.setText(phoneField.getText().trim() + " • " + emailField.getText().trim());
@@ -422,12 +455,90 @@ if (!success) {
 
     private record DiscountInfo(int percent, String label) {}
 
+    private void updateJamSelesaiInfo() {
+        if (jamSelesaiInfo == null) return;
+        String text = buildJamSelesaiText();
+        jamSelesaiInfo.setText(text.isBlank() ? "" : "Jam selesai otomatis: " + text);
+    }
+
+    private String buildJamSelesaiText() {
+        if (selectedPaket == null || jamMulaiField == null) return "";
+
+        String jamMulai = jamMulaiField.getText() != null ? jamMulaiField.getText().trim() : "";
+        if (!jamMulai.matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) return "";
+
+        String durasi = resolveJamOperasional(selectedPaket);
+        int durasiMenit = parseDurasiMenit(durasi);
+        if (durasiMenit <= 0) return "";
+
+        LocalTime mulai = LocalTime.parse(jamMulai.length() == 4 ? "0" + jamMulai : jamMulai);
+        LocalTime selesai = mulai.plusMinutes(durasiMenit);
+        return selesai.format(DateTimeFormatter.ofPattern("HH:mm")) + " (" + durasi + ")";
+    }
+
+    private String resolveJamOperasional(Paket paket) {
+        if (paket == null) return "";
+
+        String jamOperasional = paket.getJamOperasional();
+        if (jamOperasional != null && !jamOperasional.isBlank()) {
+            return jamOperasional.trim();
+        }
+
+        Paket fresh = PaketDAO.getInstance().findById(paket.getId());
+        if (fresh != null) {
+            selectedPaket = fresh;
+            String freshJam = fresh.getJamOperasional();
+            if (freshJam != null && !freshJam.isBlank()) {
+                return freshJam.trim();
+            }
+        }
+
+        return "";
+    }
+
+    private int parseDurasiMenit(String value) {
+        if (value == null || value.isBlank()) return 0;
+
+        String text = value.toLowerCase().replace(',', '.');
+        int total = 0;
+
+        java.util.regex.Matcher jamMatcher = java.util.regex.Pattern
+            .compile("(\\d+(?:\\.\\d+)?)\\s*(jam|j)")
+            .matcher(text);
+        while (jamMatcher.find()) {
+            double jam = Double.parseDouble(jamMatcher.group(1));
+            total += (int) Math.round(jam * 60);
+        }
+
+        java.util.regex.Matcher menitMatcher = java.util.regex.Pattern
+            .compile("(\\d+)\\s*(menit|min|m)")
+            .matcher(text);
+        while (menitMatcher.find()) {
+            total += Integer.parseInt(menitMatcher.group(1));
+        }
+
+        if (total == 0) {
+            java.util.regex.Matcher angkaOnly = java.util.regex.Pattern
+                .compile("^\\s*(\\d+(?:\\.\\d+)?)\\s*$")
+                .matcher(text);
+            if (angkaOnly.find()) total = (int) Math.round(Double.parseDouble(angkaOnly.group(1)) * 60);
+        }
+
+        return total;
+    }
+
     private void resetKonfirmasiState() {
         sedangKonfirmasi = false;
         if (btnKonfirmasi != null) btnKonfirmasi.setDisable(false);
     }
 
     private List<String> buildFeatures(Paket paket) {
+        List<String> items = new ArrayList<>();
+        String jamOperasional = paket.getJamOperasional();
+        if (jamOperasional != null && !jamOperasional.isBlank()) {
+            items.add("Jam operasional: " + jamOperasional.trim());
+        }
+
         String keterangan = paket.getKeterangan();
         if (keterangan != null && !keterangan.isBlank()) {
             String normalized = keterangan.trim();
@@ -435,14 +546,15 @@ if (!success) {
                 ? normalized.split("\\R+")
                 : normalized.split("\\s*[;,]\\s*");
 
-            List<String> items = new ArrayList<>();
             Arrays.stream(rawItems)
                 .map(String::trim)
                 .filter(item -> !item.isBlank())
+                .filter(item -> jamOperasional == null || jamOperasional.isBlank()
+                    || !item.toLowerCase().contains("jam operasional"))
                 .forEach(items::add);
-
-            if (!items.isEmpty()) return items;
         }
+
+        if (!items.isEmpty()) return items;
 
         // Fallback: default berdasarkan tipe jika keterangan belum diisi admin
         return getDefaultFeatures(paket.getTipe());

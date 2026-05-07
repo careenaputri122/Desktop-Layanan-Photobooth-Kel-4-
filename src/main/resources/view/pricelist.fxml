@@ -89,7 +89,7 @@
                 <Region HBox.hgrow="ALWAYS"/>
                 <VBox spacing="10" prefWidth="220">
                     <Label text="KONTAK" styleClass="footer-heading"/>
-                    <Label text="📍  Jl. Kebon Jeruk Raya No. 12,&#10;     Jakarta Barat, DKI Jakarta 11530"
+                    <Label text="📍  Jl. Kebon Jeruk Raya No. 12, Palembang 11530"
                         styleClass="footer-tagline" wrapText="true"/>
                     <Label text="💬  +62 812-3456-7890" styleClass="footer-tagline"/>
                     <Label text="✉   halo@aksafPhotobooth.id"  styleClass="footer-tagline"/>

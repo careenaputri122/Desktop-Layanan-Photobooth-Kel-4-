@@ -105,6 +105,7 @@
                             <TableColumn fx:id="colHarga" text="Harga" prefWidth="150" minWidth="120"/>
                             <TableColumn fx:id="colDiskon" text="Diskon Member" prefWidth="120" minWidth="100"/>
                             <TableColumn fx:id="colPromo" text="Promo Umum" prefWidth="110" minWidth="95"/>
+                            <TableColumn fx:id="colJamOperasional" text="Jam Operasional" prefWidth="130" minWidth="110"/>
                             <TableColumn fx:id="colAksi" text="Aksi" prefWidth="170" minWidth="160" sortable="false"/>
                         </columns>
                         <placeholder>
@@ -152,6 +153,11 @@
                     <VBox spacing="8">
                         <Label text="Promo Umum (%)" styleClass="field-label"/>
                         <TextField fx:id="fieldPromo" promptText="Contoh: 10" styleClass="input-field"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Jam Operasional" styleClass="field-label"/>
+                        <TextField fx:id="fieldJamOperasional" promptText="Contoh: 2 jam" styleClass="input-field"/>
                     </VBox>
 
                     <VBox spacing="8">

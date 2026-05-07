@@ -163,6 +163,22 @@
 .paket-type { -fx-font-size: 13px; -fx-text-fill: #9ca3af; }
 .paket-price { -fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #EC4899; }
 .paket-price-old { -fx-font-size: 14px; -fx-text-fill: #9ca3af; -fx-strikethrough: true; }
+.paket-discount-badge {
+    -fx-background-color: #DCFCE7;
+    -fx-text-fill: #16A34A;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 8 3 8;
+    -fx-background-radius: 8;
+}
+.paket-discount-source {
+    -fx-background-color: #FEF9C3;
+    -fx-text-fill: #D97706;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 8 3 8;
+    -fx-background-radius: 8;
+}
 .paket-feature { -fx-font-size: 13px; -fx-text-fill: #374151; }
 .btn-pilih {
     -fx-background-color: #EC4899;

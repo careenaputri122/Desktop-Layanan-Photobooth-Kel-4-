@@ -29,12 +29,14 @@ public class KelolaPaketController {
     @FXML private TableColumn<Paket, String> colHarga;
     @FXML private TableColumn<Paket, String> colDiskon;
     @FXML private TableColumn<Paket, String> colPromo;
+    @FXML private TableColumn<Paket, String> colJamOperasional;
     @FXML private TableColumn<Paket, Void> colAksi;
 
     @FXML private TextField fieldNama;
     @FXML private TextField fieldHarga;
     @FXML private TextField fieldDiskon;
     @FXML private TextField fieldPromo;
+    @FXML private TextField fieldJamOperasional;
     @FXML private TextArea fieldKeterangan;
     @FXML private ComboBox<String> comboTipe;
     @FXML private Button btnSimpan;
@@ -111,6 +113,9 @@ public class KelolaPaketController {
         );
         colPromo.setCellValueFactory(data ->
             new javafx.beans.property.SimpleStringProperty(data.getValue().getPromoUmum() + "%")
+        );
+        colJamOperasional.setCellValueFactory(data ->
+            new javafx.beans.property.SimpleStringProperty(nullToDash(data.getValue().getJamOperasional()))
         );
 
         colId.setCellFactory(col -> new TableCell<>() {
@@ -252,6 +257,7 @@ public class KelolaPaketController {
         String hargaText = fieldHarga.getText() != null ? fieldHarga.getText().trim() : "";
         String diskonText = fieldDiskon.getText() != null ? fieldDiskon.getText().trim() : "0";
         String promoText = fieldPromo.getText() != null ? fieldPromo.getText().trim() : "0";
+        String jamOperasional = fieldJamOperasional.getText() != null ? fieldJamOperasional.getText().trim() : "";
         String keterangan = fieldKeterangan.getText() != null ? fieldKeterangan.getText().trim() : "";
         String tipe = comboTipe.getValue();
 
@@ -309,7 +315,7 @@ public class KelolaPaketController {
             return null;
         }
 
-        return new Paket(0, nama, harga, tipe, keterangan, diskon, promo);
+        return new Paket(0, nama, harga, tipe, keterangan, diskon, promo, jamOperasional);
     }
 
     private void pilihPaket(Paket paket) {
@@ -318,6 +324,7 @@ public class KelolaPaketController {
         fieldHarga.setText(String.valueOf(paket.getHarga()));
         fieldDiskon.setText(String.valueOf(paket.getDiskonMember()));
         fieldPromo.setText(String.valueOf(paket.getPromoUmum()));
+        fieldJamOperasional.setText(paket.getJamOperasional() != null ? paket.getJamOperasional() : "");
         comboTipe.getSelectionModel().select(paket.getTipe());
 
         // Jika keterangan masih kosong/null, auto-isi default berdasarkan tipe
@@ -354,6 +361,7 @@ public class KelolaPaketController {
         fieldHarga.clear();
         fieldDiskon.clear();
         fieldPromo.clear();
+        fieldJamOperasional.clear();
         fieldKeterangan.clear();
         comboTipe.getSelectionModel().selectFirst();
         tablePaket.getSelectionModel().clearSelection();

@@ -67,18 +67,19 @@ CREATE TABLE `paket` (
   `tipe` varchar(50) NOT NULL,
   `keterangan` text,
   `diskon_member` int NOT NULL DEFAULT 0,
-  `promo_umum` int NOT NULL DEFAULT 0
+  `promo_umum` int NOT NULL DEFAULT 0,
+  `jam_operasional` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `paket`
 --
 
-INSERT INTO `paket` (`id`, `nama`, `harga`, `tipe`, `keterangan`, `diskon_member`, `promo_umum`) VALUES
-(1, 'Paket Starter', 1275000, 'Cetak', '3 jam operasional, backdrop polos 1 pilihan, dan props standar 20 pcs.', 15, 0),
-(2, 'Paket Silver', 1700000, 'Cetak', '4 jam operasional, backdrop pilihan 3 tema, dan props premium 40 pcs.', 15, 0),
-(3, 'Paket Gold', 2337500, 'Cetak', '5 jam operasional, backdrop custom tema, dan props premium 60 pcs.', 15, 0),
-(4, 'Paket Digital', 1062500, 'Tanpa Cetak', '3 jam operasional, backdrop 2 pilihan, props standar 20 pcs, tanpa cetak.', 15, 0);
+INSERT INTO `paket` (`id`, `nama`, `harga`, `tipe`, `keterangan`, `diskon_member`, `promo_umum`, `jam_operasional`) VALUES
+(1, 'Paket Starter', 1275000, 'Cetak', '3 jam operasional, backdrop polos 1 pilihan, dan props standar 20 pcs.', 15, 0, '3 jam'),
+(2, 'Paket Silver', 1700000, 'Cetak', '4 jam operasional, backdrop pilihan 3 tema, dan props premium 40 pcs.', 15, 0, '4 jam'),
+(3, 'Paket Gold', 2337500, 'Cetak', '5 jam operasional, backdrop custom tema, dan props premium 60 pcs.', 15, 0, '5 jam'),
+(4, 'Paket Digital', 1062500, 'Tanpa Cetak', '3 jam operasional, backdrop 2 pilihan, props standar 20 pcs, tanpa cetak.', 15, 0, '3 jam');
 
 -- --------------------------------------------------------
 

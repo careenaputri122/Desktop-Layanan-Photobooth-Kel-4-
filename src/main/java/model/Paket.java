@@ -8,6 +8,7 @@ public class Paket {
     private String keterangan;
     private int    diskonMember;
     private int    promoUmum;
+    private String jamOperasional;
 
     public Paket() {}
 
@@ -33,6 +34,12 @@ public class Paket {
         this.promoUmum = promoUmum;
     }
 
+    public Paket(int id, String nama, int harga, String tipe, String keterangan,
+                 int diskonMember, int promoUmum, String jamOperasional) {
+        this(id, nama, harga, tipe, keterangan, diskonMember, promoUmum);
+        this.jamOperasional = jamOperasional;
+    }
+
     // ── Getters & Setters ─────────────────────────────────────────────────
 
     public int    getId()             { return id; }
@@ -55,4 +62,7 @@ public class Paket {
 
     public int  getPromoUmum()              { return promoUmum; }
     public void setPromoUmum(int promoUmum) { this.promoUmum = promoUmum; }
+
+    public String getJamOperasional()                    { return jamOperasional; }
+    public void   setJamOperasional(String jamOperasional) { this.jamOperasional = jamOperasional; }
 }

@@ -12,7 +12,7 @@ import java.util.*;
  *  - POLYMORPHISM : implements IDao<Paket> → bisa diperlakukan seragam
  *  - SINGLETON    : satu instance shared untuk seluruh aplikasi
  *
- * Kolom tabel `paket`: id, nama, harga (INT), tipe, keterangan, diskon_member, promo_umum
+ * Kolom tabel `paket`: id, nama, harga (INT), tipe, keterangan, diskon_member, promo_umum, jam_operasional
  */
 public class PaketDAO extends BaseDao implements IDao<Paket> {
 
@@ -31,7 +31,7 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
     @Override
     public boolean save(Paket p) {
         ensurePaketColumns();
-        String sql = "INSERT INTO paket (nama, harga, tipe, keterangan, diskon_member, promo_umum) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO paket (nama, harga, tipe, keterangan, diskon_member, promo_umum, jam_operasional) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -42,6 +42,7 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
             ps.setString(4, p.getKeterangan());
             ps.setInt   (5, p.getDiskonMember());
             ps.setInt   (6, p.getPromoUmum());
+            ps.setString(7, p.getJamOperasional());
 
             int rows = ps.executeUpdate();
             if (rows > 0) {
@@ -95,7 +96,7 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
     @Override
     public boolean update(Paket p) {
         ensurePaketColumns();
-        String sql = "UPDATE paket SET nama=?, harga=?, tipe=?, keterangan=?, diskon_member=?, promo_umum=? WHERE id=?";
+        String sql = "UPDATE paket SET nama=?, harga=?, tipe=?, keterangan=?, diskon_member=?, promo_umum=?, jam_operasional=? WHERE id=?";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -106,7 +107,8 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
             ps.setString(4, p.getKeterangan());
             ps.setInt   (5, p.getDiskonMember());
             ps.setInt   (6, p.getPromoUmum());
-            ps.setInt   (7, p.getId());
+            ps.setString(7, p.getJamOperasional());
+            ps.setInt   (8, p.getId());
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -143,6 +145,7 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
         p.setKeterangan(rs.getString("keterangan"));
         p.setDiskonMember(rs.getInt("diskon_member"));
         p.setPromoUmum(rs.getInt("promo_umum"));
+        p.setJamOperasional(rs.getString("jam_operasional"));
         return p;
     }
 
@@ -161,6 +164,11 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
             if (!columnExists(conn, "paket", "promo_umum")) {
                 try (Statement st = conn.createStatement()) {
                     st.executeUpdate("ALTER TABLE paket ADD COLUMN promo_umum INT NOT NULL DEFAULT 0 AFTER diskon_member");
+                }
+            }
+            if (!columnExists(conn, "paket", "jam_operasional")) {
+                try (Statement st = conn.createStatement()) {
+                    st.executeUpdate("ALTER TABLE paket ADD COLUMN jam_operasional VARCHAR(50) NULL AFTER promo_umum");
                 }
             }
         } catch (SQLException e) {

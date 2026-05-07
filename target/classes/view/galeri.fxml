@@ -124,7 +124,7 @@
             <!-- Kontak -->
             <VBox spacing="10" HBox.hgrow="ALWAYS">
                 <Label text="KONTAK" styleClass="footer-heading"/>
-                <Label text="📍  Jl. Kebon Jeruk Raya No. 12, Jakarta Barat 11530"
+                <Label text="📍  Jl. Kebon Jeruk Raya No. 12, Palembang 11530"
                        styleClass="footer-link" wrapText="true" maxWidth="200"/>
                 <Label text="📞  +62 812-3456-7890"        styleClass="footer-link"/>
                 <Label text="✉  halo@AksafPhotobooth.id"         styleClass="footer-link"/>
