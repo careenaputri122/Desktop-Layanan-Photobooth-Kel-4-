@@ -192,27 +192,11 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
      * @return true jika berhasil
      */
     public boolean updateStatus(int id, String status) {
-        // Cek apakah perlu auto-set ke "Selesai"
-        String statusFinal = status;
-        if ("Disetujui".equals(status)) {
-            Booking b = findById(id);
-            if (b != null && b.getTanggal() != null) {
-                // Tanggal event sudah lewat → langsung Selesai
-                java.time.LocalDate tanggalEvent = b.getTanggal()
-                        .toInstant()
-                        .atZone(java.time.ZoneId.systemDefault())
-                        .toLocalDate();
-                if (tanggalEvent.isBefore(java.time.LocalDate.now())) {
-                    statusFinal = "Selesai";
-                }
-            }
-        }
-
         String sql = "UPDATE bookings SET status = ? WHERE id = ?";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, statusFinal);
+            ps.setString(1, status);
             ps.setInt   (2, id);
             return ps.executeUpdate() > 0;
 
