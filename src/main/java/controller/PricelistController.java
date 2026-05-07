@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.fxml.FXML;
+import dao.BookingDAO;
 import dao.PaketDAO;
 import dao.UserDAO;
 import model.Paket;
@@ -35,6 +36,7 @@ public void initialize() {
 
 private void loadPaketFromDatabase() {
     List<Paket> paketList = PaketDAO.getInstance().findAll();
+    boolean diskonMemberAktif = UserDAO.getInstance().currentUserHasMemberDiscount();
     paketContainer.getChildren().clear();
 
     if (paketList.isEmpty()) {
@@ -52,13 +54,13 @@ private void loadPaketFromDatabase() {
             paketContainer.getChildren().add(row);
         }
 
-        VBox card = createPaketCard(paketList.get(i), i);
+        VBox card = createPaketCard(paketList.get(i), diskonMemberAktif);
         HBox.setHgrow(card, Priority.ALWAYS);
         row.getChildren().add(card);
     }
 }
 
-private VBox createPaketCard(Paket paket, int index) {
+private VBox createPaketCard(Paket paket, boolean diskonMemberAktif) {
     VBox card = new VBox(0);
     card.getStyleClass().add("paket-card");
     card.setMaxWidth(340);
@@ -84,24 +86,32 @@ private VBox createPaketCard(Paket paket, int index) {
     }
 
     VBox prices = new VBox(6);
-    int finalPrice = paket.getHarga();
-    int originalPrice = (int) Math.round(finalPrice / 0.85);
+    int hargaNormal = paket.getHarga();
 
-    Label original = new Label(rupiahFmt.format(originalPrice));
-    original.getStyleClass().add("price-original");
-    Label discount = new Label("-15%");
-    discount.getStyleClass().add("price-discount-badge");
-    HBox originalRow = new HBox(8, original, discount);
-    originalRow.setAlignment(Pos.CENTER_LEFT);
+    if (diskonMemberAktif) {
+        int diskon = (int) Math.round(hargaNormal * BookingDAO.MEMBER_DISCOUNT_RATE);
+        int hargaMember = hargaNormal - diskon;
 
-    Label finalLabel = new Label(rupiahFmt.format(finalPrice));
-    finalLabel.getStyleClass().add("price-final");
-    Label member = new Label("Member");
-    member.getStyleClass().add("price-member-badge");
-    HBox finalRow = new HBox(8, finalLabel, member);
-    finalRow.setAlignment(Pos.CENTER_LEFT);
+        Label original = new Label(rupiahFmt.format(hargaNormal));
+        original.getStyleClass().add("price-original");
+        Label discount = new Label("-15%");
+        discount.getStyleClass().add("price-discount-badge");
+        HBox originalRow = new HBox(8, original, discount);
+        originalRow.setAlignment(Pos.CENTER_LEFT);
 
-    prices.getChildren().addAll(originalRow, finalRow);
+        Label finalLabel = new Label(rupiahFmt.format(hargaMember));
+        finalLabel.getStyleClass().add("price-final");
+        Label member = new Label("Member");
+        member.getStyleClass().add("price-member-badge");
+        HBox finalRow = new HBox(8, finalLabel, member);
+        finalRow.setAlignment(Pos.CENTER_LEFT);
+
+        prices.getChildren().addAll(originalRow, finalRow);
+    } else {
+        Label finalLabel = new Label(rupiahFmt.format(hargaNormal));
+        finalLabel.getStyleClass().add("price-final");
+        prices.getChildren().add(finalLabel);
+    }
 
     Button pesan = new Button("Pesan Paket");
     pesan.getStyleClass().add("btn-pesan");
@@ -174,6 +184,7 @@ private void setupNavbar() {
         btnLogout.setOnAction(e -> {
             UserDAO.getInstance().logout();
             setupNavbar(); // refresh navbar
+            loadPaketFromDatabase();
         });
 
         authBox.getChildren().addAll(namaLabel, btnLogout);

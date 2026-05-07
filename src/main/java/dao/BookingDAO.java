@@ -19,6 +19,9 @@ import java.util.List;
  */
 public class BookingDAO extends BaseDao implements IDao<Booking> {
 
+    public static final int MEMBER_COMPLETED_ORDER_TARGET = 3;
+    public static final double MEMBER_DISCOUNT_RATE = 0.15;
+
     // ── Singleton ─────────────────────────────────────────────────────────
     private static BookingDAO instance;
 
@@ -64,6 +67,9 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
             if (rows > 0) {
                 ResultSet keys = ps.getGeneratedKeys();
                 if (keys.next()) booking.setId(keys.getInt(1));
+                if (booking.getUser() != null) {
+                    UserDAO.getInstance().refreshMemberStatusById(booking.getUser().getId());
+                }
                 return true;
             }
 
@@ -107,6 +113,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
 
     @Override
     public Booking findById(int id) {
+        syncPastApprovedBookings();
         String sql = "SELECT * FROM bookings WHERE id = ?";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -123,6 +130,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
 
     @Override
     public List<Booking> findAll() {
+        syncPastApprovedBookings();
         List<Booking> list = new ArrayList<>();
         String sql = "SELECT * FROM bookings ORDER BY id DESC";
         try (Connection conn = getConnection();
@@ -142,6 +150,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
      * Berguna untuk halaman "Riwayat Pesanan" sisi member.
      */
     public List<Booking> findByUser(int userId) {
+        syncPastApprovedBookings();
         List<Booking> list = new ArrayList<>();
         String sql = "SELECT * FROM bookings WHERE user_id = ? ORDER BY tanggal DESC";
         try (Connection conn = getConnection();
@@ -165,6 +174,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
      * @return list booking yang cocok
      */
     public List<Booking> findByStatus(String status) {
+        syncPastApprovedBookings();
         List<Booking> list = new ArrayList<>();
         String sql = "SELECT * FROM bookings WHERE status = ? ORDER BY id DESC";
         try (Connection conn = getConnection();
@@ -192,18 +202,66 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
      * @return true jika berhasil
      */
     public boolean updateStatus(int id, String status) {
+        int userId = findUserIdByBookingId(id);
+        String statusFinal = resolveFinalStatus(id, status);
         String sql = "UPDATE bookings SET status = ? WHERE id = ?";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, status);
+            ps.setString(1, statusFinal);
             ps.setInt   (2, id);
-            return ps.executeUpdate() > 0;
+            boolean updated = ps.executeUpdate() > 0;
+            if (updated && userId > 0) {
+                UserDAO.getInstance().refreshMemberStatusById(userId);
+            }
+            return updated;
 
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public int countCompletedBookingsByUser(int userId) {
+        syncPastApprovedBookings();
+        String sql = "SELECT COUNT(*) FROM bookings WHERE user_id = ? AND status = 'Selesai'";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public boolean isMemberEligible(int userId) {
+        return countCompletedBookingsByUser(userId) >= MEMBER_COMPLETED_ORDER_TARGET;
+    }
+
+    public int countMemberEligibleUsers() {
+        syncPastApprovedBookings();
+        String sql = "SELECT COUNT(*) FROM (" +
+                     "SELECT b.user_id FROM bookings b " +
+                     "JOIN users u ON u.id = b.user_id " +
+                     "WHERE b.status = 'Selesai' AND u.role <> 'admin' " +
+                     "GROUP BY b.user_id " +
+                     "HAVING COUNT(*) >= ?" +
+                     ") member_users";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, MEMBER_COMPLETED_ORDER_TARGET);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     // ── Kalender Booking ──────────────────────────────────────────────────
@@ -219,6 +277,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
      * @return jumlah booking pada hari itu
      */
     public int countBookingsByDate(java.time.LocalDate tanggal) {
+        syncPastApprovedBookings();
         String sql = "SELECT COUNT(*) FROM bookings " +
                      "WHERE tanggal = ? AND status NOT IN ('Ditolak')";
         try (Connection conn = getConnection();
@@ -250,6 +309,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
      * @return Set tanggal yang sudah penuh
      */
     public java.util.Set<java.time.LocalDate> getFullyBookedDatesInMonth(java.time.YearMonth yearMonth) {
+        syncPastApprovedBookings();
         java.util.Set<java.time.LocalDate> fullDates = new java.util.HashSet<>();
         String sql = "SELECT tanggal, COUNT(*) AS total FROM bookings " +
                      "WHERE tanggal BETWEEN ? AND ? AND status NOT IN ('Ditolak') " +
@@ -274,6 +334,7 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
      * Menggunakan kolom created_at dengan CURDATE() di MySQL.
      */
     public int countTodayOrders() {
+        syncPastApprovedBookings();
         String sql = "SELECT COUNT(*) FROM bookings WHERE DATE(created_at) = CURDATE()";
         try (Connection conn = getConnection();
              Statement st = conn.createStatement();
@@ -298,6 +359,54 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
     }
 
     // ── Helper ────────────────────────────────────────────────────────────
+
+    private void syncPastApprovedBookings() {
+        String sql = "UPDATE bookings SET status = 'Selesai' " +
+                     "WHERE status = 'Disetujui' AND tanggal < CURDATE()";
+        try (Connection conn = getConnection();
+             Statement st = conn.createStatement()) {
+            st.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String resolveFinalStatus(int bookingId, String status) {
+        if (!"Disetujui".equalsIgnoreCase(status)) return status;
+
+        String sql = "SELECT tanggal FROM bookings WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                java.sql.Date tanggal = rs.getDate("tanggal");
+                if (tanggal != null && tanggal.toLocalDate().isBefore(java.time.LocalDate.now())) {
+                    return "Selesai";
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+
+    private int findUserIdByBookingId(int bookingId) {
+        String sql = "SELECT user_id FROM bookings WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt("user_id");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     private Booking mapRow(ResultSet rs) throws SQLException {
         Booking b = new Booking();

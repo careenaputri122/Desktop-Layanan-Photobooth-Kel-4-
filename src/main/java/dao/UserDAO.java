@@ -16,6 +16,10 @@ import java.util.List;
  */
 public class UserDAO extends BaseDao implements IDao<User> {
 
+    private static final String ROLE_ADMIN = "admin";
+    private static final String ROLE_MEMBER = "member";
+    private static final String ROLE_USER = "user";
+
     // ── Singleton ─────────────────────────────────────────────────────────
     private static UserDAO instance;
     private User currentUser;
@@ -148,6 +152,7 @@ public class UserDAO extends BaseDao implements IDao<User> {
 
             if (rs.next()) {
                 currentUser = mapRow(rs);
+                refreshMemberStatus(currentUser);
                 return currentUser;
             }
 
@@ -157,10 +162,57 @@ public class UserDAO extends BaseDao implements IDao<User> {
         return null;
     }
 
-    public User getCurrentUser() { return currentUser; }
+    public User getCurrentUser() {
+        refreshMemberStatus(currentUser);
+        return currentUser;
+    }
+
+    public boolean currentUserHasMemberDiscount() {
+        User user = getCurrentUser();
+        return user != null && ROLE_MEMBER.equalsIgnoreCase(user.getRole());
+    }
+
+    public void refreshMemberStatusById(int userId) {
+        if (userId <= 0) return;
+        refreshMemberStatus(findById(userId));
+    }
+
+    public void refreshMemberStatus(User user) {
+        if (user == null || ROLE_ADMIN.equalsIgnoreCase(user.getRole())) return;
+
+        String targetRole = BookingDAO.getInstance().isMemberEligible(user.getId())
+            ? ROLE_MEMBER
+            : ROLE_USER;
+
+        if (!targetRole.equalsIgnoreCase(user.getRole())) {
+            if (updateRole(user.getId(), targetRole)) {
+                user.setRole(targetRole);
+            }
+        }
+
+        if (currentUser != null && currentUser.getId() == user.getId()) {
+            currentUser.setRole(user.getRole());
+        }
+    }
+
     public void logout()         { currentUser = null; }
 
     // ── Helper ────────────────────────────────────────────────────────────
+
+    private boolean updateRole(int userId, String role) {
+        String sql = "UPDATE users SET role = ? WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, role);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     private User mapRow(ResultSet rs) throws SQLException {
         return new User(

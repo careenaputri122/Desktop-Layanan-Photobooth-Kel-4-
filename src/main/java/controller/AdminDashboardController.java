@@ -110,13 +110,8 @@ public class AdminDashboardController {
     }
 
     private void loadStats() {
-        List<User> semuaUser = UserDAO.getInstance().findAll();
-
         int pesananHariIni = BookingDAO.getInstance().countTodayOrders();
-
-        long memberAktif = semuaUser.stream()
-            .filter(u -> !"admin".equalsIgnoreCase(u.getRole()))
-            .count();
+        int memberAktif = BookingDAO.getInstance().countMemberEligibleUsers();
 
         // FIX: Hitung langsung dari DB, bukan cache — memastikan angka selalu fresh
         long pending = BookingDAO.getInstance().findByStatus("Menunggu Konfirmasi").size();

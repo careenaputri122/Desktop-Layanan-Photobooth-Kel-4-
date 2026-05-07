@@ -233,38 +233,28 @@ public class PemesananController {
         ringNama.setText(namaDepanField.getText().trim());
         ringContact.setText(phoneField.getText().trim() + " • " + emailField.getText().trim());
 
-        // hitung harga & diskon
+        // hitung harga & diskon member
         int hargaInt = selectedPaket.getHarga();
-User currentUser = UserDAO.getInstance().getCurrentUser();
+        boolean berhakDiskon = UserDAO.getInstance().currentUserHasMemberDiscount();
 
-// cek jumlah pesanan user
-boolean berhakDiskon = false;
-if (currentUser != null) {
-    long jumlahPesanan = BookingDAO.getInstance().findAll()
-        .stream()
-        .filter(b -> b.getUser() != null && b.getUser().getId() == currentUser.getId())
-        .count();
-    berhakDiskon = jumlahPesanan >= 3;
-}
+        int diskon = berhakDiskon ? (int) Math.round(hargaInt * BookingDAO.MEMBER_DISCOUNT_RATE) : 0;
+        int total  = hargaInt - diskon;
+        totalFinal = total;
 
-int diskon = berhakDiskon ? (int)(hargaInt * 0.15) : 0;
-int total  = hargaInt - diskon;
-totalFinal = total; 
+        payHarga.setText(formatRp(hargaInt));
 
-payHarga.setText(formatRp(hargaInt));
+        if (berhakDiskon) {
+            diskonRow.setVisible(true);
+            diskonRow.setManaged(true);
+            payDiskon.setText("-" + formatRp(diskon));
+        } else {
+            diskonRow.setVisible(false);
+            diskonRow.setManaged(false);
+        }
 
-if (berhakDiskon) {
-    diskonRow.setVisible(true);
-    diskonRow.setManaged(true);
-    payDiskon.setText("-" + formatRp(diskon));
-} else {
-    diskonRow.setVisible(false);
-    diskonRow.setManaged(false);
-}
+        payTotal.setText(formatRp(total));
 
-payTotal.setText(formatRp(total));
-
-goToStep(4);
+        goToStep(4);
        }
 
        

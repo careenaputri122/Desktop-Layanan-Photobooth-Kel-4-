@@ -100,8 +100,7 @@ private void setupNavbar() {
     // ── Aksi Konten ──────────────────────────────────
     @FXML
     private void ambilPromo() {
-        System.out.println("Ambil Promo diklik");
-        // TODO: buka detail promo / arahkan ke pemesanan
+        goPemesanan();
     }
 
     @FXML
