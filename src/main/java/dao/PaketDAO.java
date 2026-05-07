@@ -12,7 +12,7 @@ import java.util.*;
  *  - POLYMORPHISM : implements IDao<Paket> → bisa diperlakukan seragam
  *  - SINGLETON    : satu instance shared untuk seluruh aplikasi
  *
- * Kolom tabel `paket`: id, nama, harga (INT), tipe
+ * Kolom tabel `paket`: id, nama, harga (INT), tipe, keterangan
  */
 public class PaketDAO extends BaseDao implements IDao<Paket> {
 
@@ -30,7 +30,8 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
 
     @Override
     public boolean save(Paket p) {
-        String sql = "INSERT INTO paket (nama, harga, tipe) VALUES (?, ?, ?)";
+        ensurePaketColumns();
+        String sql = "INSERT INTO paket (nama, harga, tipe, keterangan) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -38,6 +39,7 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
             ps.setString(1, p.getNama());
             ps.setInt   (2, p.getHarga());
             ps.setString(3, p.getTipe());
+            ps.setString(4, p.getKeterangan());
 
             int rows = ps.executeUpdate();
             if (rows > 0) {
@@ -54,6 +56,7 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
 
     @Override
     public Paket findById(int id) {
+        ensurePaketColumns();
         String sql = "SELECT * FROM paket WHERE id = ?";
 
         try (Connection conn = getConnection();
@@ -71,6 +74,7 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
 
     @Override
     public List<Paket> findAll() {
+        ensurePaketColumns();
         List<Paket> list = new ArrayList<>();
         String sql = "SELECT * FROM paket";
 
@@ -88,7 +92,8 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
 
     @Override
     public boolean update(Paket p) {
-        String sql = "UPDATE paket SET nama=?, harga=?, tipe=? WHERE id=?";
+        ensurePaketColumns();
+        String sql = "UPDATE paket SET nama=?, harga=?, tipe=?, keterangan=? WHERE id=?";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -96,7 +101,8 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
             ps.setString(1, p.getNama());
             ps.setInt   (2, p.getHarga());
             ps.setString(3, p.getTipe());
-            ps.setInt   (4, p.getId());
+            ps.setString(4, p.getKeterangan());
+            ps.setInt   (5, p.getId());
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -107,6 +113,7 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
 
     @Override
     public boolean delete(int id) {
+        ensurePaketColumns();
         String sql = "DELETE FROM paket WHERE id = ?";
 
         try (Connection conn = getConnection();
@@ -125,10 +132,30 @@ public class PaketDAO extends BaseDao implements IDao<Paket> {
 
     private Paket mapRow(ResultSet rs) throws SQLException {
         Paket p = new Paket();
-        p.setId   (rs.getInt   ("id"));
-        p.setNama (rs.getString("nama"));
-        p.setHarga(rs.getInt   ("harga"));
-        p.setTipe (rs.getString("tipe"));
+        p.setId        (rs.getInt   ("id"));
+        p.setNama      (rs.getString("nama"));
+        p.setHarga     (rs.getInt   ("harga"));
+        p.setTipe      (rs.getString("tipe"));
+        p.setKeterangan(rs.getString("keterangan"));
         return p;
+    }
+
+    private void ensurePaketColumns() {
+        try (Connection conn = getConnection()) {
+            if (!columnExists(conn, "paket", "keterangan")) {
+                try (Statement st = conn.createStatement()) {
+                    st.executeUpdate("ALTER TABLE paket ADD COLUMN keterangan TEXT NULL AFTER tipe");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean columnExists(Connection conn, String tableName, String columnName) throws SQLException {
+        DatabaseMetaData meta = conn.getMetaData();
+        try (ResultSet rs = meta.getColumns(conn.getCatalog(), null, tableName, columnName)) {
+            return rs.next();
+        }
     }
 }

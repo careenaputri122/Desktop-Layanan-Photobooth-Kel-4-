@@ -99,11 +99,11 @@
 
                     <TableView fx:id="tablePaket" styleClass="paket-table" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colId" text="ID" prefWidth="70" minWidth="60"/>
-                            <TableColumn fx:id="colNama" text="Nama Paket" prefWidth="210" minWidth="150"/>
-                            <TableColumn fx:id="colTipe" text="Tipe" prefWidth="130" minWidth="110"/>
-                            <TableColumn fx:id="colHarga" text="Harga" prefWidth="160" minWidth="130"/>
-                            <TableColumn fx:id="colAksi" text="Aksi" prefWidth="160" minWidth="140" sortable="false"/>
+                            <TableColumn fx:id="colId" text="ID" prefWidth="60" minWidth="50"/>
+                            <TableColumn fx:id="colNama" text="Nama Paket" prefWidth="200" minWidth="130"/>
+                            <TableColumn fx:id="colTipe" text="Tipe" prefWidth="120" minWidth="100"/>
+                            <TableColumn fx:id="colHarga" text="Harga" prefWidth="150" minWidth="120"/>
+                            <TableColumn fx:id="colAksi" text="Aksi" prefWidth="170" minWidth="160" sortable="false"/>
                         </columns>
                         <placeholder>
                             <VBox alignment="CENTER" spacing="8">
@@ -114,7 +114,7 @@
                     </TableView>
                 </VBox>
 
-                <VBox styleClass="form-card" prefWidth="360" minWidth="320" spacing="18">
+                <VBox styleClass="form-card" prefWidth="360" minWidth="320" spacing="14">
                     <VBox spacing="4">
                         <Label text="Form Paket" styleClass="section-heading"/>
                         <Label text="Klik baris tabel untuk mengedit paket." styleClass="section-subheading"/>
@@ -133,6 +133,12 @@
                     <VBox spacing="8">
                         <Label text="Harga" styleClass="field-label"/>
                         <TextField fx:id="fieldHarga" promptText="Contoh: 2500000" styleClass="input-field"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Keterangan Paket" styleClass="field-label"/>
+                        <TextArea fx:id="fieldKeterangan" promptText="Isi deskripsi, benefit, atau detail paket"
+                                  prefRowCount="4" wrapText="true" styleClass="input-field"/>
                     </VBox>
 
                     <Region VBox.vgrow="ALWAYS"/>

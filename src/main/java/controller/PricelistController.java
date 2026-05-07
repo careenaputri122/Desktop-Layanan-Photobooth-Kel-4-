@@ -10,10 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,6 +23,7 @@ public class PricelistController {
     @FXML private HBox authBox;
     @FXML private VBox paketContainer;
 
+    private static final int CARDS_PER_ROW = 3;
     private final NumberFormat rupiahFmt = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
 
 @FXML
@@ -44,8 +46,8 @@ private void loadPaketFromDatabase() {
 
     HBox row = null;
     for (int i = 0; i < paketList.size(); i++) {
-        if (i % 2 == 0) {
-            row = new HBox(20);
+        if (i % CARDS_PER_ROW == 0) {
+            row = new HBox(16);
             row.setAlignment(Pos.CENTER);
             paketContainer.getChildren().add(row);
         }
@@ -59,31 +61,10 @@ private void loadPaketFromDatabase() {
 private VBox createPaketCard(Paket paket, int index) {
     VBox card = new VBox(0);
     card.getStyleClass().add("paket-card");
-    card.setMaxWidth(400);
+    card.setMaxWidth(340);
 
-    VBox imageBox = new VBox();
-    imageBox.getStyleClass().add("card-img-placeholder");
-    imageBox.setAlignment(Pos.CENTER);
-    imageBox.setStyle("-fx-background-color: " + resolveCardColor(index) + ";");
-
-    Label icon = new Label(resolveCardIcon(paket, index));
-    icon.setStyle("-fx-font-size: 60px;");
-    imageBox.getChildren().add(icon);
-
-    if (index == 1) {
-        StackPane imageStack = new StackPane(imageBox);
-        imageStack.setAlignment(Pos.TOP_RIGHT);
-        Label badge = new Label("TERLARIS");
-        badge.getStyleClass().add("badge-terlaris");
-        badge.setStyle("-fx-translate-x: -12; -fx-translate-y: 12;");
-        imageStack.getChildren().add(badge);
-        card.getChildren().add(imageStack);
-    } else {
-        card.getChildren().add(imageBox);
-    }
-
-    VBox content = new VBox(12);
-    content.setStyle("-fx-padding: 20 20 20 20;");
+    VBox content = new VBox(10);
+    content.setStyle("-fx-padding: 16 16 16 16;");
 
     Label tipe = new Label(paket.getTipe());
     tipe.getStyleClass().add(resolveBadgeClass(paket.getTipe()));
@@ -133,50 +114,50 @@ private VBox createPaketCard(Paket paket, int index) {
 }
 
 private List<String> buildFeatures(Paket paket) {
-    String tipe = paket.getTipe() == null ? "" : paket.getTipe();
-    if (tipe.equalsIgnoreCase("Tanpa Cetak")) {
+    String keterangan = paket.getKeterangan();
+    if (keterangan != null && !keterangan.isBlank()) {
+        String normalized = keterangan.trim();
+        String[] rawItems = normalized.contains("\n")
+            ? normalized.split("\\R+")
+            : normalized.split("\\s*[;,]\\s*");
+
+        List<String> items = new ArrayList<>();
+        Arrays.stream(rawItems)
+            .map(String::trim)
+            .filter(item -> !item.isBlank())
+            .forEach(items::add);
+
+        if (!items.isEmpty()) return items;
+    }
+
+    // Fallback: default berdasarkan tipe jika keterangan belum diisi admin
+    return getDefaultFeatures(paket.getTipe());
+}
+
+private List<String> getDefaultFeatures(String tipe) {
+    if (tipe != null && tipe.equalsIgnoreCase("Tanpa Cetak")) {
         return List.of(
-            "3 jam operasional",
-            "Backdrop 2 pilihan",
-            "Props standar 20 pcs",
+            "2 jam operasional",
+            "Backdrop 1 pilihan",
+            "Props standar 10 pcs",
             "Digital file semua foto",
             "Share via QR Code",
             "1 operator profesional"
         );
     }
-
     return List.of(
-        "Operator profesional",
-        "Backdrop sesuai paket",
-        "Props photobooth",
-        "Cetak foto sesuai paket",
-        "Digital file semua foto",
-        "Setup sebelum acara"
+        "4 jam operasional",
+        "Backdrop 3 pilihan",
+        "Props standar + tematik 30 pcs",
+        "Cetak foto 4R unlimited",
+        "Digital file + Share via QR Code",
+        "1 operator profesional"
     );
 }
 
 private String resolveBadgeClass(String tipe) {
     if (tipe != null && tipe.equalsIgnoreCase("Tanpa Cetak")) return "badge-digital";
     return "badge-cetak";
-}
-
-private String resolveCardColor(int index) {
-    return switch (index % 4) {
-        case 1 -> "#F9D4DF";
-        case 2 -> "#F5E6D0";
-        case 3 -> "#E8EEFA";
-        default -> "#F3E8E0";
-    };
-}
-
-private String resolveCardIcon(Paket paket, int index) {
-    if (paket.getTipe() != null && paket.getTipe().equalsIgnoreCase("Tanpa Cetak")) return "DIGI";
-    return switch (index % 4) {
-        case 1 -> "BEST";
-        case 2 -> "PRO";
-        case 3 -> "VIP";
-        default -> "PKT";
-    };
 }
 
 private void setupNavbar() {

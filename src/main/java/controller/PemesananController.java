@@ -15,6 +15,9 @@ import javafx.geometry.Insets;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 
@@ -32,7 +35,7 @@ public class PemesananController {
     @FXML private VBox step1Panel, step2Panel, step3Panel, step4Panel;
 
     // ── Step 1: Paket ─────────────────────────────────────────────
-    @FXML private VBox cardStarter, cardSilver, cardGold, cardDigital;
+    @FXML private VBox paketListBox;
 
     // ── Step 2: Tanggal ───────────────────────────────────────────
     @FXML private VBox calendarBox;
@@ -49,21 +52,22 @@ public class PemesananController {
     @FXML private Label ringNama, ringContact;
     @FXML private Label payHarga, payDiskon, payTotal; 
     @FXML private HBox  diskonRow;
+    @FXML private Button btnKonfirmasi;
 
     // ── State ─────────────────────────────────────────────────────
     private int       currentStep    = 1;
-    private String    selectedPaket  = "";
-    private String    selectedHarga  = "";
-    private String    selectedTipe   = "";
+    private Paket     selectedPaket  = null;
     private LocalDate selectedDate   = null;
     private YearMonth currentMonth   = YearMonth.now();
     private VBox      activePackCard = null;
     private int       totalFinal     = 0;
+    private boolean   sedangKonfirmasi = false;
 
     // ── Init ──────────────────────────────────────────────────────
     @FXML
     public void initialize() {
         setupNavbar();
+        loadPaketFromDatabase();
         Platform.runLater(() -> buildCalendar(currentMonth));
     }
 
@@ -93,18 +97,70 @@ public class PemesananController {
     }
 
     // ── Step 1: Pilih Paket ───────────────────────────────────────
-    @FXML private void pilihStarter()  { pilihPaket("Paket Starter",  "Rp1.275.000", "Cetak",       cardStarter); }
-    @FXML private void pilihSilver()   { pilihPaket("Paket Silver",   "Rp1.700.000", "Cetak",       cardSilver);  }
-    @FXML private void pilihGold()     { pilihPaket("Paket Gold",     "Rp2.337.500", "Cetak",       cardGold);    }
-    @FXML private void pilihDigital()  { pilihPaket("Paket Digital",  "Rp1.062.500", "Tanpa Cetak", cardDigital); }
+    private void loadPaketFromDatabase() {
+        List<Paket> paketList = PaketDAO.getInstance().findAll();
+        paketListBox.getChildren().clear();
 
-    private void pilihPaket(String nama, String harga, String tipe, VBox card) {
-        selectedPaket = nama;
-        selectedHarga = harga;
-        selectedTipe  = tipe;
+        if (paketList.isEmpty()) {
+            Label empty = new Label("Belum ada paket yang tersedia.");
+            empty.setStyle("-fx-font-size: 14px; -fx-text-fill: #6b7280;");
+            paketListBox.getChildren().add(empty);
+            return;
+        }
 
-        for (VBox c : new VBox[]{cardStarter, cardSilver, cardGold, cardDigital}) {
-            c.getStyleClass().removeAll("paket-card-selected");
+        HBox row = null;
+        for (int i = 0; i < paketList.size(); i++) {
+            if (i % 2 == 0) {
+                row = new HBox(20);
+                row.setAlignment(Pos.CENTER);
+                paketListBox.getChildren().add(row);
+            }
+
+            VBox card = createPaketCard(paketList.get(i));
+            HBox.setHgrow(card, Priority.ALWAYS);
+            row.getChildren().add(card);
+        }
+    }
+
+    private VBox createPaketCard(Paket paket) {
+        VBox card = new VBox(12);
+        card.getStyleClass().add("paket-card");
+        card.setMaxWidth(Double.MAX_VALUE);
+
+        Label nama = new Label(paket.getNama());
+        nama.getStyleClass().add("paket-name");
+
+        Label tipe = new Label(paket.getTipe());
+        tipe.getStyleClass().add("paket-type");
+
+        HBox hargaRow = new HBox(8);
+        hargaRow.setAlignment(Pos.CENTER_LEFT);
+        Label harga = new Label(formatRp(paket.getHarga()));
+        harga.getStyleClass().add("paket-price");
+        hargaRow.getChildren().add(harga);
+
+        VBox features = new VBox(6);
+        for (String feature : buildFeatures(paket)) {
+            Label item = new Label("✓  " + feature);
+            item.getStyleClass().add("paket-feature");
+            item.setWrapText(true);
+            features.getChildren().add(item);
+        }
+
+        Button pilih = new Button("Pilih Paket Ini");
+        pilih.getStyleClass().add("btn-pilih");
+        pilih.setMaxWidth(Double.MAX_VALUE);
+        pilih.setOnAction(e -> pilihPaket(paket, card));
+
+        card.getChildren().addAll(nama, tipe, hargaRow, features, pilih);
+        return card;
+    }
+
+    private void pilihPaket(Paket paket, VBox card) {
+        selectedPaket = paket;
+
+        if (activePackCard != null) {
+            activePackCard.getStyleClass().removeAll("paket-card-selected");
         }
         card.getStyleClass().add("paket-card-selected");
         activePackCard = card;
@@ -115,6 +171,7 @@ public class PemesananController {
     // ── Step 2: Tanggal & Jam Mulai ──────────────────────────────
     @FXML private void backToStep1() { goToStep(1); }
     @FXML private void goToStep3() {
+        if (selectedPaket == null) { showAlert("Pilih paket terlebih dahulu."); goToStep(1); return; }
         if (selectedDate == null) { showAlert("Pilih tanggal terlebih dahulu."); return; }
 
         // ── Validasi backend: tanggal sudah lewat atau penuh ──────────
@@ -163,8 +220,13 @@ public class PemesananController {
 
         // isi ringkasan
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy");
-        ringPaket.setText(selectedPaket);
-        ringTipe.setText(selectedTipe);
+        if (selectedPaket == null) {
+            showAlert("Pilih paket terlebih dahulu.");
+            goToStep(1);
+            return;
+        }
+        ringPaket.setText(selectedPaket.getNama());
+        ringTipe.setText(selectedPaket.getTipe());
         ringTanggal.setText(selectedDate.format(fmt));
         ringJamMulai.setText("Jam Mulai: " + jamMulaiField.getText().trim());
         ringLokasi.setText(lokasiField.getText().trim());
@@ -172,7 +234,7 @@ public class PemesananController {
         ringContact.setText(phoneField.getText().trim() + " • " + emailField.getText().trim());
 
         // hitung harga & diskon
-        int hargaInt = Integer.parseInt(selectedHarga.replace("Rp", "").replace(".", ""));
+        int hargaInt = selectedPaket.getHarga();
 User currentUser = UserDAO.getInstance().getCurrentUser();
 
 // cek jumlah pesanan user
@@ -211,6 +273,10 @@ goToStep(4);
     @FXML private void backToStep3() { goToStep(3); }
 
     @FXML private void konfirmasi() {
+        if (sedangKonfirmasi) return;
+        sedangKonfirmasi = true;
+        if (btnKonfirmasi != null) btnKonfirmasi.setDisable(true);
+
         Booking booking = new Booking();
         
 //menambahkan logic agar tersimpan ke db booking
@@ -218,6 +284,7 @@ goToStep(4);
 if (selectedDate == null || selectedDate.isBefore(LocalDate.now())) {
     showAlert("Tanggal tidak valid. Silakan pilih ulang tanggal.");
     goToStep(2);
+    resetKonfirmasiState();
     return;
 }
 if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
@@ -226,6 +293,7 @@ if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
     selectedDate = null;
     buildCalendar(currentMonth);
     goToStep(2);
+    resetKonfirmasiState();
     return;
 }
 // ──────────────────────────────────────────────────────────────
@@ -234,19 +302,17 @@ if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
 User user = UserDAO.getInstance().getCurrentUser();
 if (user == null) {
     showAlert("Login dulu!");
+    resetKonfirmasiState();
     return;
 }
 booking.setUser(user);
 
-// paket (mapping dari nama)
-Paket paket = PaketDAO.getInstance().findAll()
-    .stream()
-    .filter(p -> p.getNama().equals(selectedPaket))
-    .findFirst()
-    .orElse(null);
+// paket
+Paket paket = selectedPaket != null ? PaketDAO.getInstance().findById(selectedPaket.getId()) : null;
 
 if (paket == null) {
     showAlert("Paket gak ditemukan!");
+    resetKonfirmasiState();
     return;
 }
 booking.setPaket(paket);
@@ -265,8 +331,6 @@ String nomor = BookingDAO.generateNomorPesanan();
 booking.setNomorPesanan(nomor);
 booking.setStatus("Menunggu Konfirmasi");
 
-// harga
-int harga = Integer.parseInt(selectedHarga.replace("Rp","").replace(".",""));
 booking.setTotalHarga(totalFinal);
 
 // SAVE
@@ -274,10 +338,10 @@ boolean success = BookingDAO.getInstance().save(booking);
 
 if (!success) {
     showAlert("Gagal simpan!");
+    resetKonfirmasiState();
     return;
 }
-        int nomorAcak = (int)(Math.random() * 900) + 100;
-        String nomorPesanan = "FTM-2026-" + nomorAcak;
+        String nomorPesanan = nomor;
 
         javafx.stage.Stage popup = new javafx.stage.Stage();
         popup.initModality(javafx.stage.Modality.APPLICATION_MODAL);
@@ -345,6 +409,53 @@ if (!success) {
     // ── Helper ────────────────────────────────────────────────────
     private String formatRp(int amount) {
         return "Rp" + String.format("%,d", amount).replace(",", ".");
+    }
+
+    private void resetKonfirmasiState() {
+        sedangKonfirmasi = false;
+        if (btnKonfirmasi != null) btnKonfirmasi.setDisable(false);
+    }
+
+    private List<String> buildFeatures(Paket paket) {
+        String keterangan = paket.getKeterangan();
+        if (keterangan != null && !keterangan.isBlank()) {
+            String normalized = keterangan.trim();
+            String[] rawItems = normalized.contains("\n")
+                ? normalized.split("\\R+")
+                : normalized.split("\\s*[;,]\\s*");
+
+            List<String> items = new ArrayList<>();
+            Arrays.stream(rawItems)
+                .map(String::trim)
+                .filter(item -> !item.isBlank())
+                .forEach(items::add);
+
+            if (!items.isEmpty()) return items;
+        }
+
+        // Fallback: default berdasarkan tipe jika keterangan belum diisi admin
+        return getDefaultFeatures(paket.getTipe());
+    }
+
+    private List<String> getDefaultFeatures(String tipe) {
+        if (tipe != null && tipe.equalsIgnoreCase("Tanpa Cetak")) {
+            return List.of(
+                "2 jam operasional",
+                "Backdrop 1 pilihan",
+                "Props standar 10 pcs",
+                "Digital file semua foto",
+                "Share via QR Code",
+                "1 operator profesional"
+            );
+        }
+        return List.of(
+            "4 jam operasional",
+            "Backdrop 3 pilihan",
+            "Props standar + tematik 30 pcs",
+            "Cetak foto 4R unlimited",
+            "Digital file + Share via QR Code",
+            "1 operator profesional"
+        );
     }
 
     // ── Kalender ──────────────────────────────────────────────────
