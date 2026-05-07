@@ -31,6 +31,7 @@ public class KelolaPaketController {
 
     @FXML private TextField fieldNama;
     @FXML private TextField fieldHarga;
+    @FXML private TextArea fieldKeterangan;
     @FXML private ComboBox<String> comboTipe;
     @FXML private Button btnSimpan;
     @FXML private Button btnUpdate;
@@ -67,10 +68,17 @@ public class KelolaPaketController {
                 fieldHarga.setText(newVal.replaceAll("[^\\d]", ""));
             }
         });
+
+        // Auto-suggest keterangan saat tipe berubah (hanya saat mode tambah / keterangan masih kosong)
+        comboTipe.getSelectionModel().selectedItemProperty().addListener((obs, oldTipe, newTipe) -> {
+            if (selectedPaket == null && newTipe != null
+                    && (fieldKeterangan.getText() == null || fieldKeterangan.getText().isBlank())) {
+                fieldKeterangan.setText(buildDefaultKeterangan(newTipe));
+            }
+        });
     }
 
     private void setupTable() {
-        tablePaket.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         colId.setCellValueFactory(data ->
             new javafx.beans.property.SimpleIntegerProperty(data.getValue().getId())
@@ -120,6 +128,7 @@ public class KelolaPaketController {
                 }
             }
         });
+
 
         colAksi.setCellFactory(col -> new TableCell<>() {
             private final Button btnEdit = new Button("Edit");
@@ -221,6 +230,7 @@ public class KelolaPaketController {
     private Paket buildPaketFromForm() {
         String nama = fieldNama.getText() != null ? fieldNama.getText().trim() : "";
         String hargaText = fieldHarga.getText() != null ? fieldHarga.getText().trim() : "";
+        String keterangan = fieldKeterangan.getText() != null ? fieldKeterangan.getText().trim() : "";
         String tipe = comboTipe.getValue();
 
         if (nama.isEmpty()) {
@@ -250,8 +260,7 @@ public class KelolaPaketController {
             showError("Harga harus lebih dari 0.");
             return null;
         }
-
-        return new Paket(0, nama, harga, tipe);
+        return new Paket(0, nama, harga, tipe, keterangan);
     }
 
     private void pilihPaket(Paket paket) {
@@ -259,7 +268,32 @@ public class KelolaPaketController {
         fieldNama.setText(paket.getNama());
         fieldHarga.setText(String.valueOf(paket.getHarga()));
         comboTipe.getSelectionModel().select(paket.getTipe());
+
+        // Jika keterangan masih kosong/null, auto-isi default berdasarkan tipe
+        String keterangan = paket.getKeterangan();
+        if (keterangan == null || keterangan.isBlank()) {
+            keterangan = buildDefaultKeterangan(paket.getTipe());
+        }
+        fieldKeterangan.setText(keterangan);
+
         setModeEdit();
+    }
+
+    private String buildDefaultKeterangan(String tipe) {
+        if (tipe != null && tipe.equalsIgnoreCase("Tanpa Cetak")) {
+            return "2 jam operasional\n" +
+                   "Backdrop 1 pilihan\n" +
+                   "Props standar 10 pcs\n" +
+                   "Digital file semua foto\n" +
+                   "Share via QR Code\n" +
+                   "1 operator profesional";
+        }
+        return "4 jam operasional\n" +
+               "Backdrop 3 pilihan\n" +
+               "Props standar + tematik 30 pcs\n" +
+               "Cetak foto 4R unlimited\n" +
+               "Digital file + Share via QR Code\n" +
+               "1 operator profesional";
     }
 
     @FXML
@@ -267,6 +301,7 @@ public class KelolaPaketController {
         selectedPaket = null;
         fieldNama.clear();
         fieldHarga.clear();
+        fieldKeterangan.clear();
         comboTipe.getSelectionModel().selectFirst();
         tablePaket.getSelectionModel().clearSelection();
         setModeTambah();

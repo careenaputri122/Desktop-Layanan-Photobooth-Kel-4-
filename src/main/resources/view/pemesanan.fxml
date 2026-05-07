@@ -76,73 +76,7 @@
             <!-- ── STEP 1: Pilih Paket ── -->
             <VBox fx:id="step1Panel" spacing="20">
                 <Label text="Pilih Paket" styleClass="section-title"/>
-                <HBox spacing="20">
-                    <!-- Paket Starter -->
-                    <VBox fx:id="cardStarter" styleClass="paket-card" spacing="12" HBox.hgrow="ALWAYS">
-                        <Label text="Paket Starter" styleClass="paket-name"/>
-                        <Label text="Cetak"         styleClass="paket-type"/>
-                        <HBox spacing="8" alignment="CENTER_LEFT">
-                            <Label text="Rp1.275.000" styleClass="paket-price"/>
-                            <Label text="Rp1.500.000" styleClass="paket-price-old"/>
-                        </HBox>
-                        <VBox spacing="6">
-                            <Label text="✅  3 jam operasional"       styleClass="paket-feature"/>
-                            <Label text="✅  Backdrop polos 1 pilihan" styleClass="paket-feature"/>
-                            <Label text="✅  Props standar 20 pcs"     styleClass="paket-feature"/>
-                        </VBox>
-                        <Button text="Pilih Paket Ini" styleClass="btn-pilih" onAction="#pilihStarter" maxWidth="Infinity"/>
-                    </VBox>
-
-                    <!-- Paket Silver -->
-                    <VBox fx:id="cardSilver" styleClass="paket-card" spacing="12" HBox.hgrow="ALWAYS">
-                        <Label text="🔥 TERLARIS" styleClass="badge-hot"/>
-                        <Label text="Paket Silver" styleClass="paket-name"/>
-                        <Label text="Cetak"        styleClass="paket-type"/>
-                        <HBox spacing="8" alignment="CENTER_LEFT">
-                            <Label text="Rp1.700.000" styleClass="paket-price"/>
-                            <Label text="Rp2.000.000" styleClass="paket-price-old"/>
-                        </HBox>
-                        <VBox spacing="6">
-                            <Label text="✅  4 jam operasional"        styleClass="paket-feature"/>
-                            <Label text="✅  Backdrop pilihan 3 tema"  styleClass="paket-feature"/>
-                            <Label text="✅  Props premium 40 pcs"     styleClass="paket-feature"/>
-                        </VBox>
-                        <Button text="Pilih Paket Ini" styleClass="btn-pilih" onAction="#pilihSilver" maxWidth="Infinity"/>
-                    </VBox>
-                </HBox>
-                <HBox spacing="20">
-                    <!-- Paket Gold -->
-                    <VBox fx:id="cardGold" styleClass="paket-card" spacing="12" HBox.hgrow="ALWAYS">
-                        <Label text="Paket Gold" styleClass="paket-name"/>
-                        <Label text="Cetak"      styleClass="paket-type"/>
-                        <HBox spacing="8" alignment="CENTER_LEFT">
-                            <Label text="Rp2.337.500" styleClass="paket-price"/>
-                            <Label text="Rp2.750.000" styleClass="paket-price-old"/>
-                        </HBox>
-                        <VBox spacing="6">
-                            <Label text="✅  5 jam operasional"    styleClass="paket-feature"/>
-                            <Label text="✅  Backdrop custom tema" styleClass="paket-feature"/>
-                            <Label text="✅  Props premium 60 pcs" styleClass="paket-feature"/>
-                        </VBox>
-                        <Button text="Pilih Paket Ini" styleClass="btn-pilih" onAction="#pilihGold" maxWidth="Infinity"/>
-                    </VBox>
-
-                    <!-- Paket Digital -->
-                    <VBox fx:id="cardDigital" styleClass="paket-card" spacing="12" HBox.hgrow="ALWAYS">
-                        <Label text="Paket Digital" styleClass="paket-name"/>
-                        <Label text="Tanpa Cetak"   styleClass="paket-type"/>
-                        <HBox spacing="8" alignment="CENTER_LEFT">
-                            <Label text="Rp1.062.500" styleClass="paket-price"/>
-                            <Label text="Rp1.250.000" styleClass="paket-price-old"/>
-                        </HBox>
-                        <VBox spacing="6">
-                            <Label text="✅  3 jam operasional"  styleClass="paket-feature"/>
-                            <Label text="✅  Backdrop 2 pilihan" styleClass="paket-feature"/>
-                            <Label text="✅  Props standar 20 pcs" styleClass="paket-feature"/>
-                        </VBox>
-                        <Button text="Pilih Paket Ini" styleClass="btn-pilih" onAction="#pilihDigital" maxWidth="Infinity"/>
-                    </VBox>
-                </HBox>
+                <VBox fx:id="paketListBox" spacing="20"/>
             </VBox>
 
             <!-- ── STEP 2: Tanggal & Lokasi ── -->

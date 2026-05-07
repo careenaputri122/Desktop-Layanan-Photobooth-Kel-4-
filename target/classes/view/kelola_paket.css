@@ -202,6 +202,16 @@
     -fx-border-color: #EC4899;
     -fx-background-color: white;
 }
+.text-area.input-field {
+    -fx-padding: 0;
+}
+.text-area.input-field .content {
+    -fx-background-color: #F9FAFB;
+    -fx-background-radius: 8;
+}
+.text-area.input-field:focused .content {
+    -fx-background-color: white;
+}
 
 .btn-primary,
 .btn-secondary,
