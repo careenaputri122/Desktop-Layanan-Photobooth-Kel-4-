@@ -90,11 +90,12 @@
                     <VBox spacing="14" minWidth="280">
                         <Label text="Jam Mulai" styleClass="section-subtitle"/>
                         <VBox spacing="6">
-                            <Label text="Masukkan jam mulai acara (format HH:mm)" styleClass="field-label"/>
-                            <TextField fx:id="jamMulaiField"
-                                       promptText="Contoh: 09:00"
-                                       styleClass="input-field"/>
-                            <Label text="⏰  Operasional: 08.00 – 20.00 WIB"
+                            <Label text="Pilih jam mulai acara" styleClass="field-label"/>
+                            <ComboBox fx:id="jamMulaiField"
+                                      promptText="Pilih tanggal dulu"
+                                      maxWidth="Infinity"
+                                      styleClass="input-field"/>
+                            <Label text="⏰  Operasional: 08.00 – 21.00 WIB"
                                    styleClass="slot-time"/>
                             <Label fx:id="jamSelesaiInfo"
                                    text=""
@@ -232,7 +233,7 @@
                 <Label text="📍  Jl. Kebon Jeruk Raya No. 12, Palembang 11530" styleClass="footer-link" wrapText="true" maxWidth="200"/>
                 <Label text="📞  +62 812-3456-7890"        styleClass="footer-link"/>
                 <Label text="✉  halo@aksafPhotobooth.id"         styleClass="footer-link"/>
-                <Label text="⏰  Senin–Minggu, 08.00–20.00 WIB" styleClass="footer-link"/>
+                <Label text="⏰  Senin–Minggu, 08.00–21.00 WIB" styleClass="footer-link"/>
             </VBox>
         </HBox>
         <HBox styleClass="footer-bottom" alignment="CENTER">

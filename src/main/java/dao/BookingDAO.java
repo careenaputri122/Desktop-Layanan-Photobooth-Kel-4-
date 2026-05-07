@@ -300,6 +300,25 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
         return countBookingsByDate(tanggal) >= MAX_BOOKING_PER_DAY;
     }
 
+    public List<Booking> findActiveByDate(java.time.LocalDate tanggal) {
+        syncPastApprovedBookings();
+        List<Booking> list = new ArrayList<>();
+        String sql = "SELECT * FROM bookings " +
+                     "WHERE tanggal = ? AND status NOT IN ('Ditolak') " +
+                     "ORDER BY jam_mulai ASC";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setDate(1, java.sql.Date.valueOf(tanggal));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapRow(rs));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     /**
      * Ambil semua tanggal yang sudah PENUH dalam rentang bulan tertentu.
      * Digunakan oleh kalender untuk mewarnai tanggal merah.

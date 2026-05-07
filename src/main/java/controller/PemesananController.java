@@ -40,7 +40,7 @@ public class PemesananController {
 
     // ── Step 2: Tanggal ───────────────────────────────────────────
     @FXML private VBox calendarBox;
-    @FXML private TextField jamMulaiField;
+    @FXML private ComboBox<String> jamMulaiField;
     @FXML private Label jamSelesaiInfo;
     @FXML private TextField lokasiField;
 
@@ -64,13 +64,16 @@ public class PemesananController {
     private VBox      activePackCard = null;
     private int       totalFinal     = 0;
     private boolean   sedangKonfirmasi = false;
+    private static final LocalTime JAM_BUKA = LocalTime.of(8, 0);
+    private static final LocalTime JAM_TUTUP = LocalTime.of(21, 0);
 
     // ── Init ──────────────────────────────────────────────────────
     @FXML
     public void initialize() {
         setupNavbar();
         loadPaketFromDatabase();
-        jamMulaiField.textProperty().addListener((obs, oldVal, newVal) -> updateJamSelesaiInfo());
+        jamMulaiField.valueProperty().addListener((obs, oldVal, newVal) -> updateJamSelesaiInfo());
+        updateAvailableTimeSlots();
         Platform.runLater(() -> buildCalendar(currentMonth));
     }
 
@@ -186,6 +189,7 @@ public class PemesananController {
 
     private void pilihPaket(Paket paket, VBox card) {
         selectedPaket = paket;
+        updateAvailableTimeSlots();
         updateJamSelesaiInfo();
 
         if (activePackCard != null) {
@@ -210,7 +214,7 @@ public class PemesananController {
             buildCalendar(currentMonth);
             return;
         }
-        if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
+        if (!hasAnyAvailableSlot(selectedDate)) {
             showAlert("Tanggal " + selectedDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
                     + " sudah penuh dipesan. Silakan pilih tanggal lain.");
             selectedDate = null;
@@ -219,17 +223,22 @@ public class PemesananController {
         }
         // ──────────────────────────────────────────────────────────────
 
-        String jam = jamMulaiField.getText().trim();
+        String jam = getSelectedJamMulai();
         if (jam.isEmpty()) { showAlert("Masukkan jam mulai acara."); return; }
         if (!jam.matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) {
             showAlert("Format jam tidak valid. Gunakan HH:mm, contoh: 09:00"); return;
         }
         int jamInt = Integer.parseInt(jam.split(":")[0]);
-        if (jamInt < 8 || jamInt >= 20) {
-            showAlert("Jam mulai harus antara 08:00 – 20:00 WIB."); return;
+        if (jamInt < 8 || jamInt >= 21) {
+            showAlert("Jam mulai harus antara 08:00 - 21:00 WIB."); return;
         }
         if (parseDurasiMenit(resolveJamOperasional(selectedPaket)) <= 0) {
             showAlert("Jam operasional paket belum diatur admin.");
+            return;
+        }
+        if (!isSlotAvailable(selectedDate, jam, parseDurasiMenit(resolveJamOperasional(selectedPaket)))) {
+            showAlert("Jam " + jam + " sudah tidak tersedia. Silakan pilih jam lain.");
+            updateAvailableTimeSlots();
             return;
         }
 
@@ -261,7 +270,7 @@ public class PemesananController {
         ringPaket.setText(selectedPaket.getNama());
         ringTipe.setText(selectedPaket.getTipe());
         ringTanggal.setText(selectedDate.format(fmt));
-        ringJamMulai.setText("Jam Mulai: " + jamMulaiField.getText().trim() + " | " + buildJamSelesaiText());
+        ringJamMulai.setText("Jam Mulai: " + getSelectedJamMulai() + " | " + buildJamSelesaiText());
         ringLokasi.setText(lokasiField.getText().trim());
         ringNama.setText(namaDepanField.getText().trim());
         ringContact.setText(phoneField.getText().trim() + " • " + emailField.getText().trim());
@@ -312,7 +321,7 @@ if (selectedDate == null || selectedDate.isBefore(LocalDate.now())) {
     resetKonfirmasiState();
     return;
 }
-if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
+if (!hasAnyAvailableSlot(selectedDate)) {
     showAlert("Maaf, tanggal " + selectedDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
             + " baru saja penuh dipesan. Silakan pilih tanggal lain.");
     selectedDate = null;
@@ -322,6 +331,16 @@ if (BookingDAO.getInstance().isDateFullyBooked(selectedDate)) {
     return;
 }
 // ──────────────────────────────────────────────────────────────
+
+String jamMulai = getSelectedJamMulai();
+int durasiMenit = parseDurasiMenit(resolveJamOperasional(selectedPaket));
+if (jamMulai.isEmpty() || durasiMenit <= 0 || !isSlotAvailable(selectedDate, jamMulai, durasiMenit)) {
+    showAlert("Slot jam yang dipilih sudah tidak tersedia. Silakan pilih ulang jam.");
+    updateAvailableTimeSlots();
+    goToStep(2);
+    resetKonfirmasiState();
+    return;
+}
 
 // user
 User user = UserDAO.getInstance().getCurrentUser();
@@ -344,7 +363,7 @@ booking.setPaket(paket);
 
 // isi data
 booking.setTanggal(java.sql.Date.valueOf(selectedDate));
-booking.setJamMulai(jamMulaiField.getText().trim());
+booking.setJamMulai(jamMulai);
 booking.setLokasi(lokasiField.getText().trim());
 booking.setNamaPemesan(namaDepanField.getText());
 booking.setEmail(emailField.getText());
@@ -464,7 +483,7 @@ if (!success) {
     private String buildJamSelesaiText() {
         if (selectedPaket == null || jamMulaiField == null) return "";
 
-        String jamMulai = jamMulaiField.getText() != null ? jamMulaiField.getText().trim() : "";
+        String jamMulai = getSelectedJamMulai();
         if (!jamMulai.matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) return "";
 
         String durasi = resolveJamOperasional(selectedPaket);
@@ -474,6 +493,115 @@ if (!success) {
         LocalTime mulai = LocalTime.parse(jamMulai.length() == 4 ? "0" + jamMulai : jamMulai);
         LocalTime selesai = mulai.plusMinutes(durasiMenit);
         return selesai.format(DateTimeFormatter.ofPattern("HH:mm")) + " (" + durasi + ")";
+    }
+
+    private String getSelectedJamMulai() {
+        return jamMulaiField != null && jamMulaiField.getValue() != null
+            ? jamMulaiField.getValue().trim()
+            : "";
+    }
+
+    private void updateAvailableTimeSlots() {
+        if (jamMulaiField == null) return;
+
+        String current = getSelectedJamMulai();
+        jamMulaiField.getItems().clear();
+        jamMulaiField.setPromptText("Pilih paket dan tanggal dulu");
+
+        if (selectedPaket == null) {
+            jamMulaiField.setDisable(true);
+            jamMulaiField.setValue(null);
+            updateJamSelesaiInfo();
+            return;
+        }
+
+        int durasiMenit = parseDurasiMenit(resolveJamOperasional(selectedPaket));
+        if (durasiMenit <= 0) {
+            jamMulaiField.setDisable(true);
+            jamMulaiField.setPromptText("Durasi paket belum diatur");
+            jamMulaiField.setValue(null);
+            updateJamSelesaiInfo();
+            return;
+        }
+
+        if (selectedDate == null) {
+            jamMulaiField.setDisable(true);
+            jamMulaiField.setPromptText("Pilih tanggal dulu");
+            jamMulaiField.setValue(null);
+            updateJamSelesaiInfo();
+            return;
+        }
+
+        DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
+        List<String> slots = new ArrayList<>();
+        for (LocalTime mulai = JAM_BUKA;
+             !mulai.plusMinutes(durasiMenit).isAfter(JAM_TUTUP);
+             mulai = mulai.plusMinutes(durasiMenit)) {
+            String jam = mulai.format(timeFmt);
+            if (isSlotAvailable(selectedDate, jam, durasiMenit)) {
+                slots.add(jam);
+            }
+        }
+
+        jamMulaiField.getItems().setAll(slots);
+        jamMulaiField.setDisable(slots.isEmpty());
+        jamMulaiField.setPromptText(slots.isEmpty() ? "Slot hari ini penuh" : "Pilih jam mulai");
+        jamMulaiField.setValue(slots.contains(current) ? current : null);
+        updateJamSelesaiInfo();
+    }
+
+    private boolean isSlotAvailable(LocalDate tanggal, String jamMulai, int durasiMenit) {
+        if (tanggal == null || jamMulai == null || jamMulai.isBlank() || durasiMenit <= 0) return false;
+
+        LocalTime mulai = parseJam(jamMulai);
+        if (mulai == null) return false;
+
+        LocalTime selesai = mulai.plusMinutes(durasiMenit);
+        if (mulai.isBefore(JAM_BUKA) || selesai.isAfter(JAM_TUTUP)) return false;
+
+        for (Booking booking : BookingDAO.getInstance().findActiveByDate(tanggal)) {
+            LocalTime bookedStart = parseJam(booking.getJamMulai());
+            if (bookedStart == null) continue;
+
+            int bookedDuration = resolveDurasiMenit(booking.getPaket());
+            if (bookedDuration <= 0) bookedDuration = durasiMenit;
+
+            LocalTime bookedEnd = bookedStart.plusMinutes(bookedDuration);
+            if (mulai.isBefore(bookedEnd) && selesai.isAfter(bookedStart)) return false;
+        }
+
+        return true;
+    }
+
+    private boolean hasAnyAvailableSlot(LocalDate tanggal) {
+        if (tanggal == null || selectedPaket == null) return false;
+
+        int durasiMenit = parseDurasiMenit(resolveJamOperasional(selectedPaket));
+        if (durasiMenit <= 0) return false;
+
+        DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
+        for (LocalTime mulai = JAM_BUKA;
+             !mulai.plusMinutes(durasiMenit).isAfter(JAM_TUTUP);
+             mulai = mulai.plusMinutes(durasiMenit)) {
+            if (isSlotAvailable(tanggal, mulai.format(timeFmt), durasiMenit)) return true;
+        }
+        return false;
+    }
+
+    private LocalTime parseJam(String value) {
+        if (value == null || !value.trim().matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) return null;
+        String normalized = value.trim();
+        return LocalTime.parse(normalized.length() == 4 ? "0" + normalized : normalized);
+    }
+
+    private int resolveDurasiMenit(Paket paket) {
+        if (paket == null) return 0;
+
+        int durasi = parseDurasiMenit(paket.getJamOperasional());
+        if (durasi > 0) return durasi;
+
+        Paket fresh = PaketDAO.getInstance().findById(paket.getId());
+        return fresh != null ? parseDurasiMenit(fresh.getJamOperasional()) : 0;
     }
 
     private String resolveJamOperasional(Paket paket) {
@@ -635,11 +763,11 @@ if (!success) {
             btn.setMaxWidth(36); btn.setMaxHeight(36);
 
             boolean isPast = date.isBefore(today);
-            boolean isFull = fullDates.contains(date);
+            boolean isFull = selectedPaket == null ? fullDates.contains(date) : !hasAnyAvailableSlot(date);
 
             if (date.equals(selectedDate)) {
                 btn.getStyleClass().add("cal-day-selected");
-                btn.setOnAction(e -> { selectedDate = date; buildCalendar(currentMonth); });
+                btn.setOnAction(e -> { selectedDate = date; updateAvailableTimeSlots(); buildCalendar(currentMonth); });
             } else if (isPast) {
                 // tanggal lewat – disable, warna abu
                 btn.getStyleClass().add("cal-day-past");
@@ -653,7 +781,7 @@ if (!success) {
             } else {
                 // tersedia – warna hijau
                 btn.getStyleClass().add("cal-day-available");
-                btn.setOnAction(e -> { selectedDate = date; buildCalendar(currentMonth); });
+                btn.setOnAction(e -> { selectedDate = date; updateAvailableTimeSlots(); buildCalendar(currentMonth); });
             }
 
             grid.add(btn, col, row);
