@@ -235,18 +235,19 @@ public class PemesananController {
 
         // hitung harga & diskon member
         int hargaInt = selectedPaket.getHarga();
+        int diskonPersen = Math.max(0, Math.min(100, selectedPaket.getDiskonMember()));
         boolean berhakDiskon = UserDAO.getInstance().currentUserHasMemberDiscount();
 
-        int diskon = berhakDiskon ? (int) Math.round(hargaInt * BookingDAO.MEMBER_DISCOUNT_RATE) : 0;
+        int diskon = (berhakDiskon && diskonPersen > 0) ? (hargaInt * diskonPersen / 100) : 0;
         int total  = hargaInt - diskon;
         totalFinal = total;
 
         payHarga.setText(formatRp(hargaInt));
 
-        if (berhakDiskon) {
+        if (berhakDiskon && diskonPersen > 0) {
             diskonRow.setVisible(true);
             diskonRow.setManaged(true);
-            payDiskon.setText("-" + formatRp(diskon));
+            payDiskon.setText("-" + formatRp(diskon) + " (" + diskonPersen + "%)");
         } else {
             diskonRow.setVisible(false);
             diskonRow.setManaged(false);

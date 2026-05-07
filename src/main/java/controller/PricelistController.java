@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.fxml.FXML;
-import dao.BookingDAO;
 import dao.PaketDAO;
 import dao.UserDAO;
 import model.Paket;
@@ -12,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -87,14 +87,16 @@ private VBox createPaketCard(Paket paket, boolean diskonMemberAktif) {
 
     VBox prices = new VBox(6);
     int hargaNormal = paket.getHarga();
+    int diskonPersen = Math.max(0, Math.min(100, paket.getDiskonMember()));
 
-    if (diskonMemberAktif) {
-        int diskon = (int) Math.round(hargaNormal * BookingDAO.MEMBER_DISCOUNT_RATE);
+    if (diskonMemberAktif && diskonPersen > 0) {
+        int diskon = hargaNormal * diskonPersen / 100;
         int hargaMember = hargaNormal - diskon;
 
-        Label original = new Label(rupiahFmt.format(hargaNormal));
+        Text original = new Text(rupiahFmt.format(hargaNormal));
+        original.setStrikethrough(true);
         original.getStyleClass().add("price-original");
-        Label discount = new Label("-15%");
+        Label discount = new Label("-" + diskonPersen + "%");
         discount.getStyleClass().add("price-discount-badge");
         HBox originalRow = new HBox(8, original, discount);
         originalRow.setAlignment(Pos.CENTER_LEFT);

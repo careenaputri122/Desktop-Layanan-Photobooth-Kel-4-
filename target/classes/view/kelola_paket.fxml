@@ -103,6 +103,7 @@
                             <TableColumn fx:id="colNama" text="Nama Paket" prefWidth="200" minWidth="130"/>
                             <TableColumn fx:id="colTipe" text="Tipe" prefWidth="120" minWidth="100"/>
                             <TableColumn fx:id="colHarga" text="Harga" prefWidth="150" minWidth="120"/>
+                            <TableColumn fx:id="colDiskon" text="Diskon Member" prefWidth="120" minWidth="100"/>
                             <TableColumn fx:id="colAksi" text="Aksi" prefWidth="170" minWidth="160" sortable="false"/>
                         </columns>
                         <placeholder>
@@ -133,6 +134,11 @@
                     <VBox spacing="8">
                         <Label text="Harga" styleClass="field-label"/>
                         <TextField fx:id="fieldHarga" promptText="Contoh: 2500000" styleClass="input-field"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Diskon Member (%)" styleClass="field-label"/>
+                        <TextField fx:id="fieldDiskon" promptText="Contoh: 15" styleClass="input-field"/>
                     </VBox>
 
                     <VBox spacing="8">

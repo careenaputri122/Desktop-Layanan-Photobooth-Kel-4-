@@ -6,6 +6,7 @@ public class Paket {
     private int    harga;     
     private String tipe;
     private String keterangan;
+    private int    diskonMember;
 
     public Paket() {}
 
@@ -19,6 +20,11 @@ public class Paket {
     public Paket(int id, String nama, int harga, String tipe, String keterangan) {
         this(id, nama, harga, tipe);
         this.keterangan = keterangan;
+    }
+
+    public Paket(int id, String nama, int harga, String tipe, String keterangan, int diskonMember) {
+        this(id, nama, harga, tipe, keterangan);
+        this.diskonMember = diskonMember;
     }
 
     // ── Getters & Setters ─────────────────────────────────────────────────
@@ -37,4 +43,7 @@ public class Paket {
 
     public String getKeterangan()                  { return keterangan; }
     public void   setKeterangan(String keterangan) { this.keterangan = keterangan; }
+
+    public int  getDiskonMember()                 { return diskonMember; }
+    public void setDiskonMember(int diskonMember) { this.diskonMember = diskonMember; }
 }

@@ -27,10 +27,12 @@ public class KelolaPaketController {
     @FXML private TableColumn<Paket, String> colNama;
     @FXML private TableColumn<Paket, String> colTipe;
     @FXML private TableColumn<Paket, String> colHarga;
+    @FXML private TableColumn<Paket, String> colDiskon;
     @FXML private TableColumn<Paket, Void> colAksi;
 
     @FXML private TextField fieldNama;
     @FXML private TextField fieldHarga;
+    @FXML private TextField fieldDiskon;
     @FXML private TextArea fieldKeterangan;
     @FXML private ComboBox<String> comboTipe;
     @FXML private Button btnSimpan;
@@ -68,6 +70,11 @@ public class KelolaPaketController {
                 fieldHarga.setText(newVal.replaceAll("[^\\d]", ""));
             }
         });
+        fieldDiskon.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null && !newVal.matches("\\d*")) {
+                fieldDiskon.setText(newVal.replaceAll("[^\\d]", ""));
+            }
+        });
 
         // Auto-suggest keterangan saat tipe berubah (hanya saat mode tambah / keterangan masih kosong)
         comboTipe.getSelectionModel().selectedItemProperty().addListener((obs, oldTipe, newTipe) -> {
@@ -91,6 +98,9 @@ public class KelolaPaketController {
         );
         colHarga.setCellValueFactory(data ->
             new javafx.beans.property.SimpleStringProperty(rupiahFmt.format(data.getValue().getHarga()))
+        );
+        colDiskon.setCellValueFactory(data ->
+            new javafx.beans.property.SimpleStringProperty(data.getValue().getDiskonMember() + "%")
         );
 
         colId.setCellFactory(col -> new TableCell<>() {
@@ -230,6 +240,7 @@ public class KelolaPaketController {
     private Paket buildPaketFromForm() {
         String nama = fieldNama.getText() != null ? fieldNama.getText().trim() : "";
         String hargaText = fieldHarga.getText() != null ? fieldHarga.getText().trim() : "";
+        String diskonText = fieldDiskon.getText() != null ? fieldDiskon.getText().trim() : "0";
         String keterangan = fieldKeterangan.getText() != null ? fieldKeterangan.getText().trim() : "";
         String tipe = comboTipe.getValue();
 
@@ -260,13 +271,28 @@ public class KelolaPaketController {
             showError("Harga harus lebih dari 0.");
             return null;
         }
-        return new Paket(0, nama, harga, tipe, keterangan);
+
+        int diskon;
+        try {
+            diskon = diskonText.isEmpty() ? 0 : Integer.parseInt(diskonText);
+        } catch (NumberFormatException e) {
+            showError("Diskon member harus berupa angka.");
+            return null;
+        }
+        if (diskon < 0 || diskon > 100) {
+            showError("Diskon member harus antara 0 sampai 100 persen.");
+            fieldDiskon.requestFocus();
+            return null;
+        }
+
+        return new Paket(0, nama, harga, tipe, keterangan, diskon);
     }
 
     private void pilihPaket(Paket paket) {
         selectedPaket = paket;
         fieldNama.setText(paket.getNama());
         fieldHarga.setText(String.valueOf(paket.getHarga()));
+        fieldDiskon.setText(String.valueOf(paket.getDiskonMember()));
         comboTipe.getSelectionModel().select(paket.getTipe());
 
         // Jika keterangan masih kosong/null, auto-isi default berdasarkan tipe
@@ -301,6 +327,7 @@ public class KelolaPaketController {
         selectedPaket = null;
         fieldNama.clear();
         fieldHarga.clear();
+        fieldDiskon.clear();
         fieldKeterangan.clear();
         comboTipe.getSelectionModel().selectFirst();
         tablePaket.getSelectionModel().clearSelection();

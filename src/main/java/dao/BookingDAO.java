@@ -20,7 +20,6 @@ import java.util.List;
 public class BookingDAO extends BaseDao implements IDao<Booking> {
 
     public static final int MEMBER_COMPLETED_ORDER_TARGET = 3;
-    public static final double MEMBER_DISCOUNT_RATE = 0.15;
 
     // ── Singleton ─────────────────────────────────────────────────────────
     private static BookingDAO instance;
