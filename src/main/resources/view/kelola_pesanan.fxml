@@ -160,7 +160,7 @@
                         <TableColumn fx:id="colTanggal" text="Tanggal Event" prefWidth="140" minWidth="120"/>
                         <TableColumn fx:id="colTotal"   text="Total"         prefWidth="140" minWidth="120"/>
                         <TableColumn fx:id="colStatus"  text="Status"        prefWidth="180" minWidth="150"/>
-                        <TableColumn fx:id="colAksi"    text="Aksi"          prefWidth="110" minWidth="100" sortable="false"/>
+                        <TableColumn fx:id="colAksi"    text="Aksi"          prefWidth="140" minWidth="130" sortable="false"/>
                     </columns>
 
                     <placeholder>

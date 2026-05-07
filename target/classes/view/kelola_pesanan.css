@@ -357,7 +357,34 @@
     -fx-effect: dropshadow(gaussian, rgba(220,38,38,0.3), 6, 0, 0, 2);
 }
 
-/* Aksi dinonaktifkan (status sudah final: disetujui/ditolak/selesai) */
+.btn-selesai {
+    -fx-background-color: #EDE9FE;
+    -fx-text-fill: #7C3AED;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-min-width: 76px;
+    -fx-min-height: 32px;
+    -fx-max-width: 76px;
+    -fx-max-height: 32px;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.btn-selesai:hover {
+    -fx-background-color: #7C3AED;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(124,58,237,0.3), 6, 0, 0, 2);
+}
+
+.aksi-empty-label {
+    -fx-text-fill: #D1D5DB;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Aksi dinonaktifkan (status sudah final: ditolak/selesai) */
 .btn-aksi-disabled {
     -fx-background-color: #F3F4F6;
     -fx-text-fill: #D1D5DB;
@@ -371,6 +398,20 @@
     -fx-font-size: 16px;
     -fx-cursor: default;
     -fx-opacity: 0.5;
+}
+
+.btn-selesai-popup {
+    -fx-background-color: #7C3AED;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.btn-selesai-popup:hover {
+    -fx-background-color: #6D28D9;
 }
 
 /* ══════════════════════════════════════════════════════════════

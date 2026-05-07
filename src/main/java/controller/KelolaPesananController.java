@@ -117,11 +117,13 @@ public class KelolaPesananController {
         colAksi.setCellFactory(col -> new TableCell<>() {
             private final Button btnSetujui = new Button("✓");
             private final Button btnTolak   = new Button("✗");
-            private final HBox   box        = new HBox(6, btnSetujui, btnTolak);
+            private final Button btnSelesai = new Button("Selesai");
+            private final HBox   box        = new HBox(6);
             {
                 box.setAlignment(Pos.CENTER);
                 btnSetujui.getStyleClass().add("btn-setujui");
                 btnTolak.getStyleClass().add("btn-tolak");
+                btnSelesai.getStyleClass().add("btn-selesai");
 
                 btnSetujui.setOnAction(e -> {
                     Booking b = (Booking) btnSetujui.getUserData();
@@ -130,6 +132,10 @@ public class KelolaPesananController {
                 btnTolak.setOnAction(e -> {
                     Booking b = (Booking) btnTolak.getUserData();
                     if (b != null) handleAksi(b, "Ditolak");
+                });
+                btnSelesai.setOnAction(e -> {
+                    Booking b = (Booking) btnSelesai.getUserData();
+                    if (b != null) handleAksi(b, "Selesai");
                 });
             }
 
@@ -141,18 +147,25 @@ public class KelolaPesananController {
                 // Simpan referensi Booking terbaru ke tiap tombol
                 btnSetujui.setUserData(b);
                 btnTolak.setUserData(b);
+                btnSelesai.setUserData(b);
 
                 String  s = b.getStatus() != null ? b.getStatus() : "";
-                boolean bisaDiubah = s.equalsIgnoreCase("Menunggu Konfirmasi");
-                btnSetujui.setDisable(!bisaDiubah);
-                btnTolak.setDisable(!bisaDiubah);
+                box.getChildren().clear();
 
-                if (bisaDiubah) {
+                if (s.equalsIgnoreCase("Menunggu Konfirmasi")) {
+                    btnSetujui.setDisable(false);
+                    btnTolak.setDisable(false);
                     btnSetujui.getStyleClass().setAll("btn-setujui");
                     btnTolak.getStyleClass().setAll("btn-tolak");
+                    box.getChildren().addAll(btnSetujui, btnTolak);
+                } else if (s.equalsIgnoreCase("Disetujui")) {
+                    btnSelesai.setDisable(false);
+                    btnSelesai.getStyleClass().setAll("btn-selesai");
+                    box.getChildren().add(btnSelesai);
                 } else {
-                    btnSetujui.getStyleClass().setAll("btn-aksi-disabled");
-                    btnTolak.getStyleClass().setAll("btn-aksi-disabled");
+                    Label finalLabel = new Label("-");
+                    finalLabel.getStyleClass().add("aksi-empty-label");
+                    box.getChildren().add(finalLabel);
                 }
                 setGraphic(box);
             }
@@ -203,9 +216,11 @@ public class KelolaPesananController {
 
     // ─── FIX: Terima Booking langsung, bukan index ──────────────────────
     private void handleAksi(Booking booking, String statusBaru) {
-        String konfirmasi = statusBaru.equals("Disetujui")
-            ? "Setujui pesanan " + booking.getNomorPesanan() + "?"
-            : "Tolak pesanan "   + booking.getNomorPesanan() + "?";
+        String konfirmasi = switch (statusBaru) {
+            case "Disetujui" -> "Setujui pesanan " + booking.getNomorPesanan() + "?";
+            case "Selesai"   -> "Tandai pesanan " + booking.getNomorPesanan() + " sebagai selesai?";
+            default          -> "Tolak pesanan " + booking.getNomorPesanan() + "?";
+        };
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, konfirmasi, ButtonType.YES, ButtonType.NO);
         alert.setHeaderText(null);
@@ -267,7 +282,7 @@ public class KelolaPesananController {
 
         body.getChildren().add(popupSeparator());
 
-        // Tombol Setujui/Tolak langsung dari popup jika masih menunggu
+        // Tombol aksi langsung dari popup sesuai status pesanan
         String status = b.getStatus() != null ? b.getStatus() : "";
         if (status.equalsIgnoreCase("Menunggu Konfirmasi")) {
             HBox aksiBox = new HBox(12);
@@ -285,6 +300,14 @@ public class KelolaPesananController {
 
             aksiBox.getChildren().addAll(btnS, btnT);
             body.getChildren().add(aksiBox);
+            body.getChildren().add(popupSeparator());
+        } else if (status.equalsIgnoreCase("Disetujui")) {
+            Button btnSelesai = new Button("Tandai Selesai");
+            btnSelesai.getStyleClass().add("btn-selesai-popup");
+            btnSelesai.setMaxWidth(Double.MAX_VALUE);
+            btnSelesai.setOnAction(e -> { popup.close(); handleAksi(b, "Selesai"); });
+
+            body.getChildren().add(btnSelesai);
             body.getChildren().add(popupSeparator());
         }
 
