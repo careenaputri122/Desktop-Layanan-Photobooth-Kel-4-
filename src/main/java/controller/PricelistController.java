@@ -87,11 +87,12 @@ private VBox createPaketCard(Paket paket, boolean diskonMemberAktif) {
 
     VBox prices = new VBox(6);
     int hargaNormal = paket.getHarga();
-    int diskonPersen = Math.max(0, Math.min(100, paket.getDiskonMember()));
+    DiscountInfo discountInfo = resolveDiscount(paket, diskonMemberAktif);
+    int diskonPersen = discountInfo.percent();
 
-    if (diskonMemberAktif && diskonPersen > 0) {
+    if (diskonPersen > 0) {
         int diskon = hargaNormal * diskonPersen / 100;
-        int hargaMember = hargaNormal - diskon;
+        int hargaDiskon = hargaNormal - diskon;
 
         Text original = new Text(rupiahFmt.format(hargaNormal));
         original.setStrikethrough(true);
@@ -101,11 +102,11 @@ private VBox createPaketCard(Paket paket, boolean diskonMemberAktif) {
         HBox originalRow = new HBox(8, original, discount);
         originalRow.setAlignment(Pos.CENTER_LEFT);
 
-        Label finalLabel = new Label(rupiahFmt.format(hargaMember));
+        Label finalLabel = new Label(rupiahFmt.format(hargaDiskon));
         finalLabel.getStyleClass().add("price-final");
-        Label member = new Label("Member");
-        member.getStyleClass().add("price-member-badge");
-        HBox finalRow = new HBox(8, finalLabel, member);
+        Label badge = new Label(discountInfo.label());
+        badge.getStyleClass().add("price-member-badge");
+        HBox finalRow = new HBox(8, finalLabel, badge);
         finalRow.setAlignment(Pos.CENTER_LEFT);
 
         prices.getChildren().addAll(originalRow, finalRow);
@@ -171,6 +172,25 @@ private String resolveBadgeClass(String tipe) {
     if (tipe != null && tipe.equalsIgnoreCase("Tanpa Cetak")) return "badge-digital";
     return "badge-cetak";
 }
+
+private DiscountInfo resolveDiscount(Paket paket, boolean userMember) {
+    int promoUmum = normalizePercent(paket.getPromoUmum());
+    int diskonMember = userMember ? normalizePercent(paket.getDiskonMember()) : 0;
+
+    if (diskonMember >= promoUmum && diskonMember > 0) {
+        return new DiscountInfo(diskonMember, "Member");
+    }
+    if (promoUmum > 0) {
+        return new DiscountInfo(promoUmum, "Promo");
+    }
+    return new DiscountInfo(0, "");
+}
+
+private int normalizePercent(int value) {
+    return Math.max(0, Math.min(100, value));
+}
+
+private record DiscountInfo(int percent, String label) {}
 
 private void setupNavbar() {
     User user = UserDAO.getInstance().getCurrentUser();

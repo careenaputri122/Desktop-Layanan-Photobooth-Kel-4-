@@ -6,6 +6,7 @@ controller\SceneManager.class
 model\User.class
 controller\KelolaPaketController$3.class
 model\Booking.class
+controller\PricelistController$DiscountInfo.class
 dao\IDao.class
 controller\GaleriController$Nav.class
 model\Foto.class
@@ -16,6 +17,7 @@ model\Event.class
 controller\KelolaPaketController$1.class
 dao\PaketDAO.class
 controller\KelolaPesananController.class
+controller\PemesananController$DiscountInfo.class
 controller\LoginController.class
 controller\KelolaPesananController$3.class
 controller\AdminDashboardController.class

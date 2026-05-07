@@ -181,7 +181,7 @@
                 <Label fx:id="payHarga"      styleClass="pay-val"/>
             </HBox>
             <HBox fx:id="diskonRow" managed="false" visible="false">
-                <Label text="Diskon Member"  styleClass="pay-key" HBox.hgrow="ALWAYS"/>
+                <Label text="Promo/Diskon"  styleClass="pay-key" HBox.hgrow="ALWAYS"/>
                 <Label fx:id="payDiskon"     styleClass="pay-diskon"/>
             </HBox>
             <Label styleClass="divider-line" maxWidth="Infinity"/>

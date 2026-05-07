@@ -233,21 +233,22 @@ public class PemesananController {
         ringNama.setText(namaDepanField.getText().trim());
         ringContact.setText(phoneField.getText().trim() + " • " + emailField.getText().trim());
 
-        // hitung harga & diskon member
+        // hitung harga & promo/diskon
         int hargaInt = selectedPaket.getHarga();
-        int diskonPersen = Math.max(0, Math.min(100, selectedPaket.getDiskonMember()));
         boolean berhakDiskon = UserDAO.getInstance().currentUserHasMemberDiscount();
+        DiscountInfo discountInfo = resolveDiscount(selectedPaket, berhakDiskon);
+        int diskonPersen = discountInfo.percent();
 
-        int diskon = (berhakDiskon && diskonPersen > 0) ? (hargaInt * diskonPersen / 100) : 0;
+        int diskon = diskonPersen > 0 ? (hargaInt * diskonPersen / 100) : 0;
         int total  = hargaInt - diskon;
         totalFinal = total;
 
         payHarga.setText(formatRp(hargaInt));
 
-        if (berhakDiskon && diskonPersen > 0) {
+        if (diskonPersen > 0) {
             diskonRow.setVisible(true);
             diskonRow.setManaged(true);
-            payDiskon.setText("-" + formatRp(diskon) + " (" + diskonPersen + "%)");
+            payDiskon.setText("-" + formatRp(diskon) + " (" + discountInfo.label() + " " + diskonPersen + "%)");
         } else {
             diskonRow.setVisible(false);
             diskonRow.setManaged(false);
@@ -401,6 +402,25 @@ if (!success) {
     private String formatRp(int amount) {
         return "Rp" + String.format("%,d", amount).replace(",", ".");
     }
+
+    private DiscountInfo resolveDiscount(Paket paket, boolean userMember) {
+        int promoUmum = normalizePercent(paket.getPromoUmum());
+        int diskonMember = userMember ? normalizePercent(paket.getDiskonMember()) : 0;
+
+        if (diskonMember >= promoUmum && diskonMember > 0) {
+            return new DiscountInfo(diskonMember, "Member");
+        }
+        if (promoUmum > 0) {
+            return new DiscountInfo(promoUmum, "Promo");
+        }
+        return new DiscountInfo(0, "");
+    }
+
+    private int normalizePercent(int value) {
+        return Math.max(0, Math.min(100, value));
+    }
+
+    private record DiscountInfo(int percent, String label) {}
 
     private void resetKonfirmasiState() {
         sedangKonfirmasi = false;
