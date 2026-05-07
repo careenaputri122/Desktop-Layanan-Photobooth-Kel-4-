@@ -1,8 +1,10 @@
 package controller;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class SceneManager {
@@ -42,6 +44,10 @@ public class SceneManager {
 
     public static void showKelolaPaket() throws Exception {
         loadScene("/view/kelola_paket.fxml", "/view/kelola_paket.css", 1280, 800);
+    }
+
+    public static void showUploadGaleri() throws Exception {
+        loadScene("/view/upload_galeri.fxml", "/view/upload_galeri.css", 1280, 800);
     }
     // ── Popup Login / Register ────────────────────────────────────────────
 
@@ -88,10 +94,14 @@ public class SceneManager {
 
     private static void loadScene(String fxml, String css, double w, double h) throws Exception {
         Parent root = FXMLLoader.load(SceneManager.class.getResource(fxml));
-        Scene scene = new Scene(root, w, h);
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        Scene scene = new Scene(root, Math.min(w, bounds.getWidth()), Math.min(h, bounds.getHeight()));
         scene.getStylesheets().add(SceneManager.class.getResource(css).toExternalForm());
         stage.setScene(scene);
-        stage.setMaximized(true);
-        stage.centerOnScreen();
+        stage.setMaximized(false);
+        stage.setX(bounds.getMinX());
+        stage.setY(bounds.getMinY());
+        stage.setWidth(bounds.getWidth());
+        stage.setHeight(bounds.getHeight());
     }
 }

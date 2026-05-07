@@ -112,6 +112,14 @@
     -fx-background-radius: 12;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
 }
+.form-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+.form-scroll > .viewport {
+    -fx-background-color: transparent;
+}
 .table-card {
     -fx-padding: 0;
 }

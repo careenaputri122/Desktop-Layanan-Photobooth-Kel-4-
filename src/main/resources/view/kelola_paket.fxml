@@ -116,7 +116,14 @@
                     </TableView>
                 </VBox>
 
-                <VBox styleClass="form-card" prefWidth="360" minWidth="320" spacing="14">
+                <ScrollPane styleClass="form-scroll"
+                            prefWidth="360"
+                            minWidth="320"
+                            maxWidth="380"
+                            fitToWidth="true"
+                            hbarPolicy="NEVER"
+                            HBox.hgrow="NEVER">
+                    <VBox styleClass="form-card" spacing="14">
                     <VBox spacing="4">
                         <Label text="Form Paket" styleClass="section-heading"/>
                         <Label text="Klik baris tabel untuk mengedit paket." styleClass="section-subheading"/>
@@ -153,8 +160,6 @@
                                   prefRowCount="4" wrapText="true" styleClass="input-field"/>
                     </VBox>
 
-                    <Region VBox.vgrow="ALWAYS"/>
-
                     <Button fx:id="btnSimpan" text="Tambah Paket" onAction="#simpanPaket"
                             maxWidth="Infinity" styleClass="btn-primary"/>
                     <HBox spacing="10">
@@ -165,7 +170,8 @@
                     </HBox>
                     <Button fx:id="btnBatal" text="Bersihkan Form" onAction="#clearForm"
                             maxWidth="Infinity" styleClass="btn-muted"/>
-                </VBox>
+                    </VBox>
+                </ScrollPane>
             </HBox>
         </AnchorPane>
     </center>
