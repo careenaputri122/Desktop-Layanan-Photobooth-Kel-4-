@@ -24,6 +24,21 @@ SET time_zone = "+00:00";
 -- Database: `photobooth_db`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blocked_dates`
+--
+
+CREATE TABLE `blocked_dates` (
+  `id` int NOT NULL,
+  `tanggal` date NOT NULL,
+  `alasan` varchar(255) DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -111,6 +126,14 @@ INSERT INTO `users` (`id`, `namaDepan`, `namaBelakang`, `email`, `password`, `ro
 --
 
 --
+-- Indexes for table `blocked_dates`
+--
+ALTER TABLE `blocked_dates`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `tanggal` (`tanggal`),
+  ADD KEY `created_by` (`created_by`);
+
+--
 -- Indexes for table `bookings`
 --
 ALTER TABLE `bookings`
@@ -137,6 +160,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `blocked_dates`
+--
+ALTER TABLE `blocked_dates`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
@@ -157,6 +186,12 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `blocked_dates`
+--
+ALTER TABLE `blocked_dates`
+  ADD CONSTRAINT `blocked_dates_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `bookings`

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.KelolaPaketController"
+            styleClass="root-pane">
+
+    <left>
+        <VBox styleClass="sidebar" prefWidth="240" minWidth="240" spacing="0">
+            <VBox styleClass="sidebar-logo-box" alignment="CENTER_LEFT" spacing="4">
+                <Label text="Aksaf" styleClass="sidebar-logo-text"/>
+                <Label text="Photobooth" styleClass="sidebar-logo-sub"/>
+            </VBox>
+
+            <Separator styleClass="sidebar-sep"/>
+
+            <Label text="MENU UTAMA" styleClass="sidebar-section-label">
+                <VBox.margin><Insets top="20" left="20" bottom="8" right="0"/></VBox.margin>
+            </Label>
+
+            <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+                  onMouseClicked="#goDashboard">
+                <Label text="Dashboard" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+                  onMouseClicked="#goKelolaPesanan">
+                <Label text="Kelola Pesanan" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <HBox styleClass="sidebar-menu-item-active" alignment="CENTER_LEFT" spacing="12">
+                <Label text="Kelola Paket" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+                  onMouseClicked="#goUploadGaleri">
+                <Label text="Upload Galeri" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+                  onMouseClicked="#goKalender">
+                <Label text="Kalender Booking" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+                  onMouseClicked="#goPelanggan">
+                <Label text="Pelanggan" styleClass="sidebar-menu-label"/>
+            </HBox>
+
+            <Button fx:id="btnLogout" text="Logout"
+                    onAction="#handleLogout"
+                    styleClass="sidebar-logout-btn"
+                    maxWidth="Infinity"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <VBox styleClass="sidebar-bottom-section" spacing="0">
+                <Separator styleClass="sidebar-sep"/>
+                <HBox styleClass="sidebar-profile-box" alignment="CENTER_LEFT" spacing="12">
+                    <StackPane styleClass="sidebar-avatar" minWidth="36" minHeight="36"
+                               prefWidth="36" prefHeight="36">
+                        <Label fx:id="labelAdminInitial" text="A" styleClass="sidebar-avatar-initial"/>
+                    </StackPane>
+                    <VBox spacing="2">
+                        <Label fx:id="labelAdminName" text="Admin" styleClass="sidebar-profile-name"/>
+                        <Label fx:id="labelAdminRole" text="Administrator" styleClass="sidebar-profile-role"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <AnchorPane styleClass="main-content">
+            <padding><Insets top="32" right="32" bottom="32" left="32"/></padding>
+
+            <VBox AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                  spacing="4">
+                <Label text="Kelola Paket" styleClass="page-title"/>
+                <Label text="Tambah, ubah, dan hapus paket photobooth yang tersedia untuk pelanggan."
+                       styleClass="page-subtitle"/>
+            </VBox>
+
+            <HBox AnchorPane.topAnchor="100" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                  AnchorPane.bottomAnchor="0" spacing="24">
+
+                <VBox styleClass="table-card" HBox.hgrow="ALWAYS">
+                    <HBox styleClass="table-toolbar" alignment="CENTER_LEFT">
+                        <VBox spacing="2" HBox.hgrow="ALWAYS">
+                            <Label text="Daftar Paket" styleClass="section-heading"/>
+                            <Label text="Data diambil langsung dari tabel paket" styleClass="section-subheading"/>
+                        </VBox>
+                        <Label fx:id="labelJumlahPaket" text="0 paket" styleClass="paket-count"/>
+                    </HBox>
+
+                    <TableView fx:id="tablePaket" styleClass="paket-table" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colId" text="ID" prefWidth="60" minWidth="50"/>
+                            <TableColumn fx:id="colNama" text="Nama Paket" prefWidth="200" minWidth="130"/>
+                            <TableColumn fx:id="colTipe" text="Tipe" prefWidth="120" minWidth="100"/>
+                            <TableColumn fx:id="colHarga" text="Harga" prefWidth="150" minWidth="120"/>
+                            <TableColumn fx:id="colDiskon" text="Diskon Member" prefWidth="120" minWidth="100"/>
+                            <TableColumn fx:id="colPromo" text="Promo Umum" prefWidth="110" minWidth="95"/>
+                            <TableColumn fx:id="colJamOperasional" text="Jam Operasional" prefWidth="130" minWidth="110"/>
+                            <TableColumn fx:id="colAksi" text="Aksi" prefWidth="170" minWidth="160" sortable="false"/>
+                        </columns>
+                        <placeholder>
+                            <VBox alignment="CENTER" spacing="8">
+                                <Label text="Belum ada paket" styleClass="empty-title"/>
+                                <Label text="Tambahkan paket baru dari form di samping." styleClass="empty-subtitle"/>
+                            </VBox>
+                        </placeholder>
+                    </TableView>
+                </VBox>
+
+                <ScrollPane styleClass="form-scroll"
+                            prefWidth="360"
+                            minWidth="320"
+                            maxWidth="380"
+                            fitToWidth="true"
+                            hbarPolicy="NEVER"
+                            HBox.hgrow="NEVER">
+                    <VBox styleClass="form-card" spacing="14">
+                    <VBox spacing="4">
+                        <Label text="Form Paket" styleClass="section-heading"/>
+                        <Label text="Klik baris tabel untuk mengedit paket." styleClass="section-subheading"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Nama Paket" styleClass="field-label"/>
+                        <TextField fx:id="fieldNama" promptText="Contoh: Paket Platinum" styleClass="input-field"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Tipe Paket" styleClass="field-label"/>
+                        <ComboBox fx:id="comboTipe" maxWidth="Infinity" styleClass="input-field"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Harga" styleClass="field-label"/>
+                        <TextField fx:id="fieldHarga" promptText="Contoh: 2500000" styleClass="input-field"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Diskon Member (%)" styleClass="field-label"/>
+                        <TextField fx:id="fieldDiskon" promptText="Contoh: 15" styleClass="input-field"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Promo Umum (%)" styleClass="field-label"/>
+                        <TextField fx:id="fieldPromo" promptText="Contoh: 10" styleClass="input-field"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Jam Operasional" styleClass="field-label"/>
+                        <TextField fx:id="fieldJamOperasional" promptText="Contoh: 2 jam" styleClass="input-field"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Keterangan Paket" styleClass="field-label"/>
+                        <TextArea fx:id="fieldKeterangan" promptText="Isi deskripsi, benefit, atau detail paket"
+                                  prefRowCount="4" wrapText="true" styleClass="input-field"/>
+                    </VBox>
+
+                    <Button fx:id="btnSimpan" text="Tambah Paket" onAction="#simpanPaket"
+                            maxWidth="Infinity" styleClass="btn-primary"/>
+                    <HBox spacing="10">
+                        <Button fx:id="btnUpdate" text="Simpan Perubahan" onAction="#updatePaket"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="btn-secondary"/>
+                        <Button fx:id="btnHapus" text="Hapus" onAction="#hapusPaketTerpilih"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="btn-danger"/>
+                    </HBox>
+                    <Button fx:id="btnBatal" text="Bersihkan Form" onAction="#clearForm"
+                            maxWidth="Infinity" styleClass="btn-muted"/>
+                    </VBox>
+                </ScrollPane>
+            </HBox>
+        </AnchorPane>
+    </center>
+</BorderPane>
