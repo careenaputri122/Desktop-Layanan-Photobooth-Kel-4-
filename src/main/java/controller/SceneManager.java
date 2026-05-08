@@ -46,6 +46,10 @@ public class SceneManager {
         loadScene("/view/kelola_paket.fxml", "/view/kelola_paket.css", 1280, 800);
     }
 
+    public static void showKalenderBooking() throws Exception {
+        loadScene("/view/kalender_booking.fxml", "/view/kalender_booking.css", 1280, 800);
+    }
+
     public static void showUploadGaleri() throws Exception {
         loadScene("/view/upload_galeri.fxml", "/view/upload_galeri.css", 1280, 800);
     }

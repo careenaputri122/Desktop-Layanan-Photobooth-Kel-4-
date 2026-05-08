@@ -321,6 +321,16 @@ if (selectedDate == null || selectedDate.isBefore(LocalDate.now())) {
     resetKonfirmasiState();
     return;
 }
+// ── CEK TANGGAL SUDAH DIPESAN (persyaratan tugas tambahan) ────
+if (BookingDAO.getInstance().isTanggalSudahDipesan(selectedDate)) {
+    showAlert("Tanggal ini sudah dipesan.\nSilakan pilih tanggal lain.");
+    selectedDate = null;
+    buildCalendar(currentMonth);
+    goToStep(2);
+    resetKonfirmasiState();
+    return;
+}
+// ─────────────────────────────────────────────────────────────
 if (!hasAnyAvailableSlot(selectedDate)) {
     showAlert("Maaf, tanggal " + selectedDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
             + " baru saja penuh dipesan. Silakan pilih tanggal lain.");

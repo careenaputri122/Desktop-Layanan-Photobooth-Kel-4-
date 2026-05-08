@@ -300,6 +300,29 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
         return countBookingsByDate(tanggal) >= MAX_BOOKING_PER_DAY;
     }
 
+    /**
+     * Cek apakah sudah ada booking AKTIF pada tanggal tersebut.
+     * Status aktif: "Menunggu Konfirmasi", "Disetujui", "Selesai".
+     * Status "Ditolak" tidak dihitung (tanggal boleh dipakai lagi).
+     *
+     * @param tanggal tanggal event yang ingin dicek
+     * @return true jika sudah ada minimal 1 booking aktif pada tanggal itu
+     */
+    public boolean isTanggalSudahDipesan(java.time.LocalDate tanggal) {
+        String sql = "SELECT COUNT(*) FROM bookings " +
+                     "WHERE tanggal = ? " +
+                     "AND status IN ('Menunggu Konfirmasi', 'Disetujui', 'Selesai')";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, java.sql.Date.valueOf(tanggal));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public List<Booking> findActiveByDate(java.time.LocalDate tanggal) {
         syncPastApprovedBookings();
         List<Booking> list = new ArrayList<>();

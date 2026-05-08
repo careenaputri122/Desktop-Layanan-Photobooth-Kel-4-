@@ -16,9 +16,7 @@
       prefWidth="1280" prefHeight="800"
       styleClass="admin-root">
 
-    <!-- ══════════════════════════════════════
-         SIDEBAR KIRI
-         ══════════════════════════════════════ -->
+    <!-- SIDEBAR KIRI -->
     <VBox styleClass="sidebar" prefWidth="240" minWidth="240" spacing="0">
 
         <!-- Logo -->
@@ -29,58 +27,56 @@
 
         <Separator styleClass="sidebar-sep"/>
 
-        <!-- Label Seksi -->
         <Label text="MENU UTAMA" styleClass="sidebar-section-label">
             <VBox.margin><Insets top="20" left="20" bottom="8" right="0"/></VBox.margin>
         </Label>
 
         <!-- Dashboard (aktif) -->
         <HBox styleClass="sidebar-menu-item-active" alignment="CENTER_LEFT" spacing="12">
-            <Label text="Dashboard" styleClass="sidebar-menu-label"/>
+            <Label text="Dashboard" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
 
         <!-- Kelola Pesanan -->
         <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
               onMouseClicked="#goKelolaPesanan">
-            <Label text="Kelola Pesanan" styleClass="sidebar-menu-label"/>
+            <Label text="Kelola Pesanan" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
 
         <!-- Kelola Paket -->
         <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
               onMouseClicked="#goKelolaPaket">
-            <Label text="Kelola Paket" styleClass="sidebar-menu-label"/>
+            <Label text="Kelola Paket" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
 
         <!-- Upload Galeri -->
         <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
               onMouseClicked="#goUploadGaleri">
-            <Label text="Upload Galeri" styleClass="sidebar-menu-label"/>
+            <Label text="Upload Galeri" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
 
         <!-- Kalender Booking -->
         <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
               onMouseClicked="#goKalender">
-            <Label text="Kalender Booking" styleClass="sidebar-menu-label"/>
+            <Label text="Kalender Booking" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
 
         <!-- Pelanggan -->
         <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
               onMouseClicked="#goPelanggan">
-            <Label text="Pelanggan" styleClass="sidebar-menu-label"/>
+            <Label text="Pelanggan" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
-         <Button fx:id="btnLogout" text="Logout"
-                    onAction="#handleLogout"
-                    styleClass="sidebar-logout-btn"
-                    maxWidth="Infinity"/>
+
+        <Button fx:id="btnLogout" text="Logout"
+                onAction="#handleLogout"
+                styleClass="sidebar-logout-btn"
+                maxWidth="Infinity"/>
 
         <!-- Spacer -->
         <Region VBox.vgrow="ALWAYS"/>
 
-        <!-- Bottom Section: Profile + Logout -->
+        <!-- Bottom Section: Profile -->
         <VBox styleClass="sidebar-bottom-section" spacing="0">
             <Separator styleClass="sidebar-sep"/>
-
-            <!-- Profile Admin -->
             <HBox styleClass="sidebar-profile-box" alignment="CENTER_LEFT" spacing="12">
                 <StackPane styleClass="sidebar-avatar" minWidth="36" minHeight="36"
                            prefWidth="36" prefHeight="36">
@@ -91,31 +87,25 @@
                     <Label fx:id="labelAdminRole" text="Administrator" styleClass="sidebar-profile-role"/>
                 </VBox>
             </HBox>
-
-           
         </VBox>
 
     </VBox>
 
-    <!-- ══════════════════════════════════════
-         KONTEN UTAMA (kanan)
-         ══════════════════════════════════════ -->
+    <!-- KONTEN UTAMA -->
     <ScrollPane HBox.hgrow="ALWAYS" fitToWidth="true" hbarPolicy="NEVER"
                 style="-fx-background-color: transparent; -fx-background: transparent;">
         <VBox styleClass="main-content" spacing="0">
 
-            <!-- Header halaman -->
             <VBox styleClass="content-header" spacing="4">
                 <Label text="Dashboard" styleClass="page-title"/>
                 <Label text="Selamat datang kembali! Berikut ringkasan aktivitas hari ini."
                        styleClass="page-subtitle"/>
             </VBox>
 
-            <!-- ── STAT CARDS ── -->
+            <!-- STAT CARDS -->
             <HBox styleClass="stat-row" spacing="20">
                 <VBox.margin><Insets top="32" right="40" bottom="0" left="40"/></VBox.margin>
 
-                <!-- Pesanan Hari Ini -->
                 <VBox styleClass="stat-card" spacing="10" HBox.hgrow="ALWAYS">
                     <HBox alignment="CENTER_LEFT" spacing="0">
                         <Label text="Pesanan Hari Ini" styleClass="stat-card-label" HBox.hgrow="ALWAYS"/>
@@ -127,7 +117,6 @@
                     <Label text="pesanan masuk hari ini" styleClass="stat-card-desc"/>
                 </VBox>
 
-                <!-- Member Aktif -->
                 <VBox styleClass="stat-card" spacing="10" HBox.hgrow="ALWAYS">
                     <HBox alignment="CENTER_LEFT" spacing="0">
                         <Label text="Member Aktif" styleClass="stat-card-label" HBox.hgrow="ALWAYS"/>
@@ -139,7 +128,6 @@
                     <Label text="pengguna terdaftar" styleClass="stat-card-desc"/>
                 </VBox>
 
-                <!-- Pesanan Pending -->
                 <VBox styleClass="stat-card" spacing="10" HBox.hgrow="ALWAYS">
                     <HBox alignment="CENTER_LEFT" spacing="0">
                         <Label text="Pesanan Pending" styleClass="stat-card-label" HBox.hgrow="ALWAYS"/>
@@ -150,10 +138,9 @@
                     <Label fx:id="labelPesananPending" text="0" styleClass="stat-card-number stat-number-yellow"/>
                     <Label text="menunggu konfirmasi" styleClass="stat-card-desc"/>
                 </VBox>
-
             </HBox>
 
-            <!-- ── TABEL PESANAN TERBARU ── -->
+            <!-- TABEL PESANAN TERBARU -->
             <VBox styleClass="table-section" spacing="16">
                 <VBox.margin><Insets top="32" right="40" bottom="40" left="40"/></VBox.margin>
 
