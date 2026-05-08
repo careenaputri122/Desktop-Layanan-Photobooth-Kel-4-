@@ -1,6 +1,7 @@
 package controller;
 
 import dao.BookingDAO;
+import dao.BlockedDateDAO;
 import dao.PaketDAO;
 import dao.UserDAO;
 import model.Booking;
@@ -210,6 +211,12 @@ public class PemesananController {
         // ── Validasi backend: tanggal sudah lewat atau penuh ──────────
         if (selectedDate.isBefore(LocalDate.now())) {
             showAlert("Tanggal yang dipilih sudah lewat. Silakan pilih tanggal lain.");
+            selectedDate = null;
+            buildCalendar(currentMonth);
+            return;
+        }
+        if (BlockedDateDAO.getInstance().isBlocked(selectedDate)) {
+            showAlert("Tanggal ini sedang diblokir admin. Silakan pilih tanggal lain.");
             selectedDate = null;
             buildCalendar(currentMonth);
             return;
@@ -725,6 +732,7 @@ if (!success) {
 
         // ── Muat tanggal penuh dari DB ─────────────────────────────────
         Set<LocalDate> fullDates = BookingDAO.getInstance().getFullyBookedDatesInMonth(ym);
+        Set<LocalDate> blockedDates = BlockedDateDAO.getInstance().getBlockedDatesInMonth(ym);
 
         DateTimeFormatter headerFmt = DateTimeFormatter.ofPattern("MMMM yyyy");
 
@@ -773,6 +781,7 @@ if (!success) {
             btn.setMaxWidth(36); btn.setMaxHeight(36);
 
             boolean isPast = date.isBefore(today);
+            boolean isBlocked = blockedDates.contains(date);
             boolean isFull = selectedPaket == null ? fullDates.contains(date) : !hasAnyAvailableSlot(date);
 
             if (date.equals(selectedDate)) {
@@ -782,6 +791,11 @@ if (!success) {
                 // tanggal lewat – disable, warna abu
                 btn.getStyleClass().add("cal-day-past");
                 btn.setDisable(true);
+            } else if (isBlocked) {
+                // tanggal diblokir admin – merah dan tidak bisa diklik pelanggan
+                btn.getStyleClass().add("cal-day-blocked");
+                btn.setDisable(true);
+                btn.setTooltip(new Tooltip("Tanggal diblokir admin"));
             } else if (isFull) {
                 // tanggal penuh – disable, warna merah
                 btn.getStyleClass().add("cal-day-full");
@@ -807,6 +821,7 @@ if (!success) {
         legend.setPadding(new Insets(10, 0, 0, 0));
         legend.getChildren().addAll(
             makeLegendItem("cal-legend-available", "Tersedia"),
+            makeLegendItem("cal-legend-blocked",   "Diblokir Admin"),
             makeLegendItem("cal-legend-full",      "Penuh"),
             makeLegendItem("cal-legend-past",       "Sudah Lewat"),
             makeLegendItem("cal-legend-selected",   "Dipilih")

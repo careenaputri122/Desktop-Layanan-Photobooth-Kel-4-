@@ -395,3 +395,19 @@
 .footer-link    { -fx-font-size: 13px; -fx-text-fill: #94a3b8; }
 .footer-bottom  { -fx-background-color: #0a0f1e; }
 .footer-copy    { -fx-font-size: 12px; -fx-text-fill: #64748b; }
+
+/* Tanggal yang diblokir admin: merah dan tidak bisa dipilih pelanggan */
+.cal-day-blocked {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #991b1b;
+    -fx-font-size: 13px;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+    -fx-background-radius: 18;
+    -fx-border-color: #ef4444;
+    -fx-border-radius: 18;
+    -fx-border-width: 1;
+    -fx-opacity: 0.95;
+    -fx-font-weight: bold;
+}
+.cal-legend-blocked { -fx-background-color: #ef4444; -fx-background-radius: 6; }

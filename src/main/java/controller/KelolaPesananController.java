@@ -393,7 +393,7 @@ public class KelolaPesananController {
     @FXML private void goKelolaPesanan() { /* halaman ini sendiri */ }
     @FXML private void goKelolaPaket()   { try { SceneManager.showKelolaPaket(); } catch (Exception e) { e.printStackTrace(); } }
     @FXML private void goUploadGaleri()  { System.out.println("TODO: Upload Galeri"); }
-    @FXML private void goKalender()      { System.out.println("TODO: Kalender"); }
+    @FXML private void goKalender()      { try { SceneManager.showKalenderBooking(); } catch (Exception e) { e.printStackTrace(); } }
     @FXML private void goPelanggan()     { System.out.println("TODO: Pelanggan"); }
 
     private void showError(String msg) {

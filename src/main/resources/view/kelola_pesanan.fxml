@@ -54,7 +54,7 @@
             <!-- Kalender Booking -->
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goKalender">
-                <Label text="Kalender Booking" styleClass="sidebar-menu-label"/>
+                <Label text="Kalender Booking" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <!-- Pelanggan -->

@@ -1,6 +1,7 @@
 package controller;
 
 import dao.BookingDAO;
+import dao.BlockedDateDAO;
 import dao.UserDAO;
 import model.Booking;
 import model.User;
@@ -98,6 +99,7 @@ public class KalenderBookingController {
 
         // Ambil data booked dari DB
         Map<LocalDate, List<Booking>> bookingMap = getBookingMapForMonth(ym);
+        Set<LocalDate> blockedDates = BlockedDateDAO.getInstance().getBlockedDatesInMonth(ym);
 
         calendarGrid.getChildren().clear();
         calendarGrid.setHgap(6);
@@ -138,7 +140,7 @@ public class KalenderBookingController {
         // Isi tanggal kosong sebelum hari pertama (abu-abu)
         for (int i = 0; i < startCol; i++) {
             LocalDate prevDate = firstDay.minusDays(startCol - i);
-            calendarGrid.add(createDayCell(prevDate, true, Collections.emptyList(), today), i, row);
+            calendarGrid.add(createDayCell(prevDate, true, Collections.emptyList(), today, false), i, row);
         }
 
         // Isi tanggal bulan aktif
@@ -146,7 +148,7 @@ public class KalenderBookingController {
             LocalDate date   = ym.atDay(day);
             List<Booking> bs = bookingMap.getOrDefault(date, Collections.emptyList());
 
-            VBox cell = createDayCell(date, false, bs, today);
+            VBox cell = createDayCell(date, false, bs, today, blockedDates.contains(date));
             calendarGrid.add(cell, col, row);
 
             col++;
@@ -159,7 +161,7 @@ public class KalenderBookingController {
             LocalDate nextFirst = ym.atEndOfMonth().plusDays(1);
             while (col < 7) {
                 calendarGrid.add(createDayCell(nextFirst.plusDays(extraDay - 1), true,
-                        Collections.emptyList(), today), col, row);
+                        Collections.emptyList(), today, false), col, row);
                 col++;
                 extraDay++;
             }
@@ -167,7 +169,7 @@ public class KalenderBookingController {
     }
 
     private VBox createDayCell(LocalDate date, boolean outsideMonth,
-                               List<Booking> bookings, LocalDate today) {
+                               List<Booking> bookings, LocalDate today, boolean isBlocked) {
         VBox cell = new VBox(2);
         cell.setAlignment(Pos.TOP_CENTER);
         cell.setPadding(new Insets(6, 4, 6, 4));
@@ -181,6 +183,8 @@ public class KalenderBookingController {
         String bg;
         if (outsideMonth) {
             bg = "#F3F4F6"; // Abu-abu luar bulan
+        } else if (isBlocked) {
+            bg = "#FEE2E2"; // Merah = diblokir admin
         } else if (hasBooking) {
             bg = "#FDE8F4"; // Pink = booked
         } else {
@@ -196,7 +200,7 @@ public class KalenderBookingController {
             "-fx-background-radius: 8;" +
             border +
             "-fx-border-radius: 8;" +
-            (hasBooking && !outsideMonth ? "-fx-cursor: hand;" : "")
+            (!outsideMonth ? "-fx-cursor: hand;" : "")
         );
 
         // Label nomor tanggal
@@ -205,9 +209,26 @@ public class KalenderBookingController {
             "-fx-font-size: 13px;" +
             "-fx-font-weight: bold;" +
             "-fx-text-fill: " + (outsideMonth ? "#D1D5DB" :
+                                  isBlocked   ? "#991B1B"  :
                                   isToday     ? "#EC4899"  : "#374151") + ";"
         );
         cell.getChildren().add(lblDay);
+
+        // Badge "Diblokir" jika admin memblokir tanggal
+        if (isBlocked && !outsideMonth) {
+            Label badge = new Label("Diblokir");
+            badge.setStyle(
+                "-fx-background-color: #DC2626;" +
+                "-fx-text-fill: white;" +
+                "-fx-font-size: 9px;" +
+                "-fx-font-weight: bold;" +
+                "-fx-background-radius: 4;" +
+                "-fx-padding: 2 5 2 5;"
+            );
+            badge.setMaxWidth(Double.MAX_VALUE);
+            badge.setAlignment(Pos.CENTER);
+            cell.getChildren().add(badge);
+        }
 
         // Badge "Booked" jika ada booking
         if (hasBooking && !outsideMonth) {
@@ -225,15 +246,16 @@ public class KalenderBookingController {
             cell.getChildren().add(badge);
         }
 
-        // Klik handler untuk tampil detail
-        if (hasBooking && !outsideMonth) {
+        // Klik handler admin: semua tanggal bulan aktif bisa dibuka detailnya.
+        if (!outsideMonth) {
             final List<Booking> finalBookings = bookings;
             final LocalDate     finalDate     = date;
-            cell.setOnMouseClicked(e -> showDetailForDate(finalDate, finalBookings));
+            final boolean       finalBlocked  = isBlocked;
+            cell.setOnMouseClicked(e -> showDetailForDate(finalDate, finalBookings, finalBlocked));
 
             // Hover effect
-            cell.setOnMouseEntered(ev -> cell.setStyle(cell.getStyle().replace(bg, "#F9A8D4")));
-            cell.setOnMouseExited(ev  -> cell.setStyle(cell.getStyle().replace("#F9A8D4", bg)));
+            cell.setOnMouseEntered(ev -> cell.setStyle(cell.getStyle().replace(bg, finalBlocked ? "#FCA5A5" : "#F9A8D4")));
+            cell.setOnMouseExited(ev  -> cell.setStyle(cell.getStyle().replace(finalBlocked ? "#FCA5A5" : "#F9A8D4", bg)));
         }
 
         return cell;
@@ -287,13 +309,27 @@ public class KalenderBookingController {
         detailContent.getChildren().add(iconBox);
     }
 
-    private void showDetailForDate(LocalDate date, List<Booking> bookings) {
+    private void showDetailForDate(LocalDate date, List<Booking> bookings, boolean isBlocked) {
         detailTitle.setText("📅 " + date.format(FMT_TANGGAL));
         detailContent.getChildren().clear();
 
-        Label subTitle = new Label(bookings.size() + " booking pada tanggal ini");
-        subTitle.setStyle("-fx-font-size: 11px; -fx-text-fill: #9CA3AF;");
+        Label subTitle = new Label((isBlocked ? "Tanggal ini sedang DIBLOKIR admin • " : "") + bookings.size() + " booking pada tanggal ini");
+        subTitle.setStyle("-fx-font-size: 11px; -fx-text-fill: " + (isBlocked ? "#DC2626" : "#9CA3AF") + "; -fx-font-weight: bold;");
         detailContent.getChildren().add(subTitle);
+
+        Button toggleBlockBtn = new Button(isBlocked ? "🔓 Buka Tanggal" : "🚫 Blokir Tanggal");
+        toggleBlockBtn.setMaxWidth(Double.MAX_VALUE);
+        toggleBlockBtn.setStyle(
+            "-fx-background-color: " + (isBlocked ? "#10B981" : "#DC2626") + ";" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 12px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-background-radius: 8;" +
+            "-fx-cursor: hand;" +
+            "-fx-padding: 8 10 8 10;"
+        );
+        toggleBlockBtn.setOnAction(e -> toggleBlockedDate(date, isBlocked));
+        detailContent.getChildren().add(toggleBlockBtn);
 
         Separator sep0 = new Separator();
         sep0.setStyle("-fx-background-color: #F3F4F6;");
@@ -310,6 +346,35 @@ public class KalenderBookingController {
                 sep.setPadding(new Insets(6, 0, 6, 0));
                 detailContent.getChildren().add(sep);
             }
+        }
+    }
+
+    private void toggleBlockedDate(LocalDate date, boolean currentlyBlocked) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle(currentlyBlocked ? "Buka Tanggal" : "Blokir Tanggal");
+        confirm.setHeaderText(currentlyBlocked ? "Buka kembali tanggal ini?" : "Blokir tanggal ini?");
+        confirm.setContentText(currentlyBlocked
+            ? "Tanggal " + date.format(FMT_TANGGAL) + " akan tersedia kembali untuk pelanggan."
+            : "Tanggal " + date.format(FMT_TANGGAL) + " akan merah dan tidak bisa diklik oleh pelanggan.");
+
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) return;
+
+        boolean success;
+        if (currentlyBlocked) {
+            success = BlockedDateDAO.getInstance().unblockDate(date);
+        } else {
+            User admin = UserDAO.getInstance().getCurrentUser();
+            int adminId = admin != null ? admin.getId() : 0;
+            success = BlockedDateDAO.getInstance().blockDate(date, "Diblokir melalui kalender admin", adminId);
+        }
+
+        if (success) {
+            buildCalendar(currentMonth);
+            showPlaceholderDetail();
+        } else {
+            Alert error = new Alert(Alert.AlertType.ERROR, "Gagal menyimpan perubahan blokir tanggal ke database.");
+            error.showAndWait();
         }
     }
 
