@@ -17,7 +17,7 @@ public abstract class BaseDao {
     // ── Konfigurasi koneksi database (satu titik perubahan) ───────────────
     private static final String DB_URL  = "jdbc:mysql://localhost:3306/photobooth_db";
     private static final String DB_USER = "root";
-    private static final String DB_PASS = "";
+    private static final String DB_PASS = "Anuger@h1";
 
     /**
      * Mengembalikan koneksi baru ke database.
