@@ -1,24 +1,25 @@
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\GaleriController.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\dao\PaketDAO.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\model\Event.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\KelolaPesananController.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\dao\BaseDao.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\dao\BlockedDateDAO.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\dao\UserDAO.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\KelolaPelangganController.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\PemesananController.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\SceneManager.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\KalenderBookingController.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\LoginController.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\MainApp.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\AdminDashboardController.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\dao\IDao.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\KelolaPaketController.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\dao\BookingDAO.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\model\Booking.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\model\Foto.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\model\Paket.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\model\User.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\PricelistController.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\RegisterController.java
-C:\Users\anuge\Downloads\photobooth-fixed (1)\Desktop-Layanan-Photobooth-Kel-4--main\src\main\java\controller\HomeController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\LoginController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\dao\IDao.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\SceneManager.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\MainApp.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\dao\UserDAO.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\dao\BlockedDateDAO.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\HomeController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\dao\PaketDAO.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\KelolaPesananController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\AdminDashboardController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\KelolaPaketController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\dao\BookingDAO.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\model\Event.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\dao\BaseDao.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\model\Booking.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\KelolaPelangganController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\UploadGaleriController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\RegisterController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\model\Foto.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\PricelistController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\model\Paket.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\model\User.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\GaleriController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\KalenderBookingController.java
+C:\laragon\www\Desktop-Layanan-Photobooth-Kel-4-\src\main\java\controller\PemesananController.java
