@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import dao.UserDAO;
+import dao.GaleriDAO;
 import model.User;
 
 public class GaleriController {
@@ -122,7 +123,18 @@ public class GaleriController {
     private void renderGallery(String category, String keyword) {
         galleryPane.getChildren().clear();
 
-        for (String[] data : IMAGE_DATA) {
+        // Gabungkan data dari DB + data statis
+        java.util.List<String[]> allData = new java.util.ArrayList<>();
+        try {
+            java.util.List<String[]> dbData = GaleriDAO.getInstance().findAll();
+            // dbData: [id, judul, tema, tanggal, jumlahFoto, link, filePath]
+            for (String[] d : dbData) {
+                allData.add(new String[]{ d[6], d[2], d[1], d[3], d[4] + " foto", d[5] });
+            }
+        } catch (Exception e) { /* DB tidak tersedia, gunakan data statis */ }
+        for (String[] d : IMAGE_DATA) allData.add(d);
+
+        for (String[] data : allData) {
             String path  = data[0];
             String cat   = data[1];
             String judul = data[2];
