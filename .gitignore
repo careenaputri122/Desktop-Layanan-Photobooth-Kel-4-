@@ -1,4 +1,5 @@
 run.bat
+target/
 bin/
 out/
 *.class
