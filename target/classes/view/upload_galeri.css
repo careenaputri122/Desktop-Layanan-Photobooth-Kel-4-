@@ -1,99 +1,152 @@
 /* ============================================================
-   upload_galeri.css  —  reuse gaya admin_dashboard
+   upload_galeri.css — Halaman Upload Galeri Admin
+   Theme: Pink #EC4899 — konsisten dengan halaman admin lain
    ============================================================ */
 
-/* Import semua gaya base dari admin_dashboard */
-.admin-root            { -fx-background-color: #F9FAFB; }
+.admin-root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-background-color: #F3F4F6;
+}
 
-/* SIDEBAR */
-.sidebar               { -fx-background-color: #1F1235; -fx-padding: 0; }
-.sidebar-logo-box      { -fx-padding: 24 20 20 20; }
-.sidebar-logo-text     { -fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white; }
-.sidebar-logo-sub      { -fx-font-size: 13px; -fx-text-fill: #EC4899; -fx-font-weight: bold; }
-.sidebar-sep           { -fx-background-color: rgba(255,255,255,0.1); -fx-opacity: 1; }
-.sidebar-section-label { -fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.4);
-                          -fx-font-weight: bold; -fx-letter-spacing: 1px; }
+/* ══════════════════════════════════════════════════════════
+   SIDEBAR — identik dengan kalender_booking.css
+   ══════════════════════════════════════════════════════════ */
+.sidebar                { -fx-background-color: #EC4899; -fx-pref-width: 240px; -fx-min-width: 240px; }
+.sidebar-logo-box       { -fx-padding: 28 24 20 24; }
+.sidebar-logo-text      { -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: "Georgia"; }
+.sidebar-logo-sub       { -fx-text-fill: rgba(255,255,255,0.75); -fx-font-size: 13px; -fx-font-weight: bold; -fx-font-family: "Georgia"; }
+.sidebar-sep            { -fx-background-color: rgba(255,255,255,0.25); -fx-padding: 0; }
+.sidebar-section-label  { -fx-text-fill: rgba(255,255,255,0.60); -fx-font-size: 10px; -fx-font-weight: bold; }
+.sidebar-menu-item      { -fx-padding: 13 20 13 20; -fx-cursor: hand; -fx-background-color: transparent; }
+.sidebar-menu-item:hover{ -fx-background-color: rgba(255,255,255,0.15); }
+.sidebar-menu-item-active {
+    -fx-padding: 13 20 13 20;
+    -fx-background-color: rgba(255,255,255,0.22);
+    -fx-border-color: transparent transparent transparent white;
+    -fx-border-width: 0 0 0 3.5;
+}
+.sidebar-menu-label     { -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; }
+.sidebar-bottom-section { -fx-background-color: rgba(0,0,0,0.15); }
+.sidebar-profile-box    { -fx-padding: 12 16 12 16; -fx-background-color: transparent; }
+.sidebar-avatar         { -fx-background-color: white; -fx-background-radius: 20; -fx-min-width: 36px; -fx-min-height: 36px; }
+.sidebar-avatar-initial { -fx-text-fill: #EC4899; -fx-font-size: 16px; -fx-font-weight: bold; }
+.sidebar-profile-name   { -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; }
+.sidebar-profile-role   { -fx-text-fill: rgba(255,255,255,0.70); -fx-font-size: 11px; }
+.sidebar-logout-btn     {
+    -fx-background-color: rgba(0,0,0,0.25); -fx-text-fill: white;
+    -fx-font-size: 13px; -fx-font-weight: bold;
+    -fx-background-radius: 0; -fx-border-width: 0; -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT; -fx-padding: 13 20 13 20;
+}
+.sidebar-logout-btn:hover { -fx-background-color: rgba(0,0,0,0.40); }
 
-.sidebar-menu-item        { -fx-padding: 14 20; -fx-cursor: hand; }
-.sidebar-menu-item:hover  { -fx-background-color: rgba(255,255,255,0.07); }
-.sidebar-menu-item-active { -fx-padding: 14 20;
-                             -fx-background-color: linear-gradient(to right, #EC4899, #8B5CF6); }
-.sidebar-menu-label       { -fx-text-fill: rgba(255,255,255,0.75); -fx-font-size: 14px; }
-.sidebar-menu-item-active .sidebar-menu-label { -fx-text-fill: white; -fx-font-weight: bold; }
+/* ══════════════════════════════════════════════════════════
+   KONTEN UTAMA
+   ══════════════════════════════════════════════════════════ */
+.main-content  { -fx-background-color: #F3F4F6; -fx-spacing: 0; }
+.content-header {
+    -fx-background-color: white;
+    -fx-padding: 28 32 22 32;
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 1 0;
+}
+.page-title    { -fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #111827; }
+.page-subtitle { -fx-font-size: 13px; -fx-text-fill: #6B7280; }
 
-.sidebar-logout-btn       { -fx-background-color: rgba(239,68,68,0.15);
-                             -fx-text-fill: #FCA5A5; -fx-font-size: 13px;
-                             -fx-padding: 12 20; -fx-border-color: transparent;
-                             -fx-cursor: hand; }
-.sidebar-logout-btn:hover { -fx-background-color: rgba(239,68,68,0.3); }
+/* ══════════════════════════════════════════════════════════
+   CARD
+   ══════════════════════════════════════════════════════════ */
+.upload-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-padding: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+.section-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
 
-.sidebar-bottom-section   { -fx-padding: 0; }
-.sidebar-profile-box      { -fx-padding: 16 20; }
-.sidebar-avatar           { -fx-background-color: #EC4899; -fx-background-radius: 50%; }
-.sidebar-avatar-initial   { -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; }
-.sidebar-profile-name     { -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; }
-.sidebar-profile-role     { -fx-text-fill: rgba(255,255,255,0.5); -fx-font-size: 11px; }
+/* ══════════════════════════════════════════════════════════
+   FORM
+   ══════════════════════════════════════════════════════════ */
+.form-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}
+.form-input {
+    -fx-background-color: #F9FAFB;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 13px;
+    -fx-text-fill: #111827;
+}
+.form-input:focused {
+    -fx-border-color: #EC4899;
+    -fx-border-width: 1.5;
+    -fx-background-color: white;
+}
+.form-combo {
+    -fx-background-color: #F9FAFB;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-size: 13px;
+}
 
-/* KONTEN */
-.main-content             { -fx-background-color: #F9FAFB; -fx-padding: 0; }
-.content-header           { -fx-background-color: white;
-                             -fx-padding: 28 40;
-                             -fx-border-color: transparent transparent #E5E7EB transparent;
-                             -fx-border-width: 0 0 1 0; }
-.page-title               { -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #111827; }
-.page-subtitle            { -fx-font-size: 13px; -fx-text-fill: #6B7280; }
+/* ══════════════════════════════════════════════════════════
+   PREVIEW BOX
+   ══════════════════════════════════════════════════════════ */
+.preview-box {
+    -fx-background-color: #F9FAFB;
+    -fx-background-radius: 10;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+    -fx-border-style: dashed;
+}
+.preview-placeholder { -fx-padding: 0; }
+.file-name-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #9CA3AF;
+    -fx-text-alignment: center;
+}
 
-.section-heading          { -fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #111827; }
-.section-subheading       { -fx-font-size: 12px; -fx-text-fill: #6B7280; }
-
-/* FORM */
-.form-section             { -fx-background-color: white;
-                             -fx-padding: 24;
-                             -fx-border-color: #E5E7EB;
-                             -fx-border-radius: 12;
-                             -fx-background-radius: 12; }
-.form-label               { -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #374151; }
-.form-input               { -fx-font-size: 13px; -fx-padding: 10 14;
-                             -fx-border-color: #D1D5DB; -fx-border-radius: 8;
-                             -fx-background-radius: 8; -fx-background-color: #F9FAFB; }
-.form-input:focused       { -fx-border-color: #EC4899; -fx-background-color: white; }
-
-.btn-pilih-file           { -fx-background-color: #F3F4F6; -fx-text-fill: #374151;
-                             -fx-font-size: 13px; -fx-padding: 10 20;
-                             -fx-border-radius: 8; -fx-background-radius: 8;
-                             -fx-cursor: hand; -fx-border-color: #D1D5DB; }
-.btn-pilih-file:hover     { -fx-background-color: #E5E7EB; }
-
-.file-path-label          { -fx-font-size: 12px; -fx-text-fill: #6B7280;
-                             -fx-font-style: italic; }
-
-.btn-simpan               { -fx-background-color: linear-gradient(to right, #EC4899, #8B5CF6);
-                             -fx-text-fill: white; -fx-font-weight: bold;
-                             -fx-font-size: 13px; -fx-padding: 10 28;
-                             -fx-border-radius: 8; -fx-background-radius: 8;
-                             -fx-cursor: hand; }
-.btn-simpan:hover         { -fx-opacity: 0.9; }
-
-.btn-hapus                { -fx-background-color: #FEE2E2; -fx-text-fill: #DC2626;
-                             -fx-font-size: 13px; -fx-padding: 10 20;
-                             -fx-border-radius: 8; -fx-background-radius: 8;
-                             -fx-cursor: hand; -fx-border-color: transparent; }
-.btn-hapus:hover          { -fx-background-color: #FECACA; }
-
-.status-label             { -fx-font-size: 13px; }
-
-/* TABEL */
-.table-section            { -fx-background-color: white;
-                             -fx-padding: 24;
-                             -fx-border-color: #E5E7EB;
-                             -fx-border-radius: 12;
-                             -fx-background-radius: 12; }
-.booking-table            { -fx-background-color: transparent;
-                             -fx-border-color: #E5E7EB;
-                             -fx-border-radius: 8; }
-.booking-table .column-header-background { -fx-background-color: #F9FAFB; }
-.booking-table .column-header .label     { -fx-font-weight: bold; -fx-text-fill: #EC4899;
-                                            -fx-font-size: 12px; }
-.booking-table .table-row-cell          { -fx-border-color: transparent transparent #F3F4F6 transparent; }
-.booking-table .table-row-cell:selected { -fx-background-color: #FDF2F8; }
-.table-placeholder        { -fx-text-fill: #9CA3AF; -fx-font-size: 13px; }
+/* ══════════════════════════════════════════════════════════
+   TOMBOL
+   ══════════════════════════════════════════════════════════ */
+.btn-pilih-file {
+    -fx-background-color: #F3F4F6;
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-padding: 9 18 9 18;
+}
+.btn-pilih-file:hover {
+    -fx-background-color: #E5E7EB;
+}
+.btn-upload {
+    -fx-background-color: #EC4899;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 9 22 9 22;
+    -fx-effect: dropshadow(gaussian, rgba(236,72,153,0.35), 8, 0, 0, 2);
+}
+.btn-upload:hover {
+    -fx-background-color: #DB2777;
+}
