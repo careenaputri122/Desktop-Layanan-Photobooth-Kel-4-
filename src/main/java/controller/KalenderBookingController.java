@@ -469,5 +469,5 @@ public class KalenderBookingController {
     }
 
     @FXML private void goUploadGaleri() { System.out.println("TODO: Upload Galeri"); }
-    @FXML private void goPelanggan()    { System.out.println("TODO: Pelanggan"); }
+    @FXML private void goPelanggan()    { try { SceneManager.showKelolaPelanggan(); } catch (Exception e) { e.printStackTrace(); } }
 }

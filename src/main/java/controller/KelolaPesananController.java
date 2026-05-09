@@ -394,7 +394,7 @@ public class KelolaPesananController {
     @FXML private void goKelolaPaket()   { try { SceneManager.showKelolaPaket(); } catch (Exception e) { e.printStackTrace(); } }
     @FXML private void goUploadGaleri()  { System.out.println("TODO: Upload Galeri"); }
     @FXML private void goKalender()      { try { SceneManager.showKalenderBooking(); } catch (Exception e) { e.printStackTrace(); } }
-    @FXML private void goPelanggan()     { System.out.println("TODO: Pelanggan"); }
+    @FXML private void goPelanggan()     { try { SceneManager.showKelolaPelanggan(); } catch (Exception e) { e.printStackTrace(); } }
 
     private void showError(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);

@@ -143,6 +143,6 @@ public class AdminDashboardController {
     }
 
     @FXML private void goUploadGaleri() { System.out.println("TODO: Upload Galeri"); }
-    @FXML private void goKalender()     { try { SceneManager.showKalenderBooking(); } catch (Exception e) { e.printStackTrace(); } }
-    @FXML private void goPelanggan()    { System.out.println("TODO: Pelanggan"); }
+    @FXML private void goKalender()     { try { SceneManager.showKalenderBooking();  } catch (Exception e) { e.printStackTrace(); } }
+    @FXML private void goPelanggan()    { try { SceneManager.showKelolaPelanggan(); } catch (Exception e) { e.printStackTrace(); } }
 }

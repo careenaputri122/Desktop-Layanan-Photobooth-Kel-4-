@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.geometry.Insets?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.KelolaPelangganController"
+      prefWidth="1280" prefHeight="800"
+      styleClass="root-pane">
+
+    <!-- SIDEBAR KIRI -->
+    <VBox styleClass="sidebar" prefWidth="240" minWidth="240" spacing="0">
+
+        <!-- Logo -->
+        <VBox styleClass="sidebar-logo-box" alignment="CENTER_LEFT" spacing="4">
+            <Label text="Aksaf" styleClass="sidebar-logo-text"/>
+            <Label text="Photobooth" styleClass="sidebar-logo-sub"/>
+        </VBox>
+
+        <Separator styleClass="sidebar-sep"/>
+
+        <Label text="MENU UTAMA" styleClass="sidebar-section-label">
+            <VBox.margin><Insets top="20" left="20" bottom="8" right="0"/></VBox.margin>
+        </Label>
+
+        <!-- Dashboard -->
+        <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+              onMouseClicked="#goDashboard">
+            <Label text="Dashboard" styleClass="sidebar-menu-label" mouseTransparent="true"/>
+        </HBox>
+
+        <!-- Kelola Pesanan -->
+        <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+              onMouseClicked="#goKelolaPesanan">
+            <Label text="Kelola Pesanan" styleClass="sidebar-menu-label" mouseTransparent="true"/>
+        </HBox>
+
+        <!-- Kelola Paket -->
+        <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+              onMouseClicked="#goKelolaPaket">
+            <Label text="Kelola Paket" styleClass="sidebar-menu-label" mouseTransparent="true"/>
+        </HBox>
+
+        <!-- Upload Galeri -->
+        <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+              onMouseClicked="#goUploadGaleri">
+            <Label text="Upload Galeri" styleClass="sidebar-menu-label" mouseTransparent="true"/>
+        </HBox>
+
+        <!-- Kalender Booking -->
+        <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
+              onMouseClicked="#goKalender">
+            <Label text="Kalender Booking" styleClass="sidebar-menu-label" mouseTransparent="true"/>
+        </HBox>
+
+        <!-- Pelanggan (aktif) -->
+        <HBox styleClass="sidebar-menu-item-active" alignment="CENTER_LEFT" spacing="12">
+            <Label text="Pelanggan" styleClass="sidebar-menu-label" mouseTransparent="true"/>
+        </HBox>
+
+        <Button text="Logout"
+                onAction="#handleLogout"
+                styleClass="sidebar-logout-btn"
+                maxWidth="Infinity"/>
+
+        <!-- Spacer -->
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <!-- Bottom Section: Profile -->
+        <VBox styleClass="sidebar-bottom-section" spacing="0">
+            <Separator styleClass="sidebar-sep"/>
+            <HBox styleClass="sidebar-profile-box" alignment="CENTER_LEFT" spacing="12">
+                <StackPane styleClass="sidebar-avatar" minWidth="36" minHeight="36"
+                           prefWidth="36" prefHeight="36">
+                    <Label fx:id="labelAdminInitial" styleClass="sidebar-avatar-initial"/>
+                </StackPane>
+                <VBox spacing="2">
+                    <Label fx:id="labelAdminName" text="Admin" styleClass="sidebar-profile-name"/>
+                    <Label fx:id="labelAdminRole" text="Administrator" styleClass="sidebar-profile-role"/>
+                </VBox>
+            </HBox>
+        </VBox>
+
+    </VBox>
+
+    <!-- KONTEN UTAMA -->
+    <ScrollPane HBox.hgrow="ALWAYS" fitToWidth="true" hbarPolicy="NEVER"
+                style="-fx-background-color: transparent; -fx-background: transparent;">
+        <VBox styleClass="main-content" spacing="0">
+
+            <!-- Header -->
+            <VBox styleClass="content-header" spacing="4">
+                <Label text="Pelanggan" styleClass="page-title"/>
+                <Label text="Daftar pelanggan yang sudah pernah menyelesaikan pesanan."
+                       styleClass="page-subtitle"/>
+            </VBox>
+
+            <!-- STAT CARDS -->
+            <HBox styleClass="stat-row" spacing="20">
+                <VBox.margin><Insets top="32" right="40" bottom="0" left="40"/></VBox.margin>
+
+                <VBox styleClass="stat-card" spacing="10" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="0">
+                        <Label text="Total Pelanggan" styleClass="stat-card-label" HBox.hgrow="ALWAYS"/>
+                        <StackPane styleClass="stat-icon-box stat-icon-pink">
+                            <Label text="👥" styleClass="stat-icon"/>
+                        </StackPane>
+                    </HBox>
+                    <Label fx:id="labelTotalPelanggan" text="0" styleClass="stat-card-number"/>
+                    <Label text="pelanggan aktif" styleClass="stat-card-desc"/>
+                </VBox>
+
+                <VBox styleClass="stat-card" spacing="10" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="0">
+                        <Label text="Member" styleClass="stat-card-label" HBox.hgrow="ALWAYS"/>
+                        <StackPane styleClass="stat-icon-box stat-icon-purple">
+                            <Label text="⭐" styleClass="stat-icon"/>
+                        </StackPane>
+                    </HBox>
+                    <Label fx:id="labelTotalMember" text="0" styleClass="stat-card-number stat-number-purple"/>
+                    <Label text="≥ 3 pesanan selesai" styleClass="stat-card-desc"/>
+                </VBox>
+
+                <VBox styleClass="stat-card" spacing="10" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="0">
+                        <Label text="Regular" styleClass="stat-card-label" HBox.hgrow="ALWAYS"/>
+                        <StackPane styleClass="stat-icon-box stat-icon-green">
+                            <Label text="👤" styleClass="stat-icon"/>
+                        </StackPane>
+                    </HBox>
+                    <Label fx:id="labelTotalRegular" text="0" styleClass="stat-card-number stat-number-green"/>
+                    <Label text="belum capai 3 pesanan" styleClass="stat-card-desc"/>
+                </VBox>
+            </HBox>
+
+            <!-- TABEL PELANGGAN -->
+            <VBox styleClass="table-section" spacing="16">
+                <VBox.margin><Insets top="32" right="40" bottom="40" left="40"/></VBox.margin>
+
+                <!-- Header tabel + filter -->
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label text="Daftar Pelanggan" styleClass="section-heading"/>
+                        <Label text="Hanya menampilkan pelanggan dengan minimal 1 pesanan selesai"
+                               styleClass="section-subheading"/>
+                    </VBox>
+                    <TextField fx:id="fieldCari"
+                               promptText="Cari nama / email..."
+                               prefWidth="220"
+                               styleClass="search-field"/>
+                    <ComboBox fx:id="comboFilter" prefWidth="130" styleClass="filter-combo"/>
+                    <Button text="↻ Refresh"
+                            onAction="#handleRefresh"
+                            styleClass="btn-refresh"/>
+                </HBox>
+
+                <!-- Legend member -->
+                <HBox spacing="20" alignment="CENTER_LEFT">
+                    <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legend-box">
+                        <Label text="⭐" styleClass="legend-icon-member"/>
+                        <Label text="Member  =  ≥ 3 pesanan selesai (dapat diskon 15%)"
+                               styleClass="legend-text-member"/>
+                    </HBox>
+                    <HBox spacing="6" alignment="CENTER_LEFT" styleClass="legend-box">
+                        <Label text="●" styleClass="legend-icon-regular"/>
+                        <Label text="Regular  =  belum mencapai 3 pesanan selesai"
+                               styleClass="legend-text-regular"/>
+                    </HBox>
+                </HBox>
+
+                <TableView fx:id="tablePelanggan" prefHeight="360" styleClass="booking-table">
+                    <columns>
+                        <TableColumn fx:id="colNama"        text="Nama Pelanggan"    prefWidth="240" reorderable="false"/>
+                        <TableColumn fx:id="colEmail"       text="Email"             prefWidth="280" reorderable="false"/>
+                        <TableColumn fx:id="colJumlahOrder" text="Pesanan Selesai"   prefWidth="160" reorderable="false"/>
+                        <TableColumn fx:id="colStatus"      text="Status"            prefWidth="140" reorderable="false"/>
+                    </columns>
+                    <placeholder>
+                        <Label text="Belum ada pelanggan dengan pesanan selesai." styleClass="table-placeholder"/>
+                    </placeholder>
+                </TableView>
+
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+
+</HBox>

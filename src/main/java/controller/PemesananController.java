@@ -730,7 +730,8 @@ if (!success) {
     private void buildCalendar(YearMonth ym) {
         calendarBox.getChildren().clear();
 
-        // ── Muat tanggal penuh dari DB ─────────────────────────────────
+        // ── Muat tanggal yang sudah dipesan dan tanggal penuh dari DB ──
+        Set<LocalDate> bookedDates = BookingDAO.getInstance().getBookedDatesInMonth(ym);
         Set<LocalDate> fullDates = BookingDAO.getInstance().getFullyBookedDatesInMonth(ym);
         Set<LocalDate> blockedDates = BlockedDateDAO.getInstance().getBlockedDatesInMonth(ym);
 
@@ -782,7 +783,10 @@ if (!success) {
 
             boolean isPast = date.isBefore(today);
             boolean isBlocked = blockedDates.contains(date);
+            boolean isBooked = bookedDates.contains(date);
             boolean isFull = selectedPaket == null ? fullDates.contains(date) : !hasAnyAvailableSlot(date);
+            // Tanggal sudah dipesan (ada booking aktif) = tidak bisa dipilih
+            boolean isUnavailable = isBooked || isFull;
 
             if (date.equals(selectedDate)) {
                 btn.getStyleClass().add("cal-day-selected");
@@ -796,12 +800,11 @@ if (!success) {
                 btn.getStyleClass().add("cal-day-blocked");
                 btn.setDisable(true);
                 btn.setTooltip(new Tooltip("Tanggal diblokir admin"));
-            } else if (isFull) {
-                // tanggal penuh – disable, warna merah
+            } else if (isUnavailable) {
+                // tanggal sudah dipesan / penuh – disable, warna merah
                 btn.getStyleClass().add("cal-day-full");
                 btn.setDisable(true);
-                btn.setOnAction(e -> showAlert("Tanggal " + date.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
-                        + " sudah penuh dipesan. Silakan pilih tanggal lain."));
+                btn.setTooltip(new Tooltip("Tanggal ini sudah dipesan. Silakan pilih tanggal lain."));
             } else {
                 // tersedia – warna hijau
                 btn.getStyleClass().add("cal-day-available");

@@ -343,6 +343,33 @@ public class BookingDAO extends BaseDao implements IDao<Booking> {
     }
 
     /**
+     * Ambil semua tanggal yang sudah ADA BOOKING AKTIF dalam rentang bulan tertentu.
+     * Tanggal dengan minimal 1 booking aktif (bukan Ditolak) akan masuk ke set ini.
+     * Digunakan oleh kalender pelanggan untuk menonaktifkan tanggal yang sudah dipesan.
+     *
+     * @param yearMonth bulan yang ditampilkan
+     * @return Set tanggal yang sudah ada booking aktif (tidak bisa dipesan lagi)
+     */
+    public java.util.Set<java.time.LocalDate> getBookedDatesInMonth(java.time.YearMonth yearMonth) {
+        syncPastApprovedBookings();
+        java.util.Set<java.time.LocalDate> bookedDates = new java.util.HashSet<>();
+        String sql = "SELECT DISTINCT tanggal FROM bookings " +
+                     "WHERE tanggal BETWEEN ? AND ? AND status NOT IN ('Ditolak')";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, java.sql.Date.valueOf(yearMonth.atDay(1)));
+            ps.setDate(2, java.sql.Date.valueOf(yearMonth.atEndOfMonth()));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                bookedDates.add(rs.getDate("tanggal").toLocalDate());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookedDates;
+    }
+
+    /**
      * Ambil semua tanggal yang sudah PENUH dalam rentang bulan tertentu.
      * Digunakan oleh kalender untuk mewarnai tanggal merah.
      *

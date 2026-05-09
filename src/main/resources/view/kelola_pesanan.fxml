@@ -31,24 +31,24 @@
             <!-- Dashboard -->
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goDashboard">
-                <Label text="Dashboard" styleClass="sidebar-menu-label"/>
+                <Label text="Dashboard" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <!-- Kelola Pesanan (aktif) -->
             <HBox styleClass="sidebar-menu-item-active" alignment="CENTER_LEFT" spacing="12">
-                <Label text="Kelola Pesanan" styleClass="sidebar-menu-label"/>
+                <Label text="Kelola Pesanan" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <!-- Kelola Paket -->
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goKelolaPaket">
-                <Label text="Kelola Paket" styleClass="sidebar-menu-label"/>
+                <Label text="Kelola Paket" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <!-- Upload Galeri -->
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goUploadGaleri">
-                <Label text="Upload Galeri" styleClass="sidebar-menu-label"/>
+                <Label text="Upload Galeri" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <!-- Kalender Booking -->
@@ -60,7 +60,7 @@
             <!-- Pelanggan -->
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goPelanggan">
-                <Label text="Pelanggan" styleClass="sidebar-menu-label"/>
+                <Label text="Pelanggan" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <!-- Logout button (SETELAH Pelanggan, seperti admin_dashboard.fxml) -->
