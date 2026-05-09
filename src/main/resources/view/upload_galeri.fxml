@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.Label?>
@@ -9,8 +8,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.geometry.Insets?>
 
 <HBox xmlns:fx="http://javafx.com/fxml"
@@ -18,45 +18,55 @@
       prefWidth="1280" prefHeight="800"
       styleClass="admin-root">
 
-    <!-- ══════════════════════════════════════
-         SIDEBAR KIRI
-         ══════════════════════════════════════ -->
+    <!-- SIDEBAR KIRI -->
     <VBox styleClass="sidebar" prefWidth="240" minWidth="240" spacing="0">
+
         <VBox styleClass="sidebar-logo-box" alignment="CENTER_LEFT" spacing="4">
             <Label text="Aksaf" styleClass="sidebar-logo-text"/>
             <Label text="Photobooth" styleClass="sidebar-logo-sub"/>
         </VBox>
+
         <Separator styleClass="sidebar-sep"/>
+
         <Label text="MENU UTAMA" styleClass="sidebar-section-label">
             <VBox.margin><Insets top="20" left="20" bottom="8" right="0"/></VBox.margin>
         </Label>
+
         <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
               onMouseClicked="#goDashboard">
-            <Label text="Dashboard" styleClass="sidebar-menu-label"/>
+            <Label text="Dashboard" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
+
         <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
               onMouseClicked="#goKelolaPesanan">
-            <Label text="Kelola Pesanan" styleClass="sidebar-menu-label"/>
+            <Label text="Kelola Pesanan" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
+
         <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
               onMouseClicked="#goKelolaPaket">
-            <Label text="Kelola Paket" styleClass="sidebar-menu-label"/>
+            <Label text="Kelola Paket" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
-        <!-- Upload Galeri AKTIF -->
+
+        <!-- Upload Galeri (aktif) -->
         <HBox styleClass="sidebar-menu-item-active" alignment="CENTER_LEFT" spacing="12">
-            <Label text="Upload Galeri" styleClass="sidebar-menu-label"/>
+            <Label text="Upload Galeri" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
+
         <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
               onMouseClicked="#goKalender">
-            <Label text="Kalender Booking" styleClass="sidebar-menu-label"/>
+            <Label text="Kalender Booking" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
+
         <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
               onMouseClicked="#goPelanggan">
-            <Label text="Pelanggan" styleClass="sidebar-menu-label"/>
+            <Label text="Pelanggan" styleClass="sidebar-menu-label" mouseTransparent="true"/>
         </HBox>
+
         <Button text="Logout" onAction="#handleLogout"
                 styleClass="sidebar-logout-btn" maxWidth="Infinity"/>
+
         <Region VBox.vgrow="ALWAYS"/>
+
         <VBox styleClass="sidebar-bottom-section" spacing="0">
             <Separator styleClass="sidebar-sep"/>
             <HBox styleClass="sidebar-profile-box" alignment="CENTER_LEFT" spacing="12">
@@ -70,120 +80,106 @@
                 </VBox>
             </HBox>
         </VBox>
+
     </VBox>
 
-    <!-- ══════════════════════════════════════
-         KONTEN UTAMA
-         ══════════════════════════════════════ -->
+    <!-- KONTEN UTAMA -->
     <ScrollPane HBox.hgrow="ALWAYS" fitToWidth="true" hbarPolicy="NEVER"
                 style="-fx-background-color: transparent; -fx-background: transparent;">
         <VBox styleClass="main-content" spacing="0">
 
-            <!-- Header -->
             <VBox styleClass="content-header" spacing="4">
                 <Label text="Upload Galeri" styleClass="page-title"/>
-                <Label text="Tambah dan kelola foto galeri berdasarkan tema event."
+                <Label text="Kelola foto dan album galeri Aksaf Photobooth."
                        styleClass="page-subtitle"/>
             </VBox>
 
-            <!-- AREA FORM + GALERI -->
-            <VBox spacing="24">
-                <VBox.margin><Insets top="24" right="32" bottom="32" left="32"/></VBox.margin>
+            <!-- FORM TAMBAH GALERI -->
+            <VBox styleClass="form-section" spacing="16">
+                <VBox.margin><Insets top="32" right="40" bottom="0" left="40"/></VBox.margin>
 
-                <!-- ── CARD FORM UPLOAD ── -->
-                <VBox styleClass="upload-card" spacing="20">
-                    <Label text="Tambah Foto Baru" styleClass="section-title"/>
-                    <Separator/>
+                <Label text="Tambah Item Galeri" styleClass="section-heading"/>
+                <Label text="Isi detail foto atau album yang ingin ditampilkan di galeri."
+                       styleClass="section-subheading"/>
 
-                    <HBox spacing="24" alignment="TOP_LEFT">
+                <!-- Baris 1: Judul + Kategori -->
+                <HBox spacing="16">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Judul Album / Foto" styleClass="form-label"/>
+                        <TextField fx:id="fieldJudul" promptText="contoh: Wedding Budi &amp; Ani"
+                                   styleClass="form-input"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Kategori" styleClass="form-label"/>
+                        <ComboBox fx:id="comboKategori" maxWidth="Infinity" styleClass="form-input"/>
+                    </VBox>
+                </HBox>
 
-                        <!-- Kiri: Preview & Pilih File -->
-                        <VBox spacing="10" alignment="CENTER" prefWidth="260" minWidth="260">
-                            <StackPane styleClass="preview-box" prefWidth="240" prefHeight="160"
-                                       minWidth="240" minHeight="160">
-                                <ImageView fx:id="previewImage" fitWidth="240" fitHeight="160"
-                                           preserveRatio="true" visible="false"/>
-                                <VBox alignment="CENTER" spacing="8" styleClass="preview-placeholder">
-                                    <Label text="🖼" style="-fx-font-size: 32px;"/>
-                                    <Label text="Preview Gambar"
-                                           style="-fx-text-fill: #9CA3AF; -fx-font-size: 12px;"/>
-                                </VBox>
-                            </StackPane>
-                            <Label fx:id="labelNamaFile" text="Belum ada file dipilih"
-                                   styleClass="file-name-label" wrapText="true"
-                                   maxWidth="240" alignment="CENTER"/>
-                            <Button text="📁  Pilih Gambar" onAction="#handlePilihGambar"
-                                    styleClass="btn-pilih-file" maxWidth="Infinity"/>
-                        </VBox>
+                <!-- Baris 2: Tanggal + Jumlah Foto -->
+                <HBox spacing="16">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Tanggal Event" styleClass="form-label"/>
+                        <TextField fx:id="fieldTanggal" promptText="contoh: 09 Mei 2026"
+                                   styleClass="form-input"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Jumlah Foto" styleClass="form-label"/>
+                        <TextField fx:id="fieldJumlahFoto" promptText="contoh: 120"
+                                   styleClass="form-input"/>
+                    </VBox>
+                </HBox>
 
-                        <!-- Kanan: Form Fields -->
-                        <VBox spacing="14" HBox.hgrow="ALWAYS">
-
-                            <!-- Judul -->
-                            <VBox spacing="4">
-                                <Label text="Judul Event" styleClass="form-label"/>
-                                <TextField fx:id="fieldJudul" promptText="Contoh: Wedding Leddy &amp; Cortis"
-                                           styleClass="form-input"/>
-                            </VBox>
-
-                            <!-- Tema + Tanggal -->
-                            <HBox spacing="16">
-                                <VBox spacing="4" HBox.hgrow="ALWAYS">
-                                    <Label text="Tema" styleClass="form-label"/>
-                                    <ComboBox fx:id="comboTema" maxWidth="Infinity"
-                                              styleClass="form-combo"/>
-                                </VBox>
-                                <VBox spacing="4" HBox.hgrow="ALWAYS">
-                                    <Label text="Tanggal Event" styleClass="form-label"/>
-                                    <TextField fx:id="fieldTanggal" promptText="Contoh: 12 Apr 2026"
-                                               styleClass="form-input"/>
-                                </VBox>
-                            </HBox>
-
-                            <!-- Jumlah Foto + Link Album -->
-                            <HBox spacing="16">
-                                <VBox spacing="4" HBox.hgrow="ALWAYS">
-                                    <Label text="Jumlah Foto" styleClass="form-label"/>
-                                    <TextField fx:id="fieldJumlahFoto" promptText="Contoh: 148"
-                                               styleClass="form-input"/>
-                                </VBox>
-                                <VBox spacing="4" HBox.hgrow="ALWAYS">
-                                    <Label text="Link Album (opsional)" styleClass="form-label"/>
-                                    <TextField fx:id="fieldLinkAlbum" promptText="https://..."
-                                               styleClass="form-input"/>
-                                </VBox>
-                            </HBox>
-
-                            <!-- Status + Tombol -->
-                            <HBox spacing="16" alignment="CENTER_LEFT">
-                                <Label fx:id="labelStatus" text="" wrapText="true"
-                                       HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                                <Button text="⬆  Upload Foto" onAction="#handleUpload"
-                                        styleClass="btn-upload"/>
-                            </HBox>
-                        </VBox>
-                    </HBox>
+                <!-- Link Galeri -->
+                <VBox spacing="6">
+                    <Label text="Link Galeri Online (opsional)" styleClass="form-label"/>
+                    <TextField fx:id="fieldLink" promptText="https://..."
+                               styleClass="form-input"/>
                 </VBox>
 
-                <!-- ── SECTION GALERI ── -->
-                <VBox styleClass="upload-card" spacing="16">
-                    <!-- Header galeri: judul + filter -->
-                    <HBox alignment="CENTER_LEFT" spacing="16">
-                        <Label text="Foto Tersimpan" styleClass="section-title"
-                               HBox.hgrow="ALWAYS"/>
-                        <Label fx:id="labelJumlahFotoDb" text="0 foto"
-                               style="-fx-text-fill: #9CA3AF; -fx-font-size: 12px;"/>
-                        <ComboBox fx:id="comboFilter" prefWidth="140" styleClass="form-combo"/>
-                    </HBox>
-                    <Separator/>
+                <!-- Pilih File -->
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Button text="📁 Pilih Foto Cover" onAction="#handlePilihFile"
+                            styleClass="btn-pilih-file"/>
+                    <Label fx:id="labelFilePath" text="Belum ada file dipilih"
+                           styleClass="file-path-label"/>
+                </HBox>
 
-                    <!-- Grid foto -->
-                    <TilePane fx:id="galleryPane" hgap="14" vgap="14"
-                              prefTileWidth="220" prefTileHeight="160"
-                              style="-fx-padding: 4 0 4 0;"/>
-                </VBox>
+                <!-- Tombol Aksi -->
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Button text="✓ Simpan ke Galeri" onAction="#handleSimpan"
+                            styleClass="btn-simpan"/>
+                    <Button text="🗑 Hapus Terpilih" onAction="#handleHapus"
+                            styleClass="btn-hapus"/>
+                </HBox>
 
+                <Label fx:id="labelStatus" text="" styleClass="status-label"/>
             </VBox>
+
+            <!-- TABEL DAFTAR GALERI -->
+            <VBox styleClass="table-section" spacing="16">
+                <VBox.margin><Insets top="32" right="40" bottom="40" left="40"/></VBox.margin>
+
+                <HBox alignment="CENTER_LEFT">
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label text="Daftar Item Galeri" styleClass="section-heading"/>
+                        <Label text="Klik baris untuk memilih, lalu tekan Hapus Terpilih."
+                               styleClass="section-subheading"/>
+                    </VBox>
+                </HBox>
+
+                <TableView fx:id="tableGaleri" prefHeight="280" styleClass="booking-table">
+                    <columns>
+                        <TableColumn fx:id="colJudul"    text="Judul"         prefWidth="300" reorderable="false"/>
+                        <TableColumn fx:id="colKategori" text="Kategori"      prefWidth="120" reorderable="false"/>
+                        <TableColumn fx:id="colTanggal"  text="Tanggal"       prefWidth="130" reorderable="false"/>
+                        <TableColumn fx:id="colJumlah"   text="Jumlah Foto"   prefWidth="120" reorderable="false"/>
+                    </columns>
+                    <placeholder>
+                        <Label text="Belum ada data galeri." styleClass="table-placeholder"/>
+                    </placeholder>
+                </TableView>
+            </VBox>
+
         </VBox>
     </ScrollPane>
 

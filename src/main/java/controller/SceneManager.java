@@ -61,7 +61,7 @@ public class SceneManager {
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         Scene scene = new Scene(root, Math.min(1280, bounds.getWidth()), Math.min(800, bounds.getHeight()));
 
-        // ⬇️ Dua baris ini yang penting — jangan sampai terlewat
+        // Dua baris ini wajib ada keduanya
         scene.getStylesheets().add(SceneManager.class.getResource("/view/admin_dashboard.css").toExternalForm());
         scene.getStylesheets().add(SceneManager.class.getResource("/view/upload_galeri.css").toExternalForm());
 
@@ -71,7 +71,7 @@ public class SceneManager {
         stage.setY(bounds.getMinY());
         stage.setWidth(bounds.getWidth());
         stage.setHeight(bounds.getHeight());
-    } 
+    }
     // ── Popup Login / Register ────────────────────────────────────────────
 
     public static void showLogin() throws Exception {
