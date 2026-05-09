@@ -27,7 +27,7 @@ import java.util.*;
  *  - Kalender bulanan dengan navigasi Previous/Next
  *  - Tanggal yang sudah booked ditandai warna pink
  *  - Klik tanggal booked → tampil panel detail di kanan
- *  - Legend: Putih = tersedia, Pink = booked, Abu-abu = luar bulan
+ *  - Legend: Putih = tersedia, Pink = booked, Abu-abu = luar bulan / tanggal lewat
  */
 public class KalenderBookingController {
 
@@ -178,11 +178,12 @@ public class KalenderBookingController {
 
         boolean hasBooking = !bookings.isEmpty();
         boolean isToday    = date.equals(today);
+        boolean isPast     = !outsideMonth && date.isBefore(today); // ← tanggal lewat
 
         // Warna background
         String bg;
-        if (outsideMonth) {
-            bg = "#F3F4F6"; // Abu-abu luar bulan
+        if (outsideMonth || isPast) {
+            bg = "#F3F4F6"; // Abu-abu: luar bulan atau tanggal lewat
         } else if (isBlocked) {
             bg = "#FEE2E2"; // Merah = diblokir admin
         } else if (hasBooking) {
@@ -200,7 +201,7 @@ public class KalenderBookingController {
             "-fx-background-radius: 8;" +
             border +
             "-fx-border-radius: 8;" +
-            (!outsideMonth ? "-fx-cursor: hand;" : "")
+            (!outsideMonth && !isPast ? "-fx-cursor: hand;" : "") // ← no cursor jika lewat
         );
 
         // Label nomor tanggal
@@ -208,9 +209,9 @@ public class KalenderBookingController {
         lblDay.setStyle(
             "-fx-font-size: 13px;" +
             "-fx-font-weight: bold;" +
-            "-fx-text-fill: " + (outsideMonth ? "#D1D5DB" :
-                                  isBlocked   ? "#991B1B"  :
-                                  isToday     ? "#EC4899"  : "#374151") + ";"
+            "-fx-text-fill: " + (outsideMonth || isPast ? "#D1D5DB" : // ← abu jika lewat
+                                  isBlocked             ? "#991B1B"  :
+                                  isToday               ? "#EC4899"  : "#374151") + ";"
         );
         cell.getChildren().add(lblDay);
 
@@ -246,8 +247,8 @@ public class KalenderBookingController {
             cell.getChildren().add(badge);
         }
 
-        // Klik handler admin: semua tanggal bulan aktif bisa dibuka detailnya.
-        if (!outsideMonth) {
+        // Klik handler: hanya tanggal aktif yang BUKAN lewat
+        if (!outsideMonth && !isPast) { // ← tambah !isPast
             final List<Booking> finalBookings = bookings;
             final LocalDate     finalDate     = date;
             final boolean       finalBlocked  = isBlocked;
@@ -468,9 +469,10 @@ public class KalenderBookingController {
         try { SceneManager.showKelolaPaket(); } catch (Exception e) { e.printStackTrace(); }
     }
 
-@FXML private void goUploadGaleri() { 
-    try { SceneManager.showUploadGaleri(); } catch (Exception e) { e.printStackTrace(); } }    
-    
-@FXML private void goPelanggan()    { 
-    try { SceneManager.showKelolaPelanggan(); } catch (Exception e) { e.printStackTrace(); } }
+   @FXML private void goUploadGaleri() {
+    try { SceneManager.showUploadGaleri(); } catch (Exception e) { e.printStackTrace(); }
+}
+@FXML private void goPelanggan() {
+    try { SceneManager.showKelolaPelanggan(); } catch (Exception e) { e.printStackTrace(); }
+}
 }
