@@ -72,6 +72,24 @@ INSERT INTO `bookings` (`id`, `user_id`, `paket_id`, `tanggal`, `jam_mulai`, `lo
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `galeri`
+--
+
+CREATE TABLE `galeri` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `judul` varchar(255) NOT NULL,
+  `tema` varchar(100) NOT NULL,
+  `tanggal_event` varchar(50) NOT NULL,
+  `jumlah_foto` int NOT NULL DEFAULT 0,
+  `link_album` varchar(500) DEFAULT NULL,
+  `file_path` varchar(1000) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `paket`
 --
 
@@ -158,6 +176,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `galeri`
+--
+ALTER TABLE `galeri`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `blocked_dates`

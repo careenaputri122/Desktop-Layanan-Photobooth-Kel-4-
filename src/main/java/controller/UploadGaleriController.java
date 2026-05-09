@@ -1,5 +1,6 @@
 package controller;
 
+import dao.GaleriDAO;
 import dao.UserDAO;
 import model.User;
 import javafx.fxml.FXML;
@@ -9,6 +10,12 @@ import javafx.stage.FileChooser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 public class UploadGaleriController {
 
@@ -36,12 +43,15 @@ public class UploadGaleriController {
     private ObservableList<GaleriItem> daftarGaleri = FXCollections.observableArrayList();
     private String selectedFilePath = "";
 
+    // Folder penyimpanan foto cover
+    private static final String COVER_DIR = "cover_galeri";
+
     @FXML
     public void initialize() {
         setupSidebarProfile();
         setupKategori();
         setupTable();
-        loadDefaultData();
+        loadFromDatabase();
     }
 
     private void setupSidebarProfile() {
@@ -75,23 +85,30 @@ public class UploadGaleriController {
         tableGaleri.setItems(daftarGaleri);
     }
 
-    private void loadDefaultData() {
-        daftarGaleri.addAll(
-            new GaleriItem("Wedding Leddy & Cortis",             "Wedding",   "12 Apr 2026", "148 foto"),
-            new GaleriItem("Birthday Dea Amalia ke-19",          "Birthday",  "20 Mar 2026", "95 foto"),
-            new GaleriItem("Gathering PT. Dea Keren",            "Corporate", "05 Mar 2026", "210 foto"),
-            new GaleriItem("Wisuda Universitas Sriwijaya",       "Wisuda",    "05 Mar 2026", "150 foto"),
-            new GaleriItem("Birthday Aluna ke-18",               "Birthday",  "03 Mar 2026", "102 foto"),
-            new GaleriItem("Wedding Tasya & Arga",               "Wedding",   "01 Mar 2026", "160 foto"),
-            new GaleriItem("Wisuda Politeknik Negeri Sriwijaya", "Wisuda",    "26 Feb 2026", "135 foto"),
-            new GaleriItem("Wedding Tiara & Fauzan",             "Wedding",   "22 Feb 2026", "175 foto")
-        );
+    // ── Load data dari database ────────────────────────────────────────────
+    private void loadFromDatabase() {
+        daftarGaleri.clear();
+        try {
+            List<String[]> dbData = GaleriDAO.getInstance().findAll();
+            // dbData: [id, judul, tema, tanggal_event, jumlah_foto, link_album, file_path]
+            for (String[] d : dbData) {
+                daftarGaleri.add(new GaleriItem(
+                    Integer.parseInt(d[0]),
+                    d[1],
+                    d[2],
+                    d[3],
+                    d[4] + " foto"
+                ));
+            }
+        } catch (Exception e) {
+            showStatus("⚠ Gagal memuat data dari database: " + e.getMessage(), false);
+        }
     }
 
     @FXML
     private void handlePilihFile() {
         FileChooser fc = new FileChooser();
-        fc.setTitle("Pilih Foto");
+        fc.setTitle("Pilih Foto Cover");
         fc.getExtensionFilters().add(
             new FileChooser.ExtensionFilter("Gambar", "*.jpg", "*.jpeg", "*.png", "*.webp")
         );
@@ -104,19 +121,40 @@ public class UploadGaleriController {
 
     @FXML
     private void handleSimpan() {
-        String judul    = fieldJudul.getText().trim();
-        String kategori = comboKategori.getValue();
-        String tanggal  = fieldTanggal.getText().trim();
-        String jumlah   = fieldJumlahFoto.getText().trim();
+        String judul     = fieldJudul.getText().trim();
+        String kategori  = comboKategori.getValue();
+        String tanggal   = fieldTanggal.getText().trim();
+        String jumlahStr = fieldJumlahFoto.getText().trim();
+        String link      = fieldLink.getText().trim();
 
-        if (judul.isEmpty() || tanggal.isEmpty() || jumlah.isEmpty()) {
+        if (judul.isEmpty() || tanggal.isEmpty() || jumlahStr.isEmpty()) {
             showStatus("⚠ Judul, tanggal, dan jumlah foto wajib diisi.", false);
             return;
         }
 
-        daftarGaleri.add(0, new GaleriItem(judul, kategori, tanggal, jumlah + " foto"));
-        clearForm();
-        showStatus("✓ Galeri \"" + judul + "\" berhasil ditambahkan.", true);
+        int jumlah;
+        try {
+            jumlah = Integer.parseInt(jumlahStr);
+        } catch (NumberFormatException e) {
+            showStatus("⚠ Jumlah foto harus berupa angka.", false);
+            return;
+        }
+
+        // Salin file foto ke folder penyimpanan permanen
+        String savedFilePath = "";
+        if (!selectedFilePath.isEmpty()) {
+            savedFilePath = copyFotoToStorage(selectedFilePath);
+        }
+
+        // Simpan ke database
+        boolean berhasil = GaleriDAO.getInstance().save(judul, kategori, tanggal, jumlah, link, savedFilePath);
+        if (berhasil) {
+            loadFromDatabase();
+            clearForm();
+            showStatus("✓ Galeri \"" + judul + "\" berhasil disimpan dan akan tampil di halaman galeri pelanggan.", true);
+        } else {
+            showStatus("⚠ Gagal menyimpan ke database. Periksa koneksi database.", false);
+        }
     }
 
     @FXML
@@ -126,8 +164,42 @@ public class UploadGaleriController {
             showStatus("⚠ Pilih item galeri yang ingin dihapus.", false);
             return;
         }
-        daftarGaleri.remove(selected);
-        showStatus("✓ Galeri berhasil dihapus.", true);
+
+        boolean berhasil = GaleriDAO.getInstance().delete(selected.id);
+        if (berhasil) {
+            daftarGaleri.remove(selected);
+            showStatus("✓ Galeri \"" + selected.judul + "\" berhasil dihapus.", true);
+        } else {
+            showStatus("⚠ Gagal menghapus dari database. Periksa koneksi.", false);
+        }
+    }
+
+    /**
+     * Menyalin file foto ke folder permanen di home user agar bisa diakses lintas sesi.
+     * Mengembalikan path absolut file yang telah disalin.
+     */
+    private String copyFotoToStorage(String sourcePath) {
+        try {
+            String appDir = System.getProperty("user.home") + File.separator
+                          + "aksaf_photobooth" + File.separator + COVER_DIR;
+            Path dirPath = Paths.get(appDir);
+            if (!Files.exists(dirPath)) {
+                Files.createDirectories(dirPath);
+            }
+
+            String sourceFile = Paths.get(sourcePath).getFileName().toString();
+            String ext = sourceFile.contains(".")
+                ? sourceFile.substring(sourceFile.lastIndexOf('.'))
+                : ".jpg";
+            String newFileName = System.currentTimeMillis() + ext;
+
+            Path destPath = dirPath.resolve(newFileName);
+            Files.copy(Paths.get(sourcePath), destPath, StandardCopyOption.REPLACE_EXISTING);
+            return destPath.toAbsolutePath().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return sourcePath;
+        }
     }
 
     private void clearForm() {
@@ -158,9 +230,7 @@ public class UploadGaleriController {
     @FXML private void goKelolaPaket() {
         try { SceneManager.showKelolaPaket(); } catch (Exception e) { e.printStackTrace(); }
     }
-    @FXML private void goUploadGaleri() {
-        // sudah di halaman ini
-    }
+    @FXML private void goUploadGaleri() { /* sudah di halaman ini */ }
     @FXML private void goKalender() {
         try { SceneManager.showKalenderBooking(); } catch (Exception e) { e.printStackTrace(); }
     }
@@ -171,12 +241,17 @@ public class UploadGaleriController {
         try { SceneManager.showAdminDashboard(); } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // ── Inner class model ringan ──────────────────────────────────────────
+    // ── Inner class model ─────────────────────────────────────────────────
     public static class GaleriItem {
+        public final int    id;
         public final String judul, kategori, tanggal, jumlahFoto;
-        public GaleriItem(String judul, String kategori, String tanggal, String jumlahFoto) {
-            this.judul = judul; this.kategori = kategori;
-            this.tanggal = tanggal; this.jumlahFoto = jumlahFoto;
+
+        public GaleriItem(int id, String judul, String kategori, String tanggal, String jumlahFoto) {
+            this.id        = id;
+            this.judul     = judul;
+            this.kategori  = kategori;
+            this.tanggal   = tanggal;
+            this.jumlahFoto = jumlahFoto;
         }
     }
 }
