@@ -24,31 +24,31 @@
 
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goDashboard">
-                <Label text="Dashboard" styleClass="sidebar-menu-label"/>
+                <Label text="Dashboard" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goKelolaPesanan">
-                <Label text="Kelola Pesanan" styleClass="sidebar-menu-label"/>
+                <Label text="Kelola Pesanan" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <HBox styleClass="sidebar-menu-item-active" alignment="CENTER_LEFT" spacing="12">
-                <Label text="Kelola Paket" styleClass="sidebar-menu-label"/>
+                <Label text="Kelola Paket" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goUploadGaleri">
-                <Label text="Upload Galeri" styleClass="sidebar-menu-label"/>
+                <Label text="Upload Galeri" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goKalender">
-                <Label text="Kalender Booking" styleClass="sidebar-menu-label"/>
+                <Label text="Kalender Booking" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <HBox styleClass="sidebar-menu-item" alignment="CENTER_LEFT" spacing="12"
                   onMouseClicked="#goPelanggan">
-                <Label text="Pelanggan" styleClass="sidebar-menu-label"/>
+                <Label text="Pelanggan" styleClass="sidebar-menu-label" mouseTransparent="true"/>
             </HBox>
 
             <Button fx:id="btnLogout" text="Logout"
