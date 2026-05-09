@@ -412,7 +412,11 @@ public class KelolaPaketController {
     }
 
     @FXML private void goKelolaPaket() { }
-    @FXML private void goUploadGaleri() { System.out.println("TODO: Upload Galeri"); }
-    @FXML private void goKalender() { try { SceneManager.showKalenderBooking(); } catch (Exception e) { e.printStackTrace(); } }
-    @FXML private void goPelanggan() { try { SceneManager.showKelolaPelanggan(); } catch (Exception e) { e.printStackTrace(); } }
+    
+    @FXML private void goUploadGaleri() { 
+        try { SceneManager.showUploadGaleri(); } catch (Exception e) { e.printStackTrace(); } }   
+    @FXML private void goKalender() { 
+        try { SceneManager.showKalenderBooking(); } catch (Exception e) { e.printStackTrace(); } }
+    @FXML private void goPelanggan() { 
+        try { SceneManager.showKelolaPelanggan(); } catch (Exception e) { e.printStackTrace(); } }
 }

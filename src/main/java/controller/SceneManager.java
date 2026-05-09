@@ -12,7 +12,9 @@ public class SceneManager {
     private static Stage stage;
     public static String afterLoginDestination = null;
 
-    public static void setStage(Stage s) { stage = s; }
+    public static void setStage(Stage s) {
+        stage = s;
+    }
 
     // ── Halaman Publik ────────────────────────────────────────────────────
 
@@ -39,8 +41,8 @@ public class SceneManager {
     }
 
     public static void showKelolaPesanan() throws Exception {
-    loadScene("/view/kelola_pesanan.fxml", "/view/kelola_pesanan.css", 1280, 800);
-}
+        loadScene("/view/kelola_pesanan.fxml", "/view/kelola_pesanan.css", 1280, 800);
+    }
 
     public static void showKelolaPaket() throws Exception {
         loadScene("/view/kelola_paket.fxml", "/view/kelola_paket.css", 1280, 800);
@@ -55,16 +57,28 @@ public class SceneManager {
     }
 
     public static void showUploadGaleri() throws Exception {
-        loadScene("/view/upload_galeri.fxml", "/view/upload_galeri.css", 1280, 800);
-    }
+        Parent root = FXMLLoader.load(SceneManager.class.getResource("/view/upload_galeri.fxml"));
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        Scene scene = new Scene(root, Math.min(1280, bounds.getWidth()), Math.min(800, bounds.getHeight()));
+
+        // ⬇️ Dua baris ini yang penting — jangan sampai terlewat
+        scene.getStylesheets().add(SceneManager.class.getResource("/view/admin_dashboard.css").toExternalForm());
+        scene.getStylesheets().add(SceneManager.class.getResource("/view/upload_galeri.css").toExternalForm());
+
+        stage.setScene(scene);
+        stage.setMaximized(false);
+        stage.setX(bounds.getMinX());
+        stage.setY(bounds.getMinY());
+        stage.setWidth(bounds.getWidth());
+        stage.setHeight(bounds.getHeight());
+    } 
     // ── Popup Login / Register ────────────────────────────────────────────
 
     public static void showLogin() throws Exception {
         Parent root = FXMLLoader.load(SceneManager.class.getResource("/view/login.fxml"));
         Scene scene = new Scene(root, 400, 420);
         scene.getStylesheets().add(
-            SceneManager.class.getResource("/view/style.css").toExternalForm()
-        );
+                SceneManager.class.getResource("/view/style.css").toExternalForm());
         Stage popup = new Stage();
         popup.setScene(scene);
         popup.setTitle("Masuk");
@@ -79,8 +93,7 @@ public class SceneManager {
         Parent root = FXMLLoader.load(SceneManager.class.getResource("/view/register.fxml"));
         Scene scene = new Scene(root, 420, 520);
         scene.getStylesheets().add(
-            SceneManager.class.getResource("/view/style.css").toExternalForm()
-        );
+                SceneManager.class.getResource("/view/style.css").toExternalForm());
         Stage popup = new Stage();
         popup.setScene(scene);
         popup.setTitle("Daftar");
@@ -93,9 +106,9 @@ public class SceneManager {
 
     public static void closeCurrentPopup() {
         javafx.stage.Stage.getWindows().stream()
-            .filter(w -> w instanceof javafx.stage.Stage && w != stage && w.isShowing())
-            .findFirst()
-            .ifPresent(javafx.stage.Window::hide);
+                .filter(w -> w instanceof javafx.stage.Stage && w != stage && w.isShowing())
+                .findFirst()
+                .ifPresent(javafx.stage.Window::hide);
     }
 
     // ── Helper ────────────────────────────────────────────────────────────

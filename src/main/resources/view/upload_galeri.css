@@ -1,99 +1,82 @@
 /* ============================================================
-   upload_galeri.css  —  reuse gaya admin_dashboard
+   upload_galeri.css
+   Hanya style TAMBAHAN — sidebar di-cover admin_dashboard.css
    ============================================================ */
 
-/* Import semua gaya base dari admin_dashboard */
-.admin-root            { -fx-background-color: #F9FAFB; }
+/* FORM SECTION */
+.form-section {
+    -fx-background-color: white;
+    -fx-padding: 24;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);
+}
+.form-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}
+.form-input {
+    -fx-font-size: 13px;
+    -fx-padding: 10 14;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-background-color: #F9FAFB;
+}
+.form-input:focused {
+    -fx-border-color: #EC4899;
+    -fx-background-color: white;
+}
 
-/* SIDEBAR */
-.sidebar               { -fx-background-color: #1F1235; -fx-padding: 0; }
-.sidebar-logo-box      { -fx-padding: 24 20 20 20; }
-.sidebar-logo-text     { -fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white; }
-.sidebar-logo-sub      { -fx-font-size: 13px; -fx-text-fill: #EC4899; -fx-font-weight: bold; }
-.sidebar-sep           { -fx-background-color: rgba(255,255,255,0.1); -fx-opacity: 1; }
-.sidebar-section-label { -fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.4);
-                          -fx-font-weight: bold; -fx-letter-spacing: 1px; }
+/* TOMBOL PILIH FILE */
+.btn-pilih-file {
+    -fx-background-color: #F3F4F6;
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-border-color: #D1D5DB;
+    -fx-border-width: 1;
+}
+.btn-pilih-file:hover { -fx-background-color: #E5E7EB; }
+.file-path-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6B7280;
+    -fx-font-style: italic;
+}
 
-.sidebar-menu-item        { -fx-padding: 14 20; -fx-cursor: hand; }
-.sidebar-menu-item:hover  { -fx-background-color: rgba(255,255,255,0.07); }
-.sidebar-menu-item-active { -fx-padding: 14 20;
-                             -fx-background-color: linear-gradient(to right, #EC4899, #8B5CF6); }
-.sidebar-menu-label       { -fx-text-fill: rgba(255,255,255,0.75); -fx-font-size: 14px; }
-.sidebar-menu-item-active .sidebar-menu-label { -fx-text-fill: white; -fx-font-weight: bold; }
+/* TOMBOL SIMPAN */
+.btn-simpan {
+    -fx-background-color: #EC4899;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 10 28;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+.btn-simpan .label { -fx-text-fill: white; -fx-font-weight: bold; }
+.btn-simpan:hover  { -fx-background-color: #DB2777; }
 
-.sidebar-logout-btn       { -fx-background-color: rgba(239,68,68,0.15);
-                             -fx-text-fill: #FCA5A5; -fx-font-size: 13px;
-                             -fx-padding: 12 20; -fx-border-color: transparent;
-                             -fx-cursor: hand; }
-.sidebar-logout-btn:hover { -fx-background-color: rgba(239,68,68,0.3); }
+/* TOMBOL HAPUS */
+.btn-hapus {
+    -fx-background-color: #FEE2E2;
+    -fx-text-fill: #DC2626;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+.btn-hapus .label { -fx-text-fill: #DC2626; }
+.btn-hapus:hover  { -fx-background-color: #FECACA; }
 
-.sidebar-bottom-section   { -fx-padding: 0; }
-.sidebar-profile-box      { -fx-padding: 16 20; }
-.sidebar-avatar           { -fx-background-color: #EC4899; -fx-background-radius: 50%; }
-.sidebar-avatar-initial   { -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; }
-.sidebar-profile-name     { -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; }
-.sidebar-profile-role     { -fx-text-fill: rgba(255,255,255,0.5); -fx-font-size: 11px; }
-
-/* KONTEN */
-.main-content             { -fx-background-color: #F9FAFB; -fx-padding: 0; }
-.content-header           { -fx-background-color: white;
-                             -fx-padding: 28 40;
-                             -fx-border-color: transparent transparent #E5E7EB transparent;
-                             -fx-border-width: 0 0 1 0; }
-.page-title               { -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #111827; }
-.page-subtitle            { -fx-font-size: 13px; -fx-text-fill: #6B7280; }
-
-.section-heading          { -fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #111827; }
-.section-subheading       { -fx-font-size: 12px; -fx-text-fill: #6B7280; }
-
-/* FORM */
-.form-section             { -fx-background-color: white;
-                             -fx-padding: 24;
-                             -fx-border-color: #E5E7EB;
-                             -fx-border-radius: 12;
-                             -fx-background-radius: 12; }
-.form-label               { -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #374151; }
-.form-input               { -fx-font-size: 13px; -fx-padding: 10 14;
-                             -fx-border-color: #D1D5DB; -fx-border-radius: 8;
-                             -fx-background-radius: 8; -fx-background-color: #F9FAFB; }
-.form-input:focused       { -fx-border-color: #EC4899; -fx-background-color: white; }
-
-.btn-pilih-file           { -fx-background-color: #F3F4F6; -fx-text-fill: #374151;
-                             -fx-font-size: 13px; -fx-padding: 10 20;
-                             -fx-border-radius: 8; -fx-background-radius: 8;
-                             -fx-cursor: hand; -fx-border-color: #D1D5DB; }
-.btn-pilih-file:hover     { -fx-background-color: #E5E7EB; }
-
-.file-path-label          { -fx-font-size: 12px; -fx-text-fill: #6B7280;
-                             -fx-font-style: italic; }
-
-.btn-simpan               { -fx-background-color: linear-gradient(to right, #EC4899, #8B5CF6);
-                             -fx-text-fill: white; -fx-font-weight: bold;
-                             -fx-font-size: 13px; -fx-padding: 10 28;
-                             -fx-border-radius: 8; -fx-background-radius: 8;
-                             -fx-cursor: hand; }
-.btn-simpan:hover         { -fx-opacity: 0.9; }
-
-.btn-hapus                { -fx-background-color: #FEE2E2; -fx-text-fill: #DC2626;
-                             -fx-font-size: 13px; -fx-padding: 10 20;
-                             -fx-border-radius: 8; -fx-background-radius: 8;
-                             -fx-cursor: hand; -fx-border-color: transparent; }
-.btn-hapus:hover          { -fx-background-color: #FECACA; }
-
-.status-label             { -fx-font-size: 13px; }
-
-/* TABEL */
-.table-section            { -fx-background-color: white;
-                             -fx-padding: 24;
-                             -fx-border-color: #E5E7EB;
-                             -fx-border-radius: 12;
-                             -fx-background-radius: 12; }
-.booking-table            { -fx-background-color: transparent;
-                             -fx-border-color: #E5E7EB;
-                             -fx-border-radius: 8; }
-.booking-table .column-header-background { -fx-background-color: #F9FAFB; }
-.booking-table .column-header .label     { -fx-font-weight: bold; -fx-text-fill: #EC4899;
-                                            -fx-font-size: 12px; }
-.booking-table .table-row-cell          { -fx-border-color: transparent transparent #F3F4F6 transparent; }
-.booking-table .table-row-cell:selected { -fx-background-color: #FDF2F8; }
-.table-placeholder        { -fx-text-fill: #9CA3AF; -fx-font-size: 13px; }
+.status-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
